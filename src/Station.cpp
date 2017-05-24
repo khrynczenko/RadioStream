@@ -1,7 +1,7 @@
 #include "../include/Station.hpp"
 
-Station::Station(const std::string& name_, const std::string& ip_)
-	: name(name_)
-	, ip(ip_)
+Station::Station(const std::string& name, const std::string& ip)
+	: name_(name)
+	, ip_(ip)
 {
 }

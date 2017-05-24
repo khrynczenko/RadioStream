@@ -17,7 +17,7 @@ class State
 {
 public:
 	virtual ~State() = default;
-	//Context represents a structure containing references to items use throughout all states
+	//Context represents a structure containing references to items use throughout all states_
 	struct Context
 	{
 		Context(nana::form& window, nana::menubar& menubar, StreamManager& stream_manager, StationsManager& stations_manager);
@@ -31,9 +31,9 @@ public:
 protected:
 	void pop_error(const std::string& str) const;
 	void switch_state(States::ID id) const;
-	Context& context;
+	Context& context_;
 private:
-	StatesManager& manager;
+	StatesManager& manager_;
 };
 
 #endif

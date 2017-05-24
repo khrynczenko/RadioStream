@@ -7,8 +7,8 @@ struct Station
 {
 	Station(const std::string& name_, const std::string& ip_);
 	~Station() = default;
-	const std::string name;
-	const std::string ip;
+	const std::string name_;
+	const std::string ip_;
 };
 
 #endif

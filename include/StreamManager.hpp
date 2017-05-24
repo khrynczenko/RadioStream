@@ -15,8 +15,8 @@ public:
 	StreamManager();
 	~StreamManager() = default;
 private:
-	HSTREAM main_stream;
-	float volume;
+	HSTREAM main_stream_;
+	float volume_;
 };
 
 #endif

@@ -15,8 +15,8 @@ public:
 private:
 	void load_default_stations();
 	void load_user_stations();
-	std::vector<Station> default_stations;
-	std::vector<Station> user_stations;
+	std::vector<Station> default_stations_;
+	std::vector<Station> user_stations_;
 };
 
 #endif

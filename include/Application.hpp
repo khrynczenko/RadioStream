@@ -13,11 +13,11 @@ public:
 private:
 	void register_states();
 	void init_menubar();
-	nana::form window;
-	StatesManager states_manager;
-	nana::menubar menubar;
-	StreamManager stream_manager;
-	StationsManager stations_manager;
+	nana::form window_;
+	StatesManager states_manager_;
+	nana::menubar menubar_;
+	StreamManager stream_manager_;
+	StationsManager stations_manager_;
 };
 
 
