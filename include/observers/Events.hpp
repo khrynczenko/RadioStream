@@ -1,0 +1,21 @@
+#ifndef EVENTS_HPP
+#define EVENTS_HPP
+
+namespace events
+{
+	enum class Event
+	{
+
+		STREAM_PAUSE,
+		STREAM_PLAY,
+		STREAM_NEW,
+		VOLUME_CHANGED,
+
+		UPDATE_STATION_LABEL,
+		SEARCH_STATIONS,
+		POPULATE_LISTBOX,
+		UPDATE_SONG_LABEL
+	};
+}
+
+#endif
