@@ -7,5 +7,3 @@ BASS https://www.un4seen.com/
 JSON for Modern C++ https://nlohmann.github.io/json/  
 
 RadioStream is still in really early phase of development. Do not consider master branch to be stable release, for now it contains the fundamental features in their basic form. Latest tested release goes on the master branch, while develop branch is used for creating new content before realeasing. If You want to make a pull request, please use the develop branch. For more information about project (insturction, code, design decisions etc.) consider visting [project wiki](https://github.com/JenioPY/RadioStream/wiki).
-
-You can check the compiled master [here](https://ufile.io/m6b2f), but be aware it is just to show what RadioStream is gonna be about and so you get to know what to expect of it.
