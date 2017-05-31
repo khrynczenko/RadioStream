@@ -1,7 +1,6 @@
 #include "../include/Application.hpp"
-#include "../include/MainState.hpp"
 #include <nana/gui/msgbox.hpp>
-#include <iostream>
+#include "../include/states/MainState.hpp"
 
 Application::Application()
 	: window_(nana::API::make_center(600, 500), nana::appear::decorate<nana::appear::minimize, nana::appear::sizable, nana::appear::maximize, nana::appear::taskbar>())

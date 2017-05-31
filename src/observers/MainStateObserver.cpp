@@ -1,7 +1,6 @@
 #include "../../include/observers/MainStateObserver.hpp"
 #include <nana/gui/widgets/textbox.hpp>
-#include "../MainState.hpp"
-#include <iostream>
+#include "../../include/states/MainState.hpp"
 
 MainStateObserver::MainStateObserver(MainState& ui)
 	: Observer()

@@ -1,5 +1,4 @@
-#include "../include/StatesManager.hpp"
-
+#include "../../include/states/StatesManager.hpp"
 
 
 StatesManager::StatesManager(Context context)

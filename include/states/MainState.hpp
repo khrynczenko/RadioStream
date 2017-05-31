@@ -8,8 +8,7 @@
 #include <nana/gui/widgets/textbox.hpp>
 #include <nana/gui/widgets/slider.hpp>
 #include <nana/gui/widgets/label.hpp>
-#include <chrono>
-#include "observers/Subject.hpp"
+#include "../observers/Subject.hpp"
 
 class MainState :
 	public State

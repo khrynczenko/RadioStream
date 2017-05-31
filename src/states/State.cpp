@@ -1,5 +1,9 @@
-#include "../include/State.hpp"
-#include "../include/StatesManager.hpp"
+#include "../../include/states/StatesManager.hpp"
+#include <nana/gui/widgets/form.hpp>
+#include <nana/gui/widgets/menubar.hpp>
+#include "../../include/StreamManager.hpp"
+#include "../../include/StationsManager.hpp"
+
 
 State::Context::Context(nana::form& window, nana::menubar& menubar, StreamManager& stream_manager, StationsManager& stations_manager)
 	: window(window)

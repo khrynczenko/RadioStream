@@ -1,10 +1,8 @@
-#include "../include/MainState.hpp"
 #include <nana/gui/widgets/menubar.hpp>
-#include "../include/Utilities.hpp"
-#include "../include/Constants.hpp"
-#include "../include/observers/Observer.hpp"
-#include "../include/observers/StreamObserver.hpp"
-#include "../include/observers/MainStateObserver.hpp"
+#include "../../include/states/MainState.hpp"
+#include "../../include/observers/StreamObserver.hpp"
+#include "../../include/observers/MainStateObserver.hpp"
+#include "../../include/Constants.hpp"
 
 MainState::MainState(StatesManager& manager, Context& context)
 	: State(manager, context)

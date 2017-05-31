@@ -2,8 +2,8 @@
 #include <nana/gui.hpp>
 #include "../include/Application.hpp"
 
-int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, char*, int nShowCmd)
-//int main
+//int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, char*, int nShowCmd)
+int main()
 {
 	
 	try {

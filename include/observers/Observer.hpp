@@ -1,6 +1,6 @@
 #ifndef OBSERVER_HPP
 #define OBSERVER_HPP
-#include "../StatesManager.hpp"
+#include "../states/StatesManager.hpp"
 #include "Events.hpp"
 #include "../Utilities.hpp"
 

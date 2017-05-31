@@ -3,8 +3,8 @@
 
 #include <nana\gui\widgets\form.hpp>
 #include "StateIdentifiers.hpp"
-#include "StreamManager.hpp"
-#include "StationsManager.hpp"
+#include "../StreamManager.hpp"
+#include "../StationsManager.hpp"
 
 
 namespace nana {
