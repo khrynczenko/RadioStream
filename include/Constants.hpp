@@ -6,9 +6,22 @@ namespace constants
 {
 	enum class StationListboxCategories
 	{
-		Default,
+		NanaDefault,
+		UserDefined,
+		Default
+		
 	};
-	nana::color volume_slider_vernier_color{ 50,50,50,0.5 };
+	enum class StationListboxColumns
+	{
+		Name,
+		Favorite,
+		UserDefined
+	};
+
+	const nana::color VERNIER_COLOR{ 50,50,50,0.5 };
+
+	constexpr const char* STATIONS_FILE = "stations.data";
+	constexpr const char* DEFAULT_STATIONS_FILE = "default_stations.data";
 
 }
 

@@ -8,6 +8,10 @@
 
 using Context = State::Context;
 
+/**
+ * \brief Manages available states, shows only one at time
+ * 
+ */
 class StatesManager
 {
 public:

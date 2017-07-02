@@ -17,7 +17,10 @@ class State
 {
 public:
 	virtual ~State() = default;
-	//Context represents a structure containing references to items use throughout all states_
+
+	/**
+	 * \brief Context represents a structure containing references to items use throughout all states
+	 */
 	struct Context
 	{
 		Context(nana::form& window, nana::menubar& menubar, StreamManager& stream_manager, StationsManager& stations_manager);

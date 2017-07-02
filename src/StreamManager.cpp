@@ -31,7 +31,7 @@ void StreamManager::pause()
 
 void StreamManager::play()
 {
-	BASS_ChannelPlay(main_stream_, true);
+	BASS_ChannelPlay(main_stream_, false);
 }
 
 std::string StreamManager::get_song_title() const

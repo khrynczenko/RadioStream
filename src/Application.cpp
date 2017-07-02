@@ -32,7 +32,7 @@ void Application::init_menubar()
 	menubar_.push_back("Settings: ");
 	menubar_.at(FILE).append("Open URL", [this](nana::menu::item_proxy& ip)
 	{
-		nana::inputbox::text url("<bold blue>URL</>");	//The format text is also available, the second parameter can be given for default value
+		nana::inputbox::text url("URL");	//The format text is also available, the second parameter can be given for default value
 		nana::inputbox inbox(window_, "Please write correct URL.\n\n\n", "Open URL");
 		if (inbox.show_modal(url))
 		{

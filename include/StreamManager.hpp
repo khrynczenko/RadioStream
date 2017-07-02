@@ -3,6 +3,9 @@
 #include <bass.h>
 #include <string>
 
+/**
+ * \brief StreamManager is responsible for creating the stream, associating it with the channel and managing it, it mean changing volume, pausing, playing associating with URL etc.
+ */
 class StreamManager
 {
 public:
