@@ -4,13 +4,17 @@
 
 #include "Observer.hpp"
 #include <nana/gui/widgets/slider.hpp>
+#include <nana/gui/widgets/button.hpp>
 
 class StreamObserver :
-	public Observer
+    public Observer
 {
 public:
-	StreamObserver() = default;
-	void on_notify(const nana::widget& caller, Context context, events::Event e) override;
+    StreamObserver(nana::slider& volume_slider, nana::button& mute_button);
+    void on_notify(const nana::widget& caller, Context context, events::Event e) override;
+private:
+    nana::slider& volume_slider_;
+    nana::button& mute_button_;
 };
 
 #endif

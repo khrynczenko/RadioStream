@@ -11,28 +11,29 @@
 #include "../observers/Subject.hpp"
 
 class MainState :
-	public State
+    public State
 {
-	friend class MainStateObserver;
+    friend class MainStateObserver;
 public:
-	MainState(StatesManager& manager, Context& context);
-	void change_visibility(bool visible) override;
+    MainState(StatesManager& manager, Context& context);
+    void change_visibility(bool visible) override;
 private:
-	void build_interface();
-	void init_listbox();
-	void update_titles();
-	nana::place container_;
-	nana::label current_song_label_;
-	nana::label current_station_label_;
-	nana::button play_button_;
-	nana::button pause_button_;
-	nana::button turn_favorite_button_;
-	nana::textbox search_textbox_;
-	nana::listbox stations_listbox_;
-	nana::slider volume_slider_;
-	std::thread song_title_updater_;
-	std::mutex song_title_mutex_;
-	Subject subject_;
+    void build_interface();
+    void init_listbox();
+    void update_titles();
+    nana::place container_;
+    nana::label current_song_label_;
+    nana::label current_station_label_;
+    nana::button play_button_;
+    nana::button pause_button_;
+    nana::button turn_favorite_button_;
+    nana::button mute_button_;
+    nana::textbox search_textbox_;
+    nana::listbox stations_listbox_;
+    nana::slider volume_slider_;
+    std::thread song_title_updater_;
+    std::mutex song_title_mutex_;
+    Subject subject_;
 };
 
 #endif

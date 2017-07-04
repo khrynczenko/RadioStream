@@ -4,7 +4,9 @@
 #include "../../include/observers/MainStateObserver.hpp"
 #include "../../include/Constants.hpp"
 #include "../../include/InlineCheckbox.hpp"
+
 using namespace constants;
+
 MainState::MainState(StatesManager& manager, Context& context)
 	: State(manager, context)
 	, container_(context.window)
@@ -13,11 +15,12 @@ MainState::MainState(StatesManager& manager, Context& context)
 	, play_button_(context.window)
 	, pause_button_(context.window)
 	, turn_favorite_button_(context.window)
+	, mute_button_(context.window)
 	, search_textbox_(context.window)
 	, stations_listbox_(context.window)
 	, volume_slider_(context.window)
 {
-	subject_.attach(std::make_unique<StreamObserver>());
+	subject_.attach(std::make_unique<StreamObserver>(volume_slider_, mute_button_));
 	subject_.attach(std::make_unique<MainStateObserver>(*this));
 	build_interface();
 	init_listbox();
@@ -36,6 +39,7 @@ void MainState::build_interface()
 	play_button_.caption("Play");
 	pause_button_.caption("Pause");
 	turn_favorite_button_.caption("Subscribe");
+	mute_button_.caption("Mute");
 	play_button_.events().click([this]()
 	{
 		subject_.notify(play_button_, context_, events::Event::STREAM_PLAY);
@@ -48,14 +52,19 @@ void MainState::build_interface()
 	{
 		subject_.notify(turn_favorite_button_, context_, events::Event::SUBSCRIBE_TO_STATION);
 	});
+	mute_button_.enable_pushed(true);
+	mute_button_.events().mouse_up([this]()
+	{
+		subject_.notify(mute_button_, context_, events::Event::STREAM_MUTE);
+	});
 	volume_slider_.scheme().color_vernier = VERNIER_COLOR;
 	volume_slider_.maximum(100);
-	volume_slider_.value(volume_float_to_int(context_.stream_manager.get_volume()));
+	volume_slider_.value(volume_float_to_int(context_.stream_manager.get_current_volume()));
 	volume_slider_.vernier([](unsigned maximum, unsigned cursor_value)
 	{
 		return std::string(std::to_string(cursor_value) + "/" + std::to_string(maximum));
 	});
-	volume_slider_.events().value_changed([this](const nana::arg_slider& value)
+	volume_slider_.events().value_changed([this]()
 	{
 		subject_.notify(volume_slider_, context_, events::Event::VOLUME_CHANGED);
 	});
@@ -66,12 +75,12 @@ void MainState::build_interface()
 	});
 	container_.div(
 		"<content vertical margin=[5%,0,0,0]" 
-		"<first_line weight=12% arrange=[10%,10%,10%] gap=1% margin=1%>"
+		"<first_line weight=12% arrange=[10%,10%,10%,10%] gap=1% margin=1%>"
 		"<between_line weight=10% arrange=[49%,48%] gap=1% margin=1% >"
 		"<second_line weight=8% arrange=[25%,72%] gap=1% margin=1%>"
 		"<listbox margin=1%>"
 		">");
-	container_.field("first_line") << play_button_ << pause_button_ <<turn_favorite_button_;
+	container_.field("first_line") << play_button_ << pause_button_ << turn_favorite_button_ << mute_button_ ;
 	container_.field("between_line") << current_station_label_ << current_song_label_;
 	container_.field("second_line") << search_textbox_ << volume_slider_;
 	container_.field("listbox") << stations_listbox_;
@@ -91,10 +100,6 @@ void MainState::init_listbox()
 	stations_listbox_.enable_single(true, false);
 	subject_.notify(stations_listbox_, context_, events::Event::POPULATE_LISTBOX);
 	stations_listbox_.sort_col(cast_uint(StationListboxColumns::Favorite), true);
-	stations_listbox_.events().selected([this](const nana::arg_listbox& arg)
-	{
-
-	});
 	stations_listbox_.events().dbl_click([this](const nana::arg_mouse& arg)
 	{
 		if(!stations_listbox_.cast(arg.pos).is_category()) // this condition must be fulfilled because when we click category one it selects the last item in it so when we dbl_click category it works just as we would dbl_click last item in it
@@ -117,5 +122,4 @@ void MainState::update_titles()
 		std::lock_guard<std::mutex>{song_title_mutex_};
 		subject_.notify(stations_listbox_, context_, events::Event::UPDATE_SONG_LABEL);
 	}
-	
 }

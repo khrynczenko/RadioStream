@@ -9,8 +9,8 @@
 class StreamManager
 {
 public:
-	void set_volume(float);
-	float get_volume() const;
+	void set_current_volume(float);
+	float get_current_volume() const;
 	void set_new_stream(const std::string& url);
 	void pause();
 	void play();
@@ -19,7 +19,8 @@ public:
 	~StreamManager() = default;
 private:
 	HSTREAM main_stream_;
-	float volume_;
+	float current_volume_;
+    std::string url_playing_;
 };
 
 #endif
