@@ -11,9 +11,7 @@ void StreamManager::set_current_volume(float volume)
 
 float StreamManager::get_current_volume() const
 {
-	float value;
-	BASS_ChannelGetAttribute(main_stream_, BASS_ATTRIB_VOL, &value);
-	return value;
+    return current_volume_;
 }
 
 void StreamManager::set_new_stream(const std::string& url)

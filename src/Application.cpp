@@ -1,15 +1,13 @@
 #include "../include/Application.hpp"
-#include <nana/gui/msgbox.hpp>
-#include "../include/states/MainState.hpp"
 
 Application::Application()
 	: window_(nana::API::make_center(600, 500), nana::appear::decorate<nana::appear::minimize, nana::appear::sizable, nana::appear::maximize, nana::appear::taskbar>())
-	, states_manager_(State::Context{ window_, menubar_, stream_manager_, stations_manager_})
 	, menubar_(window_)
 	, stream_manager_()
 	, stations_manager_()
+    , states_manager_(State::Context{ window_, menubar_, stream_manager_, stations_manager_ })
 {
-	window_.caption("Radio Client");
+    window_.caption("Radio Client");
 	init_menubar();
 	register_states();
 	states_manager_.switch_state(States::ID::Main);
