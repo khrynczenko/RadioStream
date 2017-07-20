@@ -9,7 +9,7 @@ class MainStateObserver
 	: public Observer
 {
 public:
-	MainStateObserver(MainState& ui);
+	explicit MainStateObserver(MainState& ui);
 	void on_notify(const nana::widget& caller, Context context, events::Event e) override;
 private:
 	MainState& ui_;

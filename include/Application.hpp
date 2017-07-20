@@ -9,11 +9,18 @@
 #include "StationsManager.hpp"
 #include "states/MainState.hpp"
 
+/**
+ * \class Application
+ * \brief Glues each compomnent of a system together. Creates window, sets initial States, initializes menubar etc.
+ */
 class Application
 {
 public:
 	Application();
 private:
+    /**
+	 * \brief Gets called in constructor, register states that are gonna be used througout the application
+	 */
 	void register_states();
 	void init_menubar();
 	nana::form window_;

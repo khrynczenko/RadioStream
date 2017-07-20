@@ -31,7 +31,7 @@ Station& Station::operator=(const Station& rhs)
 
 bool Station::operator==(const Station& rhs) const
 {
-	if (name_ == rhs.name_ && ip_ == rhs.ip_)
+	if (name_ == rhs.name_)
 		return true;
 	return false;
 }

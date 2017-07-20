@@ -15,21 +15,31 @@ void StreamObserver::on_notify(const nana::widget& caller, Context context, even
 	using namespace constants;
 	switch(e)
 	{
-	case events::Event::STREAM_PAUSE:
-		context.stream_manager.pause();
+	case events::Event::StreamPause:
+    {
+        context.stream_manager.pause();
+    }
+    break;
+
+	case events::Event::StreamPlay:
+	{
+        context.stream_manager.play();
+	}
 	break;
-	case events::Event::STREAM_PLAY:
-		context.stream_manager.play();
+
+	case events::Event::VolumeChanged:
+	{
+        if (!mute_button_.pushed())
+            context.stream_manager.set_current_volume(volume_int_to_float(static_cast<const nana::slider&>(caller).value()));
+	}
 	break;
-	case events::Event::VOLUME_CHANGED:
-        if(!mute_button_.pushed())
-		    context.stream_manager.set_current_volume(volume_int_to_float(static_cast<const nana::slider&>(caller).value()));
-	break;
-	case events::Event::STREAM_NEW:
+
+	case events::Event::StreamNew:
 	{
 		const nana::listbox&  stations_listbox = static_cast<const nana::listbox&>(caller);
 		if (!stations_listbox.selected().empty())
 		{
+
 			auto selected_item = stations_listbox.selected().front();
 			std::string station_name;
 			if (selected_item.cat == static_cast<std::size_t>(StationListboxCategories::Default))
@@ -46,17 +56,21 @@ void StreamObserver::on_notify(const nana::widget& caller, Context context, even
 		}
 	}
 	break;
-	case events::Event::STREAM_MUTE:
-		if (context.stream_manager.get_current_volume() != 0.f)
-		{
-			context.stream_manager.set_current_volume(0.f);
+
+	case events::Event::StreamMute:
+    {
+        if (context.stream_manager.get_current_volume() != 0.f)
+        {
+            context.stream_manager.set_current_volume(0.f);
             mute_button_.pushed(true);
-		}	
-		else
-		{
-			context.stream_manager.set_current_volume(volume_int_to_float(volume_slider_.value()));
-			mute_button_.pushed(false);
-		}
+        }
+        else
+        {
+            context.stream_manager.set_current_volume(volume_int_to_float(volume_slider_.value()));
+            mute_button_.pushed(false);
+        }
+    }
 	break;
+
 	}
 }

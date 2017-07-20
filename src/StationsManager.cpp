@@ -4,13 +4,13 @@
 #include <vector>
 #include "../include/Station.hpp"
 #include "../include/Constants.hpp"
+#include "../include/Utilities.hpp"
+
 using json = nlohmann::json;
 
 StationsManager::StationsManager()
 {
 	load_stations();
-	for (const auto& station : stations_)
-		std::cout << '\n' << station.name_;
 }
 
 StationsManager::~StationsManager()
@@ -66,11 +66,11 @@ std::vector<std::string> StationsManager::search_matching_stations(const std::st
 {
 	std::vector<std::string> matching_station_names;
 	std::string searched_str;
-	std::transform(str.cbegin(), str.cend(), std::back_inserter(searched_str), tolower);
+	std::transform(str.cbegin(), str.cend(), std::back_inserter(searched_str), easytolower);
 	for(const auto& station : stations_)
 	{
 		std::string lower_cased;
-		std::transform(station.name_.cbegin(), station.name_.cend(), std::back_inserter(lower_cased), tolower);
+		std::transform(station.name_.cbegin(), station.name_.cend(), std::back_inserter(lower_cased), easytolower);
 		if (lower_cased.find(searched_str) != std::string::npos)
 			matching_station_names.push_back(station.name_);
 	}
@@ -79,8 +79,6 @@ std::vector<std::string> StationsManager::search_matching_stations(const std::st
 
 void StationsManager::set_favorite(std::string station_name)
 {
-
-	
 	auto iterator = std::find_if(stations_.begin(), stations_.end(), [&station_name](const Station& station)
 	{
 		if (station.name_ == station_name)
@@ -110,3 +108,21 @@ void StationsManager::save_all_changes_to_file() const
 	output.close();
 }
 
+void StationsManager::add_station(const Station& station)
+{
+    stations_.push_back(station);
+}
+
+void StationsManager::delete_station(const Station& station)
+{
+    auto it = std::find(stations_.begin(), stations_.end(), station);
+    if (it != stations_.end())
+    {
+        stations_.erase(it);
+    }
+    else
+    {
+        throw std::exception("Could not delete station that does not exist.");
+    }
+
+}

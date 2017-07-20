@@ -3,8 +3,8 @@
 #include "../include/Application.hpp"
 #include <string>
 
-//int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, char*, int nShowCmd)
-int main()
+int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, char*, int nShowCmd)
+//int main()
 {
 	try {
 		Application app{};

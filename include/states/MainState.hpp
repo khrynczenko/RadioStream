@@ -8,6 +8,7 @@
 #include <nana/gui/widgets/textbox.hpp>
 #include <nana/gui/widgets/slider.hpp>
 #include <nana/gui/widgets/label.hpp>
+#include <nana/gui/widgets/menu.hpp>
 #include "../observers/Subject.hpp"
 
 class MainState :
@@ -19,6 +20,7 @@ public:
     void change_visibility(bool visible) override;
 private:
     void build_interface();
+    void init_contextual_menus();
     void init_listbox();
     void update_titles();
     nana::place container_;
@@ -26,11 +28,13 @@ private:
     nana::label current_station_label_;
     nana::button play_button_;
     nana::button pause_button_;
-    nana::button turn_favorite_button_;
     nana::button mute_button_;
     nana::textbox search_textbox_;
     nana::listbox stations_listbox_;
     nana::slider volume_slider_;
+    nana::menu song_label_menu_;
+    nana::menu listbox_item_menu_;
+    nana::menu listbox_category_menu_;
     std::thread song_title_updater_;
     std::mutex song_title_mutex_;
     Subject subject_;

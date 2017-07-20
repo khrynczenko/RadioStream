@@ -6,6 +6,8 @@
 
 class Observer
 {
+protected:
+    using Context = State::Context;
 public:
 	virtual ~Observer() = default;
 	virtual void on_notify(const nana::widget& caller, Context context,events::Event e) = 0;

@@ -5,15 +5,13 @@
 #include <nana/gui/widgets/form.hpp>
 #include <map>
 
-
-using Context = State::Context;
-
 /**
- * \brief Manages available states, shows only one at time
+ * \brief Stores registred states, shows only one at time.
  * 
  */
 class StatesManager
 {
+    using Context = State::Context;
 public:
 	StatesManager(Context context);
 	StatesManager() = delete;
@@ -23,10 +21,16 @@ public:
 	template<typename T>
 	void register_state(States::ID id);
 private:
+
 	Context context_;
 	std::map<States::ID, std::unique_ptr<State>> states_;
 };
 
+/**
+ * \brief Adds new State to the StatesManager map.
+ * \tparam T Type of State (should be a class derived from a State).
+ * \param id States::ID that should be associated with given State.
+ */
 template <typename T>
 void StatesManager::register_state(States::ID id)
 {

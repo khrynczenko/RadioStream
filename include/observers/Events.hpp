@@ -5,19 +5,24 @@ namespace events
 {
 	enum class Event
 	{
-
-		STREAM_PAUSE,
-		STREAM_PLAY,
-		STREAM_NEW,
-		STREAM_MUTE,
-		VOLUME_CHANGED,
-
-		UPDATE_STATION_LABEL,
-		SEARCH_STATIONS,
-		POPULATE_LISTBOX,
-		UPDATE_SONG_LABEL,
-		SUBSCRIBE_TO_STATION,
-
+        //StreamObserver events
+		StreamPause,
+		StreamPlay,
+		StreamNew,
+		StreamMute,
+		VolumeChanged,
+        //MainStateObserver events
+		UpdateStationLabel,
+		SearchStations,
+		PopulateListbox,
+		UpdateSongLabel,
+		SubscribeToStation,
+	    StationsListboxContextualMenu,
+	    CopySongTitleToClipboard,
+	    SongLabelContextualMenu,
+        //StationsObserver events
+        AddStation,
+        DeleteStation,
 	};
 }
 

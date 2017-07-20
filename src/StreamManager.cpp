@@ -38,7 +38,7 @@ void StreamManager::play()
         main_stream_ = BASS_StreamCreateURL(url_playing_.c_str(), 0, 0, 0, 0);
         BASS_ChannelSetAttribute(main_stream_, BASS_ATTRIB_VOL, current_volume_);
     }
-	BASS_ChannelPlay(main_stream_, true);
+	BASS_ChannelPlay(main_stream_, false);
 }
 
 std::string StreamManager::get_song_title() const
@@ -49,9 +49,9 @@ std::string StreamManager::get_song_title() const
 		//string in tags looks something like "StreamTitle='title',url='url'"
 		std::cout << tags;
 		std::string str = tags;
-		unsigned first = str.find('\'');
+		auto first = str.find('\'');
 		first++;
-		unsigned last = str.substr(first).find('\'');
+		auto last = str.substr(first).find('\'');
 		return str.substr(first, last);
 	}
 	return "";
