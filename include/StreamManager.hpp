@@ -1,5 +1,6 @@
 #ifndef STREAMMANGER_HPP
 #define STREAMMANGER_HPP
+
 #include <bass.h>
 #include <string>
 

@@ -1,13 +1,11 @@
 #ifndef APP_HPP
 #define APP_HPP
 
-#include <nana/gui/widgets/form.hpp>
-#include <nana/gui/widgets/menubar.hpp>
-#include <nana/gui/msgbox.hpp>
 #include "states/StatesManager.hpp"
 #include "StreamManager.hpp"
 #include "StationsManager.hpp"
-#include "states/MainState.hpp"
+#include <nana/gui/widgets/form.hpp>
+#include <nana/gui/widgets/menubar.hpp>
 
 /**
  * \class Application

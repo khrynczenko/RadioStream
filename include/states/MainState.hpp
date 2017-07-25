@@ -2,6 +2,7 @@
 #define MAINSTATE_HPP
 
 #include "State.hpp"
+#include "../observers/Subject.hpp"
 #include <nana/gui/place.hpp>
 #include <nana/gui/widgets/button.hpp>
 #include <nana/gui/widgets/listbox.hpp>
@@ -9,7 +10,7 @@
 #include <nana/gui/widgets/slider.hpp>
 #include <nana/gui/widgets/label.hpp>
 #include <nana/gui/widgets/menu.hpp>
-#include "../observers/Subject.hpp"
+#include <thread>
 
 class MainState :
     public State

@@ -1,10 +1,10 @@
 #include "../include/StationsManager.hpp"
-#include <fstream>
-#include <json.hpp>
-#include <vector>
 #include "../include/Station.hpp"
 #include "../include/Constants.hpp"
 #include "../include/Utilities.hpp"
+#include <json.hpp>
+#include <fstream>
+#include <stdexcept>
 
 using json = nlohmann::json;
 
@@ -122,7 +122,7 @@ void StationsManager::delete_station(const Station& station)
     }
     else
     {
-        throw std::exception("Could not delete station that does not exist.");
+        throw std::runtime_error("Could not delete station that does not exist.");
     }
 
 }

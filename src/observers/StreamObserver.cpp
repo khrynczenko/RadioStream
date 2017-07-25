@@ -1,8 +1,8 @@
 #include "../../include/observers/StreamObserver.hpp"
-#include <nana/gui/widgets/listbox.hpp>
 #include "../../include/Constants.hpp"
+#include "../../include/Utilities.hpp"
+#include <nana/gui/widgets/listbox.hpp>
 #include <nana/gui/widgets/button.hpp>
-
 StreamObserver::StreamObserver(nana::slider& volume_slider, nana::button& mute_button)
 	: volume_slider_(volume_slider)
 	, mute_button_(mute_button)

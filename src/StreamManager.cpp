@@ -1,7 +1,5 @@
 #include "../include/StreamManager.hpp"
-#include <iostream>
-
-
+#include <stdexcept>
 
 void StreamManager::set_current_volume(float volume)
 {
@@ -47,7 +45,6 @@ std::string StreamManager::get_song_title() const
 	if (tags != nullptr)
 	{
 		//string in tags looks something like "StreamTitle='title',url='url'"
-		std::cout << tags;
 		std::string str = tags;
 		auto first = str.find('\'');
 		first++;
@@ -64,7 +61,7 @@ StreamManager::StreamManager()
 {
 	if(!BASS_Init(-1, 44100, BASS_DEVICE_STEREO, nullptr, nullptr))
 	{
-		throw std::exception("Could not initialize sound device.");
+		throw std::runtime_error("Could not initialize sound device.");
 	}
 }
 

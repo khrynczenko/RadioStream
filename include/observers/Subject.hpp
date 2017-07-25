@@ -1,7 +1,9 @@
 #ifndef SUBJECT_HPP
 #define SUBJECT_HPP
-#include <vector>
+
 #include "Observer.hpp"
+#include <vector>
+
 
 class Subject
 {

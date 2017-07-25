@@ -1,5 +1,7 @@
 #include "../include/Application.hpp"
-#include "../include/observers/StationsObserver.hpp"
+#include "../include/states/MainState.hpp"
+#include <nana/gui/msgbox.hpp>
+
 
 Application::Application()
 	: window_(nana::API::make_center(600, 500), nana::appear::decorate<nana::appear::minimize, nana::appear::sizable, nana::appear::maximize, nana::appear::taskbar>())

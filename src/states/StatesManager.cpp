@@ -1,5 +1,5 @@
 #include "../../include/states/StatesManager.hpp"
-
+#include <stdexcept>
 
 StatesManager::StatesManager(Context context)
 	: context_(context)
@@ -9,7 +9,7 @@ StatesManager::StatesManager(Context context)
 void StatesManager::switch_state(States::ID id)
 {
 	if (states_.find(id) == states_.end())
-		throw std::exception("State not registred.");
+		throw std::runtime_error("State not registred.");
 	for (auto& state : states_)
 	{
 		if (state.first == id)

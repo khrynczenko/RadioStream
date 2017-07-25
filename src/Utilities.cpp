@@ -1,15 +1,19 @@
 #include "../include/Utilities.hpp"
+
+#if defined _WIN32
 #include <Windows.h>
-#include <iostream>
+#elif defined __linux__
+
+#endif
 
 float volume_int_to_float(int vol)
 {
-	return float(vol) / 100.f;
+	return static_cast<float>(vol) / 100.f;
 }
 
 unsigned int volume_float_to_int(float vol)
 {
-	return unsigned int(vol*100.f);
+	return static_cast<unsigned int>(vol*100.f);
 }
 
 bool str_to_bool(const std::string& str)
@@ -32,7 +36,6 @@ char easytolower(char in) {
 void copy_to_clipboard(const std::string& message)
 {
 #ifdef _WIN32
-    std::cout << message;
     if (OpenClipboard(nullptr))
     {
         EmptyClipboard();
@@ -41,19 +44,17 @@ void copy_to_clipboard(const std::string& message)
         memcpy(GlobalLock(hg), message.c_str(), message.size() + 1);
         GlobalUnlock(hg);
         if (!SetClipboardData(CF_TEXT, hg))
-            throw std::exception("Could not set new data to clipboard.");
+            throw std::runtime_error("Could not set new data to clipboard.");
         CloseClipboard();
         GlobalFree(hg);
     }
     else
     {
-        throw std::exception("Could not open clipboard.");
+        throw std::runtime_error("Could not open clipboard.");
     }
 #elif defined __linux__
-#include <X11/Xlib.h>
-    void copy_to_clipboard(const std::string& message)
-    {
-    }
+
+
 #endif
 }
 

@@ -1,11 +1,10 @@
 #ifndef STATE_HPP
 #define STATE_HPP
 
-#include <nana\gui\widgets\form.hpp>
 #include "StateIdentifiers.hpp"
 #include "../StreamManager.hpp"
 #include "../StationsManager.hpp"
-
+#include <nana/gui/widgets/form.hpp>
 
 namespace nana {
 	class menubar;

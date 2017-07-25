@@ -1,9 +1,10 @@
-#include <nana/gui/widgets/menubar.hpp>
 #include "../../include/states/MainState.hpp"
 #include "../../include/observers/StreamObserver.hpp"
 #include "../../include/observers/MainStateObserver.hpp"
 #include "../../include/Constants.hpp"
+#include "../../include/Utilities.hpp"
 #include "../../include/observers/StationsObserver.hpp"
+#include <nana/gui/widgets/menubar.hpp>
 
 using namespace constants;
 

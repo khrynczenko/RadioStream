@@ -2,8 +2,8 @@
 #define STATIONSMANAGER_HPP
 
 #include "Station.hpp"
-#include <vector>
 #include "Constants.hpp"
+#include <vector>
 
 /**
  * \brief StationsManager holds up all the data associated with saved stations and helps working with it.
