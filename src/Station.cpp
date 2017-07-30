@@ -1,4 +1,5 @@
 #include "../include/Station.hpp"
+#include "../include/Utilities.hpp"
 
 Station::Station(const std::string& name, const std::string& ip, bool favorite, bool user_defined)
 	: name_(name)
@@ -31,8 +32,12 @@ Station& Station::operator=(const Station& rhs)
 
 bool Station::operator==(const Station& rhs) const
 {
-	if (name_ == rhs.name_)
+	if (name_ == rhs.name_ && ip_ == rhs.ip_)
 		return true;
 	return false;
 }
 
+nana::listbox::oresolver& operator<<(nana::listbox::oresolver& ores, Station station)
+{
+    return ores << station.name_ << station.ip_ << bool_to_str(station.favorite_) << bool_to_str(station.user_defined_);
+}

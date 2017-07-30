@@ -24,6 +24,14 @@ private:
     void init_contextual_menus();
     void init_listbox();
     void update_titles();
+    void update_song_label();
+    void update_station_label();
+    void subscribe_to_station();
+    void populate_listbox();
+    void search_stations();
+    void pop_song_title_menu();
+    void pop_stations_listbox_menu();
+    void set_new_stream();
     nana::place container_;
     nana::label current_song_label_;
     nana::label current_station_label_;

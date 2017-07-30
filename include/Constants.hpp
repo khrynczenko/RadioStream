@@ -15,6 +15,7 @@ namespace constants
 	enum class StationListboxColumns
 	{
 		Name,
+        Ip,
 		Favorite,
 		UserDefined
 	};

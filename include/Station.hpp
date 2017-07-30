@@ -1,7 +1,7 @@
 #ifndef STATION_HPP
 #define STATION_HPP
 
-#include <string>
+#include <nana/gui/widgets/listbox.hpp>
 
 struct Station
 {
@@ -15,5 +15,7 @@ struct Station
 	bool favorite_;
 	bool user_defined_;
 };
+
+nana::listbox::oresolver& operator<<(nana::listbox::oresolver& ores, Station station);
 
 #endif
