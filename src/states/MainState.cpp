@@ -109,7 +109,7 @@ void MainState::init_contextual_menus()
         std::string title = current_song_label_.caption();
         copy_to_clipboard(title);
     });
-    listbox_item_menu_.append("Play", [this](auto& )
+    listbox_item_menu_.append("Play", [this](auto&)
     {
         set_new_stream();
     });
@@ -118,10 +118,8 @@ void MainState::init_contextual_menus()
         subscribe_to_station();
     });
     listbox_item_menu_.append("Delete from list", [this](auto&)
-    {   
-        auto item_position = stations_listbox_.selected().at(0).item;
-        auto station_name = stations_listbox_.at(cast_uint(constants::StationListboxCategories::UserDefined)).at(item_position).text(cast_uint(constants::StationListboxColumns::Name));
-        subject_.notify(std::make_any<std::string>(station_name), context_, events::Event::DeleteStation);
+    {
+        delete_station();
     });
 }
 
@@ -135,7 +133,7 @@ void MainState::init_listbox()
 	stations_listbox_.append_header("User defined");
 	stations_listbox_.column_at(static_cast<std::size_t>(StationListboxColumns::Name)).width(300u);
     stations_listbox_.column_at(static_cast<std::size_t>(StationListboxColumns::Ip)).width(200u);
-	stations_listbox_.column_at(static_cast<std::size_t>(StationListboxColumns::Favorite)).width(50u);
+	stations_listbox_.column_at(static_cast<std::size_t>(StationListboxColumns::Favorite)).width(100u);
 	stations_listbox_.column_at(static_cast<std::size_t>(StationListboxColumns::UserDefined)).width(0u); // 0u to make this column invisibe to the user and so that we can check easly whether it is user defined etc.
 	stations_listbox_.enable_single(true, false);
     populate_listbox();
@@ -294,4 +292,13 @@ void MainState::set_new_stream()
         }
         subject_.notify(station_name, context_, events::Event::StreamNew);
     }
+}
+
+void MainState::delete_station()
+{
+    Station station{};
+    auto indexes = stations_listbox_.selected().at(0);
+    stations_listbox_.at(indexes.cat).at(indexes.item).resolve_to(station);
+    subject_.notify(std::make_any<Station>(station), context_, events::Event::DeleteStation);
+    populate_listbox();
 }

@@ -10,26 +10,6 @@ Station::Station(const std::string& name, const std::string& ip, bool favorite, 
 {
 }
 
-Station::Station(const Station& rhs)
-	: name_(rhs.name_)
-	, ip_(rhs.ip_)
-	, favorite_(rhs.favorite_)
-	, user_defined_(rhs.user_defined_)
-{
-}
-
-Station& Station::operator=(const Station& rhs)
-{
-	if (this == &rhs)
-		return *this;
-	const_cast<std::string&>(name_) = rhs.name_;
-	const_cast<std::string&>(ip_) = rhs.ip_;
-	favorite_ = rhs.favorite_;
-	user_defined_ = rhs.user_defined_;
-	return *this;
-
-}
-
 bool Station::operator==(const Station& rhs) const
 {
 	if (name_ == rhs.name_ && ip_ == rhs.ip_)
@@ -37,7 +17,12 @@ bool Station::operator==(const Station& rhs) const
 	return false;
 }
 
-nana::listbox::oresolver& operator<<(nana::listbox::oresolver& ores, Station station)
+nana::listbox::oresolver& operator<<(nana::listbox::oresolver& ores, const Station& station)
 {
     return ores << station.name_ << station.ip_ << bool_to_str(station.favorite_) << bool_to_str(station.user_defined_);
+}
+
+nana::listbox::iresolver& operator>>(nana::listbox::iresolver& ires, Station& station)
+{
+    return ires >> station.name_ >> station.ip_ >> bool_to_str(station.favorite_) >> bool_to_str(station.user_defined_);
 }

@@ -1,6 +1,5 @@
 #include "../../include/observers/StationsObserver.hpp"
 
-
 void StationsObserver::on_notify(const std::any& any, Context context, events::Event e)
 {
     switch (e)

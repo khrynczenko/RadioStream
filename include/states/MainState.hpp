@@ -32,6 +32,7 @@ private:
     void pop_song_title_menu();
     void pop_stations_listbox_menu();
     void set_new_stream();
+    void delete_station();
     nana::place container_;
     nana::label current_song_label_;
     nana::label current_station_label_;

@@ -51,5 +51,4 @@ void Application::init_menubar()
             stations_manager_.add_station(Station{ station_name.value(), url.value(), false, true });
         }
     });
-	menubar_.hide();
 }
