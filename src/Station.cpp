@@ -24,5 +24,11 @@ nana::listbox::oresolver& operator<<(nana::listbox::oresolver& ores, const Stati
 
 nana::listbox::iresolver& operator>>(nana::listbox::iresolver& ires, Station& station)
 {
-    return ires >> station.name_ >> station.ip_ >> bool_to_str(station.favorite_) >> bool_to_str(station.user_defined_);
+    std::string favorite = bool_to_str(station.favorite_);
+    std::string user_defined = bool_to_str(station.user_defined_);
+    ires >> station.name_;
+    ires >> station.ip_;
+    ires >> favorite;
+    ires >> user_defined;
+    return ires;
 }

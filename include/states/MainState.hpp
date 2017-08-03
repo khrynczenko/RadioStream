@@ -15,7 +15,6 @@
 class MainState :
     public State
 {
-    friend class MainStateObserver;
 public:
     MainState(StatesManager& manager, Context& context);
     void change_visibility(bool visible) override;
