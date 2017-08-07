@@ -9,12 +9,20 @@ Application::Application()
 	, stream_manager_()
 	, stations_manager_()
     , states_manager_(State::Context{ window_, menubar_, stream_manager_, stations_manager_ })
+    , status_label_(window_, nana::rectangle{50,50,100,100}, true)
 {
-    window_.caption("Radio Client");
+    window_.caption("RadioStream");
+    status_label_.caption("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
 	init_menubar();
 	register_states();
 	states_manager_.switch_state(States::ID::Main);
-	window_.show();
+    status_label_.show();
+
+    
+    window_.bring_top(true);
+        window_.collocate();
+        window_.show();
+
 }
 
 void Application::register_states()
@@ -29,6 +37,7 @@ void Application::init_menubar()
 		FILE,
 		SETTINGS
 	};
+
 	menubar_.push_back("File: ");
 	menubar_.push_back("Settings: ");
 	menubar_.at(FILE).append("Open URL", [this](nana::menu::item_proxy&)
@@ -41,6 +50,7 @@ void Application::init_menubar()
 			stream_manager_.play();
 		}
 	});
+
     menubar_.at(FILE).append("Add Station", [this](nana::menu::item_proxy&)
     {   
         nana::inputbox::text station_name("Station name:");

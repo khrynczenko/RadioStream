@@ -61,18 +61,18 @@ void MainState::build_interface()
     {
         if(mute_button_.pushed())
         {
-            subject_.notify(std::make_any<unsigned>(volume_slider_.value()), context_, events::Event::StreamMute);
+            subject_.notify(std::make_any<unsigned int>(volume_slider_.value()), context_, events::Event::StreamMute);
         }
         else
         {
-            subject_.notify(std::make_any<unsigned>(volume_slider_.value()), context_, events::Event::VolumeChanged);
+            subject_.notify(std::make_any<unsigned int>(volume_slider_.value()), context_, events::Event::VolumeChanged);
         }
 
     });
 	volume_slider_.scheme().color_vernier = VERNIER_COLOR;
 	volume_slider_.maximum(100);
 	volume_slider_.value(volume_float_to_int(context_.stream_manager.get_current_volume()));
-	volume_slider_.vernier([](unsigned maximum, unsigned cursor_value)
+	volume_slider_.vernier([](unsigned int maximum, unsigned int cursor_value)
 	{
 		return std::string(std::to_string(cursor_value) + "/" + std::to_string(maximum));
 	});
@@ -80,7 +80,7 @@ void MainState::build_interface()
 	{
         if (!mute_button_.pushed())
         {
-            subject_.notify(std::make_any<unsigned>(volume_slider_.value()), context_, events::Event::VolumeChanged);
+            subject_.notify(std::make_any<unsigned int>(volume_slider_.value()), context_, events::Event::VolumeChanged);
         }    
 	});
 	search_textbox_.line_wrapped(true).multi_lines(false).tip_string("Search...");
@@ -90,14 +90,14 @@ void MainState::build_interface()
 	});
 	container_.div(
 		"<content vertical margin=[5%,0,0,0]" 
-		"<first_line weight=12% arrange=[10%,10%,10%,10%] gap=1% margin=1%>"
-		"<between_line weight=10% arrange=[49%,48%] gap=1% margin=1% >"
-		"<second_line weight=8% arrange=[25%,72%] gap=1% margin=1%>"
+		"<buttons weight=12% arrange=[10%,10%,10%,10%] gap=1% margin=1%>"
+		"<labels weight=10% arrange=[49%,48%] gap=1% margin=1% >"
+		"<misc weight=8% arrange=[25%,72%] gap=1% margin=1%>"
 		"<listbox margin=1%>"
 		">");
-	container_.field("first_line") << play_button_ << pause_button_ << mute_button_ ;
-	container_.field("between_line") << current_station_label_ << current_song_label_;
-	container_.field("second_line") << search_textbox_ << volume_slider_;
+	container_.field("buttons") << play_button_ << pause_button_ << mute_button_ ;
+	container_.field("labels") << current_station_label_ << current_song_label_;
+	container_.field("misc") << search_textbox_ << volume_slider_;
 	container_.field("listbox") << stations_listbox_;
 	container_.collocate();
 }
@@ -131,13 +131,13 @@ void MainState::init_listbox()
     stations_listbox_.append_header("Ip");
 	stations_listbox_.append_header("Favorite");
 	stations_listbox_.append_header("User defined");
-	stations_listbox_.column_at(static_cast<std::size_t>(StationListboxColumns::Name)).width(300u);
-    stations_listbox_.column_at(static_cast<std::size_t>(StationListboxColumns::Ip)).width(200u);
-	stations_listbox_.column_at(static_cast<std::size_t>(StationListboxColumns::Favorite)).width(100u);
-	stations_listbox_.column_at(static_cast<std::size_t>(StationListboxColumns::UserDefined)).width(0u); // 0u to make this column invisibe to the user and so that we can check easly whether it is user defined etc.
+	stations_listbox_.column_at(uint(StationListboxColumns::Name)).width(300u);
+    stations_listbox_.column_at(uint(StationListboxColumns::Ip)).width(200u);
+	stations_listbox_.column_at(uint(StationListboxColumns::Favorite)).width(100u);
+	stations_listbox_.column_at(uint(StationListboxColumns::UserDefined)).width(0u); // 0u to make this column invisibe to the user and so that we can check easly whether it is user defined etc.
 	stations_listbox_.enable_single(true, false);
     populate_listbox();
-	stations_listbox_.sort_col(cast_uint(StationListboxColumns::Favorite), true);
+	stations_listbox_.sort_col(uint(StationListboxColumns::Favorite), true);
     stations_listbox_.events().mouse_up([this](const nana::arg_mouse& arg)
     {
         if (!arg.is_left_button() && !stations_listbox_.selected().empty() && !stations_listbox_.cast(arg.pos).empty() && !stations_listbox_.cast(arg.pos).is_category())
@@ -176,42 +176,45 @@ void MainState::update_station_label()
     if (!stations_listbox_.selected().empty())
     {
         auto selected_item = stations_listbox_.selected().front();
-        if (selected_item.cat == static_cast<size_t>(StationListboxCategories::Default))
+        if (selected_item.cat == uint(StationListboxCategories::Default))
         {
-            auto station_name = stations_listbox_.at(static_cast<size_t>(StationListboxCategories::Default)).at(selected_item.item).text(static_cast<size_t>(StationListboxColumns::Name));
+            auto station_name = stations_listbox_.at(uint(StationListboxCategories::Default)).at(selected_item.item).text(uint(StationListboxColumns::Name));
             current_station_label_.caption(station_name);
         }
         else
         {
-            auto station_name = stations_listbox_.at(static_cast<size_t>(StationListboxCategories::UserDefined)).at(selected_item.item).text(static_cast<size_t>(StationListboxColumns::Name));
+            auto station_name = stations_listbox_.at(uint(StationListboxCategories::UserDefined)).at(selected_item.item).text(uint(StationListboxColumns::Name));
             current_station_label_.caption(station_name);
         }
     }
 }
 
+/**
+ * \brief Changes favorite value in both listbox and StationsManager::stations_.
+ */
 void MainState::subscribe_to_station()
 {
-    //changes favorite value in both listbox and StationsManager::stations_
     auto selected_item = stations_listbox_.selected().front();
-    if (selected_item.cat == static_cast<size_t>(StationListboxCategories::Default))
+    if (selected_item.cat == uint(StationListboxCategories::Default))
     {
-        auto station_name = stations_listbox_.at(static_cast<size_t>(StationListboxCategories::Default)).at(selected_item.item).text(static_cast<size_t>(StationListboxColumns::Name));
+        auto station_name = stations_listbox_.at(uint(StationListboxCategories::Default)).at(selected_item.item).text(uint(StationListboxColumns::Name));
         context_.stations_manager.set_favorite(station_name);
-        bool past_favorite = str_to_bool(stations_listbox_.at(static_cast<size_t>(StationListboxCategories::Default)).at(selected_item.item).text(static_cast<size_t>(StationListboxColumns::Favorite)));
-        stations_listbox_.at(static_cast<size_t>(StationListboxCategories::Default)).at(selected_item.item).text(static_cast<size_t>(StationListboxColumns::Favorite), bool_to_str(!past_favorite));
+        bool past_favorite = str_to_bool(stations_listbox_.at(uint(StationListboxCategories::Default)).at(selected_item.item).text(uint(StationListboxColumns::Favorite)));
+        stations_listbox_.at(uint(StationListboxCategories::Default)).at(selected_item.item).text(uint(StationListboxColumns::Favorite), bool_to_str(!past_favorite));
     }
     else
     {
-        auto station_name = stations_listbox_.at(static_cast<size_t>(StationListboxCategories::UserDefined)).at(selected_item.item).text(static_cast<size_t>(StationListboxColumns::Name));
+        auto station_name = stations_listbox_.at(uint(StationListboxCategories::UserDefined)).at(selected_item.item).text(uint(StationListboxColumns::Name));
         context_.stations_manager.set_favorite(station_name);
-        bool past_favorite = str_to_bool(stations_listbox_.at(static_cast<size_t>(StationListboxCategories::UserDefined)).at(selected_item.item).text(static_cast<size_t>(StationListboxColumns::Favorite)));
-        stations_listbox_.at(static_cast<size_t>(StationListboxCategories::UserDefined)).at(selected_item.item).text(static_cast<size_t>(StationListboxColumns::Favorite), bool_to_str(!past_favorite));
+        bool past_favorite = str_to_bool(stations_listbox_.at(uint(StationListboxCategories::UserDefined)).at(selected_item.item).text(uint(StationListboxColumns::Favorite)));
+        stations_listbox_.at(uint(StationListboxCategories::UserDefined)).at(selected_item.item).text(uint(StationListboxColumns::Favorite), bool_to_str(!past_favorite));
     }
 }
 
 void MainState::populate_listbox()
 {
     stations_listbox_.auto_draw(false);
+    stations_listbox_.clear();
     for (const auto& station : context_.stations_manager.get_stations())
     {
         if (station.user_defined_)
@@ -224,7 +227,7 @@ void MainState::populate_listbox()
             stations_listbox_.at(static_cast<nana::drawerbase::listbox::size_type>(StationListboxCategories::Default)).append(station);
         }
     }
-    stations_listbox_.sort_col(cast_uint(StationListboxColumns::Favorite), true);
+    stations_listbox_.sort_col(uint(StationListboxColumns::Favorite), true);
     stations_listbox_.auto_draw(true);
 }
 
@@ -234,9 +237,9 @@ void MainState::search_stations()
     search_textbox_.getline(0, searched_string);
     if (!searched_string.empty())
     {
-        stations_listbox_.clear(cast_uint(StationListboxCategories::NanaDefault));
-        stations_listbox_.clear(cast_uint(StationListboxCategories::Default));
-        stations_listbox_.clear(cast_uint(StationListboxCategories::UserDefined));
+        stations_listbox_.clear(uint(StationListboxCategories::NanaDefault));
+        stations_listbox_.clear(uint(StationListboxCategories::Default));
+        stations_listbox_.clear(uint(StationListboxCategories::UserDefined));
         auto station_names = context_.stations_manager.search_matching_stations(searched_string);
         for (const auto& listed_station : context_.stations_manager.get_stations())
         {
@@ -245,18 +248,18 @@ void MainState::search_stations()
                 if (listed_station.name_ == name)
                 {
                     if (listed_station.user_defined_)
-                        stations_listbox_.at(cast_uint(StationListboxCategories::UserDefined)).append(listed_station);
+                        stations_listbox_.at(uint(StationListboxCategories::UserDefined)).append(listed_station);
                     else
-                        stations_listbox_.at(cast_uint(StationListboxCategories::Default)).append(listed_station);
+                        stations_listbox_.at(uint(StationListboxCategories::Default)).append(listed_station);
                 }
             }
         }
     }
     else
     {
-        stations_listbox_.clear(cast_uint(StationListboxCategories::NanaDefault));
-        stations_listbox_.clear(cast_uint(StationListboxCategories::Default));
-        stations_listbox_.clear(cast_uint(StationListboxCategories::UserDefined));
+        stations_listbox_.clear(uint(StationListboxCategories::NanaDefault));
+        stations_listbox_.clear(uint(StationListboxCategories::Default));
+        stations_listbox_.clear(uint(StationListboxCategories::UserDefined));
         populate_listbox();
     }
 }
@@ -282,13 +285,13 @@ void MainState::set_new_stream()
 
         auto selected_item = stations_listbox_.selected().front();
         std::string station_name;
-        if (selected_item.cat == static_cast<std::size_t>(StationListboxCategories::Default))
+        if (selected_item.cat == uint(StationListboxCategories::Default))
         {
-            station_name = stations_listbox_.at(static_cast<std::size_t>(StationListboxCategories::Default)).at(selected_item.item).text(static_cast<std::size_t>(StationListboxColumns::Name));
+            station_name = stations_listbox_.at(uint(StationListboxCategories::Default)).at(selected_item.item).text(uint(StationListboxColumns::Name));
         }
         else
         {
-            station_name = stations_listbox_.at(static_cast<std::size_t>(StationListboxCategories::UserDefined)).at(selected_item.item).text(static_cast<std::size_t>(StationListboxColumns::Name));
+            station_name = stations_listbox_.at(uint(StationListboxCategories::UserDefined)).at(selected_item.item).text(uint(StationListboxColumns::Name));
         }
         subject_.notify(station_name, context_, events::Event::StreamNew);
     }

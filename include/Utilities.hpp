@@ -14,7 +14,7 @@ void copy_to_clipboard(const std::string& message);
 char easytolower(char in);
 
 template <typename T>
-unsigned int cast_uint(T t)
+unsigned int uint(T t)
 {
 	static_assert(std::is_integral<T>::value || std::is_enum<T>::value , "Cannot convert non integral to unsigned int");
 	return static_cast<unsigned int>(t);
