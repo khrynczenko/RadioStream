@@ -5,11 +5,12 @@
 #include <nana/gui/widgets/form.hpp>
 #include <nana/gui/widgets/menubar.hpp>
 
-State::Context::Context(nana::form& window, nana::menubar& menubar, StreamManager& stream_manager, StationsManager& stations_manager)
+State::Context::Context(nana::form& window, nana::menubar& menubar, StreamManager& stream_manager, StationsManager& stations_manager , StatusBar& status)
 	: window(window)
 	, menubar(menubar)
 	, stream_manager(stream_manager)
 	, stations_manager(stations_manager)
+    , status(status)
 {
 
 }

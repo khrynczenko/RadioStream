@@ -1,9 +1,11 @@
 #include "../../include/states/MainState.hpp"
 #include "../../include/observers/StreamObserver.hpp"
+#include "../../include/observers/StationsObserver.hpp"
+#include "../../include/observers/StatusObserver.hpp"
 #include "../../include/Constants.hpp"
 #include "../../include/Utilities.hpp"
-#include "../../include/observers/StationsObserver.hpp"
 #include <nana/gui/widgets/menubar.hpp>
+
 
 using namespace constants;
 
@@ -23,6 +25,7 @@ MainState::MainState(StatesManager& manager, Context& context)
 {
 	subject_.attach(std::make_unique<StreamObserver>());
     subject_.attach(std::make_unique<StationsObserver>());
+    subject_.attach(std::make_unique<StatusObserver>());
 	build_interface();
     init_contextual_menus();
 	init_listbox();
@@ -93,7 +96,7 @@ void MainState::build_interface()
 		"<buttons weight=12% arrange=[10%,10%,10%,10%] gap=1% margin=1%>"
 		"<labels weight=10% arrange=[49%,48%] gap=1% margin=1% >"
 		"<misc weight=8% arrange=[25%,72%] gap=1% margin=1%>"
-		"<listbox margin=1%>"
+		"<listbox margin=[1%,1%,7%,1%]>"
 		">");
 	container_.field("buttons") << play_button_ << pause_button_ << mute_button_ ;
 	container_.field("labels") << current_station_label_ << current_song_label_;
@@ -233,6 +236,7 @@ void MainState::populate_listbox()
 
 void MainState::search_stations()
 {
+    subject_.notify(Observer::placeholder, context_, events::Event::SearchingStationsStatus);
     std::string searched_string{};
     search_textbox_.getline(0, searched_string);
     if (!searched_string.empty())
@@ -262,6 +266,7 @@ void MainState::search_stations()
         stations_listbox_.clear(uint(StationListboxCategories::UserDefined));
         populate_listbox();
     }
+    subject_.notify(Observer::placeholder, context_, events::Event::NormalStatus);
 }
 
 void MainState::pop_song_title_menu()
@@ -280,9 +285,9 @@ void MainState::pop_stations_listbox_menu()
 
 void MainState::set_new_stream()
 {
+    subject_.notify(Observer::placeholder, context_, events::Event::LoadingStreamStatus);
     if (!stations_listbox_.selected().empty())
     {
-
         auto selected_item = stations_listbox_.selected().front();
         std::string station_name;
         if (selected_item.cat == uint(StationListboxCategories::Default))
@@ -295,6 +300,7 @@ void MainState::set_new_stream()
         }
         subject_.notify(station_name, context_, events::Event::StreamNew);
     }
+    subject_.notify(Observer::placeholder, context_, events::Event::NormalStatus);
 }
 
 void MainState::delete_station()

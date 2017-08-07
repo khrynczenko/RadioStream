@@ -4,8 +4,11 @@
 #include "states/StatesManager.hpp"
 #include "StreamManager.hpp"
 #include "StationsManager.hpp"
+#include "observers/Subject.hpp"
+#include "StatusBar.hpp"
 #include <nana/gui/widgets/form.hpp>
 #include <nana/gui/widgets/menubar.hpp>
+#include <nana/gui/widgets/label.hpp>
 
 /**
  * \class Application
@@ -23,9 +26,12 @@ private:
 	void init_menubar();
 	nana::form window_;
 	nana::menubar menubar_;
+    nana::place general_container_;
+    StatusBar status_;
 	StreamManager stream_manager_;
 	StationsManager stations_manager_;
     StatesManager states_manager_;
+    Subject subject_;
 };
 
 

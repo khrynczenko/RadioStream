@@ -69,9 +69,10 @@ std::vector<std::string> StationsManager::search_matching_stations(const std::st
 	std::transform(str.cbegin(), str.cend(), std::back_inserter(searched_str), easytolower);
 	for(const auto& station : stations_)
 	{
-		std::string lower_cased;
-		std::transform(station.name_.cbegin(), station.name_.cend(), std::back_inserter(lower_cased), easytolower);
-		if (lower_cased.find(searched_str) != std::string::npos)
+        std::string lower_cased;
+        lower_cased.resize(station.name_.size());
+		std::transform(station.name_.cbegin(), station.name_.cend(), lower_cased.begin(), easytolower);
+		if (lower_cased.find_first_of(searched_str) != std::string::npos)
 			matching_station_names.push_back(station.name_);
 	}
 	return matching_station_names;

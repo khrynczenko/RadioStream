@@ -1,28 +1,30 @@
 #include "../include/Application.hpp"
 #include "../include/states/MainState.hpp"
+#include "../include/observers/StatusObserver.hpp"
 #include <nana/gui/msgbox.hpp>
+
 
 
 Application::Application()
 	: window_(nana::API::make_center(600, 500), nana::appear::decorate<nana::appear::minimize, nana::appear::sizable, nana::appear::maximize, nana::appear::taskbar>())
 	, menubar_(window_)
+    , general_container_(window_)
+    , status_(window_)
 	, stream_manager_()
 	, stations_manager_()
-    , states_manager_(State::Context{ window_, menubar_, stream_manager_, stations_manager_ })
-    , status_label_(window_, nana::rectangle{50,50,100,100}, true)
+    , states_manager_(State::Context{ window_, menubar_, stream_manager_, stations_manager_, status_})
+
 {
+    subject_.attach(std::make_unique<StatusObserver>());
     window_.caption("RadioStream");
-    status_label_.caption("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
 	init_menubar();
-	register_states();
+    register_states();
 	states_manager_.switch_state(States::ID::Main);
-    status_label_.show();
-
-    
-    window_.bring_top(true);
-        window_.collocate();
-        window_.show();
-
+    general_container_.div("<status_ weight=100% gap=1% margin=[97%,0%,0%,0%]>");
+    subject_.notify(Observer::placeholder, State::Context{ window_, menubar_, stream_manager_, stations_manager_, status_ }, events::Event::NormalStatus);
+    general_container_.field("status_") << status_;
+    general_container_.collocate();
+    window_.show();
 }
 
 void Application::register_states()

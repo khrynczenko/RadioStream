@@ -4,7 +4,10 @@
 #include "StateIdentifiers.hpp"
 #include "../StreamManager.hpp"
 #include "../StationsManager.hpp"
+#include "../StatusBar.hpp"
 #include <nana/gui/widgets/form.hpp>
+
+
 
 namespace nana {
 	class menubar;
@@ -22,11 +25,16 @@ public:
 	 */
 	struct Context
 	{
-		Context(nana::form& window, nana::menubar& menubar, StreamManager& stream_manager, StationsManager& stations_manager);
+		Context(nana::form& window,
+                nana::menubar& menubar,
+                StreamManager& stream_manager,
+                StationsManager& stations_manager ,
+                StatusBar& status);
 		nana::form& window;
 		nana::menubar& menubar;
 		StreamManager& stream_manager;
 		StationsManager& stations_manager;
+        StatusBar& status;
 	};
 	State(StatesManager& state_manager, Context& context);
 	virtual void change_visibility(bool visibile) = 0;

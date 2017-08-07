@@ -11,18 +11,13 @@ namespace events
 		StreamNew,
 		StreamMute,
 		VolumeChanged,
-        //MainStateObserver events
-		UpdateStationLabel,
-		SearchStations,
-		PopulateListbox,
-		UpdateSongLabel,
-		SubscribeToStation,
-	    StationsListboxContextualMenu,
-	    CopySongTitleToClipboard,
-	    SongLabelContextualMenu,
+        //StatusObserver events
+        LoadingStreamStatus,
+        NormalStatus,
+        SearchingStationsStatus,
         //StationsObserver events
         AddStation,
-        DeleteStation,
+        DeleteStation,    
 	};
 }
 
