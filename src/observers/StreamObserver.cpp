@@ -1,7 +1,6 @@
 #include "../../include/observers/StreamObserver.hpp"
 #include "../../include/Constants.hpp"
 #include "../../include/Utilities.hpp"
-#include <nana/gui/widgets/listbox.hpp>
 
 void StreamObserver::on_notify(const std::any& any, Context context, events::Event e)
 {

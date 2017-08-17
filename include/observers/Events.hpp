@@ -15,9 +15,13 @@ namespace events
         LoadingStreamStatus,
         NormalStatus,
         SearchingStationsStatus,
+        StreamPlayingStatus,
+        StreamPausedStatus,
         //StationsObserver events
         AddStation,
-        DeleteStation,    
+        DeleteStation,
+
+
 	};
 }
 

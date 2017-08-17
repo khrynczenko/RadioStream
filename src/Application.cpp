@@ -50,6 +50,7 @@ void Application::init_menubar()
 		{
 			stream_manager_.set_new_stream(url.value());
 			stream_manager_.play();
+            subject_.notify(Observer::placeholder, State::Context{ window_, menubar_, stream_manager_, stations_manager_, status_ }, events::Event::StreamPlayingStatus);
 		}
 	});
 

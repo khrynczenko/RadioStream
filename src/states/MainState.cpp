@@ -52,11 +52,13 @@ void MainState::build_interface()
     play_button_.events().click([this]()
     {
         subject_.notify(std::make_any<bool>(true), context_, events::Event::StreamPlay);
+        subject_.notify(Observer::placeholder, context_, events::Event::StreamPlayingStatus);
     });
 	pause_button_.caption("Pause");
 	pause_button_.events().click([this]()
 	{
 		subject_.notify(std::make_any<bool>(true), context_, events::Event::StreamPause);
+        subject_.notify(Observer::placeholder, context_, events::Event::StreamPausedStatus);
 	});
 	mute_button_.caption("Mute");
     mute_button_.enable_pushed(true);
@@ -299,8 +301,8 @@ void MainState::set_new_stream()
             station_name = stations_listbox_.at(uint(StationListboxCategories::UserDefined)).at(selected_item.item).text(uint(StationListboxColumns::Name));
         }
         subject_.notify(station_name, context_, events::Event::StreamNew);
+        subject_.notify(Observer::placeholder, context_, events::Event::StreamPlayingStatus);
     }
-    subject_.notify(Observer::placeholder, context_, events::Event::NormalStatus);
 }
 
 void MainState::delete_station()
