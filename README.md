@@ -1,7 +1,9 @@
 
-## master [![Build Status](https://travis-ci.org/JenioPY/RadioStream.svg?branch=master)](https://travis-ci.org/JenioPY/RadioStream)
-## develop [![Build Status](https://travis-ci.org/JenioPY/RadioStream.svg?branch=develop)](https://travis-ci.org/JenioPY/RadioStream)
+## master 
+## develop 
 # RadioStream
+**master** [![Build Status](https://travis-ci.org/JenioPY/RadioStream.svg?branch=master)](https://travis-ci.org/JenioPY/RadioStream) **develop** [![Build Status](https://travis-ci.org/JenioPY/RadioStream.svg?branch=develop)](https://travis-ci.org/JenioPY/RadioStream)  
+  
 Simple, fast and light-weight radio player for desktop.
 
 Dependencies:  
