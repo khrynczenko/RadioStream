@@ -11,18 +11,17 @@ addons:
     packages:
       - gcc-7
       - g++-7
-      - cmake
 script:
   # Link gcc-7 and g++-7 to their standard commands
-  - ln -s /usr/bin/gcc-7 /usr/local/bin/gcc
-  - ln -s /usr/bin/g++-7 /usr/local/bin/g++
+  - sudo ln -s /usr/bin/gcc-7 /usr/local/bin/gcc
+  - sudo ln -s /usr/bin/g++-7 /usr/local/bin/g++
   # Export CC and CXX to tell cmake which compiler to use
   - export CC=/usr/bin/gcc-7
   - export CXX=/usr/bin/g++-7
   # Get newest cmake
   - sudo apt-get purge cmake
-  - mkdir ~/temp
-  - cd ~/temp
+  - mkdir temp
+  - cd temp
   - wget https://cmake.org/files/v3.9/cmake-3.9.1.tar.gz
   - tar -xzf cmake-3.9.1.tar.gz
   - cd cmake-3.9.1/
