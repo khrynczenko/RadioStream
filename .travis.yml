@@ -11,6 +11,10 @@ addons:
     packages:
       - gcc-7
       - g++-7
+      - unzip
+      - libx11-dev
+      - libfreetype6
+      - libfreetype6-dev
 script:
   # Link gcc-7 and g++-7 to their standard commands
   - sudo ln -s /usr/bin/gcc-7 /usr/local/bin/gcc
@@ -33,6 +37,14 @@ script:
   # Check versions of gcc, g++ and cmake
   - gcc -v && g++ -v && cmake --version
   # Run your build commands next
+  - mkdir libs
+  - mkdir libs/nana
+  - mkdir libs/json
+  - mkdir libs/bass
+  - git clone https://github.com/cnjinhao/nana.git libs/nana
+  - git clone https://github.com/nlohmann/json.git libs/json
+  - sudo wget http://us.un4seen.com/files/bass24-linux.zip
+  - sudo unzip bass24-linux.zip -d libs/bass
   - mkdir build
   - cd build
   - cmake ..
