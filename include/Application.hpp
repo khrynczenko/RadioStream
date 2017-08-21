@@ -8,7 +8,6 @@
 #include "StatusBar.hpp"
 #include <nana/gui/widgets/form.hpp>
 #include <nana/gui/widgets/menubar.hpp>
-#include <nana/gui/widgets/label.hpp>
 
 /**
  * \class Application

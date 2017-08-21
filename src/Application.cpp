@@ -1,6 +1,7 @@
 #include "../include/Application.hpp"
 #include "../include/states/MainState.hpp"
 #include "../include/observers/StatusObserver.hpp"
+#include "../include/StatusBar.hpp"
 #include <nana/gui/msgbox.hpp>
 
 

@@ -25,10 +25,12 @@ src/main.cpp
 src/states
 src/Station.cpp
 src/StationsManager.cpp
+src/StatusBar.cpp
 src/StreamManager.cpp
 src/Utilities.cpp
 src/observers/Observer.cpp
 src/observers/StationsObserver.cpp
+src/observers/StatusObserver.cpp
 src/observers/StreamObserver.cpp
 src/observers/Subject.cpp
 src/states/MainState.cpp
@@ -40,11 +42,13 @@ include/observers
 include/states
 include/Station.hpp
 include/StationsManager.hpp
+include/StatusBar.hpp
 include/StreamManager.hpp
 include/Utilities.hpp
 include/observers/Events.hpp
 include/observers/Observer.hpp
 include/observers/StationsObserver.hpp
+include/observers/StatusObserver.hpp
 include/observers/StreamObserver.hpp
 include/observers/Subject.hpp
 include/states/MainState.hpp
