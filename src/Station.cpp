@@ -6,7 +6,6 @@ Station::Station(const std::string& name, const std::string& ip, bool favorite, 
 	, ip_(ip)
 	, favorite_(favorite)
 	, user_defined_(user_defined)
-
 {
 }
 

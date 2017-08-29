@@ -1,4 +1,6 @@
 #include "../include/Utilities.hpp"
+#include <algorithm>
+
 
 #if defined _WIN32
 #include <Windows.h>
@@ -30,6 +32,14 @@ char easytolower(char in) {
     if (in <= 'Z' && in >= 'A')
         return in - ('Z' - 'z');
     return in;
+}
+
+std::string string_to_lower(const std::string& str)
+{
+    std::string lowered;
+    lowered.resize(str.size());
+    std::transform(str.begin(), str.end(), lowered.begin(), easytolower);
+    return lowered;
 }
 
 

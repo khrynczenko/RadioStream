@@ -5,6 +5,7 @@
 #include "../../include/Constants.hpp"
 #include "../../include/Utilities.hpp"
 #include <nana/gui/widgets/menubar.hpp>
+#include <iostream>
 
 
 using namespace constants;
@@ -23,20 +24,30 @@ MainState::MainState(StatesManager& manager, Context& context)
     , song_label_menu_()
     , listbox_item_menu_()
 {
-	subject_.attach(std::make_unique<StreamObserver>());
-    subject_.attach(std::make_unique<StationsObserver>());
-    subject_.attach(std::make_unique<StatusObserver>());
+    add_observers();
 	build_interface();
     init_contextual_menus();
 	init_listbox();
-	song_title_updater_ = std::thread(&MainState::update_titles, this);
-	song_title_updater_.detach();
+    run_concurrent_song_name_updater();
 }
 
 void MainState::change_visibility(bool visible)
 {
 	container_.field_display("content", visible);
 	context_.menubar.show();
+}
+
+void MainState::add_observers()
+{
+    subject_.attach(std::make_unique<StreamObserver>());
+    subject_.attach(std::make_unique<StationsObserver>());
+    subject_.attach(std::make_unique<StatusObserver>());
+}
+
+void MainState::run_concurrent_song_name_updater()
+{
+    song_title_updater_ = std::thread(&MainState::update_titles, this);
+    song_title_updater_.detach();
 }
 
 void MainState::build_interface()
@@ -239,19 +250,18 @@ void MainState::populate_listbox()
 void MainState::search_stations()
 {
     subject_.notify(Observer::placeholder, context_, events::Event::SearchingStationsStatus);
-    std::string searched_string{};
-    search_textbox_.getline(0, searched_string);
-    if (!searched_string.empty())
+    std::string string_to_find{};
+    search_textbox_.getline(0, string_to_find);
+    stations_listbox_.auto_draw(false);
+    if (!string_to_find.empty())
     {
-        stations_listbox_.clear(static_cast<std::size_t>(StationListboxCategories::NanaDefault));
-        stations_listbox_.clear(static_cast<std::size_t>(StationListboxCategories::Default));
-        stations_listbox_.clear(static_cast<std::size_t>(StationListboxCategories::UserDefined));
-        auto station_names = context_.stations_manager.search_matching_stations(searched_string);
+        stations_listbox_.clear();
+        auto station_names = context_.stations_manager.get_matching_stations(string_to_find);
         for (const auto& listed_station : context_.stations_manager.get_stations())
         {
             for (const auto& name : station_names)
             {
-                if (listed_station.name_ == name)
+                if (string_to_lower(listed_station.name_) == name)
                 {
                     if (listed_station.user_defined_)
                         stations_listbox_.at(static_cast<std::size_t>(StationListboxCategories::UserDefined)).append(listed_station);
@@ -263,11 +273,10 @@ void MainState::search_stations()
     }
     else
     {
-        stations_listbox_.clear(static_cast<std::size_t>(StationListboxCategories::NanaDefault));
-        stations_listbox_.clear(static_cast<std::size_t>(StationListboxCategories::Default));
-        stations_listbox_.clear(static_cast<std::size_t>(StationListboxCategories::UserDefined));
+        stations_listbox_.clear();
         populate_listbox();
     }
+    stations_listbox_.auto_draw(true);
     subject_.notify(Observer::placeholder, context_, events::Event::NormalStatus);
 }
 

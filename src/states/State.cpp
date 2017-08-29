@@ -22,11 +22,6 @@ State::State(StatesManager& state_manager, Context& context)
 
 }
 
-void State::pop_error(const std::string& str) const
-{
-	str.c_str();
-}
-
 void State::switch_state(States::ID id) const
 {
 	manager_.switch_state(id);

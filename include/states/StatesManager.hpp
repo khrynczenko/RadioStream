@@ -21,7 +21,6 @@ public:
 	template<typename T>
 	void register_state(States::ID id);
 private:
-
 	Context context_;
 	std::map<States::ID, std::unique_ptr<State>> states_;
 };

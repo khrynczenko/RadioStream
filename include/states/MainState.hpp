@@ -19,6 +19,8 @@ public:
     MainState(StatesManager& manager, Context& context);
     void change_visibility(bool visible) override;
 private:
+    void add_observers();
+    void run_concurrent_song_name_updater();
     void build_interface();
     void init_contextual_menus();
     void init_listbox();

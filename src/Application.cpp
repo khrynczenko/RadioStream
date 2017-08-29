@@ -21,8 +21,9 @@ Application::Application()
 	init_menubar();
     register_states();
 	states_manager_.switch_state(States::ID::Main);
-    general_container_.div("<status_ weight=100% gap=1% margin=[97%,0%,0%,0%]>");
+    
     subject_.notify(Observer::placeholder, State::Context{ window_, menubar_, stream_manager_, stations_manager_, status_ }, events::Event::NormalStatus);
+    general_container_.div("<status_ weight=100% gap=1% margin=[97%,0%,0%,0%]>");
     general_container_.field("status_") << status_;
     general_container_.collocate();
     window_.show();
