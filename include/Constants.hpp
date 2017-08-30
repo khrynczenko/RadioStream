@@ -2,6 +2,7 @@
 #define CONSTANTS_HPP
 
 #include <nana/gui/detail/color_schemes.hpp>
+#include <chrono>
 
 namespace constants
 {
@@ -27,8 +28,10 @@ namespace constants
 
 	const nana::color VERNIER_COLOR{ 50,50,50,0.5 };
 
-	constexpr const char* STATIONS_FILE = "stations.data";
-	constexpr const char* DEFAULT_STATIONS_FILE = "default_stations.data";
+    constexpr std::chrono::seconds TIME_TO_CHECK_IF_SONG_CHANGED{ 10 };
+
+	constexpr char* STATIONS_FILE = "stations.data";
+	constexpr char* DEFAULT_STATIONS_FILE = "default_stations.data";
 
 }
 

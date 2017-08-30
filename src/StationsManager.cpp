@@ -90,7 +90,7 @@ void StationsManager::set_favorite(std::string station_name)
 		iterator->favorite_ = !iterator->favorite_;
 		return;
 	}
-	throw;
+	throw std::runtime_error("Cannot subscribe to station that does not exist.");
 }
 
 void StationsManager::save_all_changes_to_file() const
