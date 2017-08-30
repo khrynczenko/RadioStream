@@ -25,11 +25,12 @@ private:
 	void init_menubar();
 	nana::form window_;
 	nana::menubar menubar_;
-    nana::place general_container_;
+    StreamManager stream_manager_;
+    StationsManager stations_manager_;
     StatusBar status_;
-	StreamManager stream_manager_;
-	StationsManager stations_manager_;
+    State::Context context_;
     StatesManager states_manager_;
+    nana::place general_container_;
     Subject subject_;
 };
 

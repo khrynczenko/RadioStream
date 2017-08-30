@@ -9,20 +9,20 @@
 Application::Application()
 	: window_(nana::API::make_center(600, 500), nana::appear::decorate<nana::appear::minimize, nana::appear::sizable, nana::appear::maximize, nana::appear::taskbar>())
 	, menubar_(window_)
-    , general_container_(window_)
+    , stream_manager_()
+    , stations_manager_()
     , status_(window_)
-	, stream_manager_()
-	, stations_manager_()
-    , states_manager_(State::Context{ window_, menubar_, stream_manager_, stations_manager_, status_})
-
+    , context_(window_, menubar_, stream_manager_, stations_manager_, status_)
+    , states_manager_(context_)
+    , general_container_(window_)
+    , subject_()
 {
     subject_.attach(std::make_unique<StatusObserver>());
     window_.caption("RadioStream");
 	init_menubar();
     register_states();
 	states_manager_.switch_state(States::ID::Main);
-    
-    subject_.notify(Observer::placeholder, State::Context{ window_, menubar_, stream_manager_, stations_manager_, status_ }, events::Event::NormalStatus);
+    subject_.notify(Observer::placeholder, context_, events::Event::NormalStatus);
     general_container_.div("<status_ weight=100% gap=1% margin=[97%,0%,0%,0%]>");
     general_container_.field("status_") << status_;
     general_container_.collocate();
@@ -52,7 +52,7 @@ void Application::init_menubar()
 		{
 			stream_manager_.set_new_stream(url.value());
 			stream_manager_.play();
-            subject_.notify(Observer::placeholder, State::Context{ window_, menubar_, stream_manager_, stations_manager_, status_ }, events::Event::StreamPlayingStatus);
+            subject_.notify(Observer::placeholder, context_, events::Event::StreamPlayingStatus);
 		}
 	});
 
