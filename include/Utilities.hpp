@@ -12,4 +12,6 @@ std::string bool_to_str(bool b);
 void copy_to_clipboard(const std::string& message);
 
 char easytolower(char in);
+
+std::string string_to_lower(const std::string& str);
 #endif

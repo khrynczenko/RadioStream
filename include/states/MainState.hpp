@@ -18,7 +18,10 @@ class MainState :
 public:
     MainState(StatesManager& manager, Context& context);
     void change_visibility(bool visible) override;
+    void set_station_name(const std::string& name);
 private:
+    void add_observers();
+    void run_concurrent_song_name_updater();
     void build_interface();
     void init_contextual_menus();
     void init_listbox();
@@ -47,6 +50,7 @@ private:
     std::thread song_title_updater_;
     std::mutex song_title_mutex_;
     Subject subject_;
+    std::mutex mutex_;
 };
 
 #endif

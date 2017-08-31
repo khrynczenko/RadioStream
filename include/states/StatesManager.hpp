@@ -20,8 +20,9 @@ public:
 	void switch_state(States::ID id);
 	template<typename T>
 	void register_state(States::ID id);
+    template<typename T>
+    T& getState(States::ID id);
 private:
-
 	Context context_;
 	std::map<States::ID, std::unique_ptr<State>> states_;
 };
@@ -35,6 +36,12 @@ template <typename T>
 void StatesManager::register_state(States::ID id)
 {
 	states_.insert(std::make_pair(id, std::make_unique<T>(*this, context_)));
+}
+
+template <typename T>
+T& StatesManager::getState(States::ID id)
+{
+    return *(static_cast<T*>(states_.at(id).get()));
 }
 
 #endif

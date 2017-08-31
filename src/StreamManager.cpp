@@ -12,12 +12,15 @@ float StreamManager::get_current_volume() const
     return current_volume_;
 }
 
-void StreamManager::set_new_stream(const std::string& url)
+void StreamManager::set_stream(const std::string& url)
 {
     url_playing_ = url;
-	BASS_ChannelStop(main_stream_);
-	BASS_StreamFree(main_stream_);
-	main_stream_ = BASS_StreamCreateURL(url.c_str(), 0, 0, 0, 0);
+    if(main_stream_ != NULL)
+    {
+        BASS_ChannelStop(main_stream_);
+        BASS_StreamFree(main_stream_);
+    }
+	main_stream_ = BASS_StreamCreateURL(url.c_str(), 0, 0, 0, 0);    
 	BASS_ChannelSetAttribute(main_stream_, BASS_ATTRIB_VOL, current_volume_);
 }
 
@@ -30,7 +33,6 @@ void StreamManager::pause()
 
 void StreamManager::play()
 {
-    
     if(main_stream_ == NULL)
     {
         main_stream_ = BASS_StreamCreateURL(url_playing_.c_str(), 0, 0, 0, 0);

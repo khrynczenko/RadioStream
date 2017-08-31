@@ -57,23 +57,22 @@ void StationsManager::load_stations(const std::string& filename)
 	while (std::getline(input, temp))
 	{
 		json j = json::parse(temp);
-		stations_.push_back(Station(j["name"].get<std::string>(), j["ip"].get<std::string>(),j["favorite"].get<bool>(), j["user_defined"].get<bool>()));
+		stations_.push_back(Station(j["name"].get<std::string>(), j["ip"].get<std::string>(), j["favorite"].get<bool>(), j["user_defined"].get<bool>()));
 	}
 	input.close();
 }
 
-std::vector<std::string> StationsManager::search_matching_stations(const std::string& str) const
+std::vector<std::string> StationsManager::get_matching_stations(const std::string& str) const
 {
 	std::vector<std::string> matching_station_names;
-	std::string searched_str;
-	std::transform(str.cbegin(), str.cend(), std::back_inserter(searched_str), easytolower);
+    std::string string_to_look_for = string_to_lower(str);
 	for(const auto& station : stations_)
 	{
-        std::string lower_cased;
-        lower_cased.resize(station.name_.size());
-		std::transform(station.name_.cbegin(), station.name_.cend(), lower_cased.begin(), easytolower);
-		if (lower_cased.find_first_of(searched_str) != std::string::npos)
-			matching_station_names.push_back(station.name_);
+        std::string lower_cased_station_name = string_to_lower(station.name_);
+		if (lower_cased_station_name.find(string_to_look_for) != std::string::npos)
+		{
+            matching_station_names.push_back(lower_cased_station_name);
+		}
 	}
 	return matching_station_names;
 }
@@ -91,7 +90,7 @@ void StationsManager::set_favorite(std::string station_name)
 		iterator->favorite_ = !iterator->favorite_;
 		return;
 	}
-	throw;
+	throw std::runtime_error("Cannot subscribe to station that does not exist.");
 }
 
 void StationsManager::save_all_changes_to_file() const
@@ -123,7 +122,7 @@ void StationsManager::delete_station(const Station& station)
     }
     else
     {
-        throw std::runtime_error("Could not delete station that does not exist.");
+        throw std::runtime_error("Cannot delete station that does not exist.");
     }
 
 }

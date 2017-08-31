@@ -19,17 +19,18 @@ void StreamObserver::on_notify(const std::any& any, Context context, events::Eve
 	}
 	break;
 
-	case events::Event::VolumeChanged:
+	case events::Event::StreamVolumeChanged:
 	{
         context.stream_manager.set_current_volume(volume_int_to_float(std::any_cast<unsigned>(any)));
 	}
 	break;
 
-	case events::Event::StreamNew:
+	case events::Event::StreamSetNew:
 	{
-            std::string station_name = std::any_cast<std::string>(any);
-			context.stream_manager.set_new_stream(context.stations_manager.get_station_ip(station_name));
-			context.stream_manager.play();
+        auto station_name = std::any_cast<std::string>(any);
+        auto station_ip = context.stations_manager.get_station_ip(station_name);
+        context.stream_manager.set_stream(station_ip);
+        context.stream_manager.play();
 	}
 	break;
 

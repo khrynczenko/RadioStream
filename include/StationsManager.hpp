@@ -18,7 +18,7 @@ public:
 	const std::vector<Station>& get_stations() const;
 	std::string get_station_ip(const std::string& station_name) const;
 	std::string get_station_name(const std::string& ip) const;
-	std::vector<std::string> search_matching_stations(const std::string& str) const;
+	std::vector<std::string> get_matching_stations(const std::string& str) const;
 	void set_favorite(std::string station_name);
 	void save_all_changes_to_file() const;
 private:

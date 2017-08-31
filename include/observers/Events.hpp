@@ -8,9 +8,9 @@ namespace events
         //StreamObserver events
 		StreamPause,
 		StreamPlay,
-		StreamNew,
+		StreamSetNew,
 		StreamMute,
-		VolumeChanged,
+		StreamVolumeChanged,
         //StatusObserver events
         LoadingStreamStatus,
         NormalStatus,
@@ -20,8 +20,6 @@ namespace events
         //StationsObserver events
         AddStation,
         DeleteStation,
-
-
 	};
 }
 
