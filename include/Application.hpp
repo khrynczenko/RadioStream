@@ -32,6 +32,7 @@ private:
     StatesManager states_manager_;
     nana::place general_container_;
     Subject subject_;
+    std::mutex mutex_;
 };
 
 

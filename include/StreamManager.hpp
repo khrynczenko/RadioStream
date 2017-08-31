@@ -12,7 +12,7 @@ class StreamManager
 public:
 	void set_current_volume(float);
 	float get_current_volume() const;
-	void set_new_stream(const std::string& url);
+	void set_stream(const std::string& url);
 	void pause();
 	void play();
 	std::string get_song_title() const;

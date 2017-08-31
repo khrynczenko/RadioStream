@@ -35,6 +35,11 @@ void MainState::change_visibility(bool visible)
 	context_.menubar.show();
 }
 
+void MainState::set_station_name(const std::string& name)
+{
+    current_station_label_.caption(name);
+}
+
 void MainState::add_observers()
 {
     subject_.attach(std::make_unique<StreamObserver>());
@@ -79,7 +84,7 @@ void MainState::build_interface()
         }
         else
         {
-            subject_.notify(std::make_any<unsigned int>(volume_slider_.value()), context_, events::Event::VolumeChanged);
+            subject_.notify(std::make_any<unsigned int>(volume_slider_.value()), context_, events::Event::StreamVolumeChanged);
         }
 
     });
@@ -94,7 +99,7 @@ void MainState::build_interface()
 	{
         if (!mute_button_.pushed())
         {
-            subject_.notify(std::make_any<unsigned int>(volume_slider_.value()), context_, events::Event::VolumeChanged);
+            subject_.notify(std::make_any<unsigned int>(volume_slider_.value()), context_, events::Event::StreamVolumeChanged);
         }    
 	});
 	search_textbox_.line_wrapped(true).multi_lines(false).tip_string("Search...");
@@ -312,28 +317,34 @@ void MainState::pop_stations_listbox_menu()
 
 void MainState::set_new_stream()
 {
-    subject_.notify(Observer::placeholder, context_, events::Event::LoadingStreamStatus);
-    if (!stations_listbox_.selected().empty())
+    
+    std::thread thread{[&]()
     {
-        auto selected_item = stations_listbox_.selected().front();
-        std::string station_name;
-        if (selected_item.cat == static_cast<std::size_t>(StationListboxCategories::Default))
+        std::lock_guard<std::mutex> lock(mutex_);
+        subject_.notify(Observer::placeholder, context_, events::Event::LoadingStreamStatus);
+        if (!stations_listbox_.selected().empty())
         {
-            auto category_index = static_cast<std::size_t>(StationListboxCategories::Default);
-            auto column_index = static_cast<std::size_t>(StationListboxColumns::Name);
-            auto station_category = stations_listbox_.at(category_index);
-            station_name = station_category.at(selected_item.item).text(column_index);
+            auto selected_item = stations_listbox_.selected().front();
+            std::string station_name;
+            if (selected_item.cat == static_cast<std::size_t>(StationListboxCategories::Default))
+            {
+                auto category_index = static_cast<std::size_t>(StationListboxCategories::Default);
+                auto column_index = static_cast<std::size_t>(StationListboxColumns::Name);
+                auto station_category = stations_listbox_.at(category_index);
+                station_name = station_category.at(selected_item.item).text(column_index);
+            }
+            else
+            {
+                auto category_index = static_cast<std::size_t>(StationListboxCategories::UserDefined);
+                auto column_index = static_cast<std::size_t>(StationListboxColumns::Name);
+                auto station_category = stations_listbox_.at(category_index);
+                station_name = station_category.at(selected_item.item).text(column_index);
+            }
+            subject_.notify(station_name, context_, events::Event::StreamSetNew);
+            subject_.notify(Observer::placeholder, context_, events::Event::StreamPlayingStatus);
         }
-        else
-        {
-            auto category_index = static_cast<std::size_t>(StationListboxCategories::UserDefined);
-            auto column_index = static_cast<std::size_t>(StationListboxColumns::Name);
-            auto station_category = stations_listbox_.at(category_index);
-            station_name = station_category.at(selected_item.item).text(column_index);
-        }
-        subject_.notify(station_name, context_, events::Event::StreamNew);
-        subject_.notify(Observer::placeholder, context_, events::Event::StreamPlayingStatus);
-    }
+    } };
+    thread.detach();
 }
 
 void MainState::delete_station()

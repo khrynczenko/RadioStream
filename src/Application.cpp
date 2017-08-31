@@ -5,7 +5,6 @@
 #include <nana/gui/msgbox.hpp>
 
 
-
 Application::Application()
 	: window_(nana::API::make_center(600, 500), nana::appear::decorate<nana::appear::minimize, nana::appear::sizable, nana::appear::maximize, nana::appear::taskbar>())
 	, menubar_(window_)
@@ -46,14 +45,21 @@ void Application::init_menubar()
 	menubar_.push_back("Settings: ");
 	menubar_.at(FILE).append("Open URL", [this](nana::menu::item_proxy&)
 	{
+        std::thread thread([&]()
+        {
 		nana::inputbox::text url("URL");
 		nana::inputbox inbox(window_, "Please write correct URL.\n", "Open URL");
 		if (inbox.show(url))
 		{
-			stream_manager_.set_new_stream(url.value());
-			stream_manager_.play();
-            subject_.notify(Observer::placeholder, context_, events::Event::StreamPlayingStatus);
-		}
+                std::lock_guard<std::mutex> lock(mutex_);
+                subject_.notify(Observer::placeholder, context_, events::Event::LoadingStreamStatus);
+                stream_manager_.set_stream(url.value());
+                stream_manager_.play();
+                states_manager_.getState<MainState>(States::ID::Main).set_station_name("Undefined station");
+                subject_.notify(Observer::placeholder, context_, events::Event::StreamPlayingStatus);
+            }
+        });
+        thread.detach();
 	});
 
     menubar_.at(FILE).append("Add Station", [this](nana::menu::item_proxy&)
