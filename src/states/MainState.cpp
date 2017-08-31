@@ -152,14 +152,14 @@ void MainState::init_listbox()
 	stations_listbox_.enable_single(true, false);
     populate_listbox();
 	stations_listbox_.sort_col(static_cast<std::size_t>(StationListboxColumns::Favorite), true);
-    stations_listbox_.events().mouse_up([this](const nana::arg_mouse& arg)
+    stations_listbox_.events().mouse_down([this](const nana::arg_mouse& arg)
     {
         if (!arg.is_left_button() && !stations_listbox_.selected().empty() && !stations_listbox_.cast(arg.pos).empty() && !stations_listbox_.cast(arg.pos).is_category())
             pop_stations_listbox_menu();
     });
 	stations_listbox_.events().dbl_click([this](const nana::arg_mouse& arg)
 	{
-		if(!stations_listbox_.cast(arg.pos).is_category()) // this condition must be fulfilled because when we click category it selects the last item in it so when we dbl_click category it works just as we would click last item in it
+		if(!stations_listbox_.cast(arg.pos).is_category() && arg.is_left_button()) // this condition must be fulfilled because when we click category it selects the last item in it so when we dbl_click category it works just as we would click last item in it
 		{
             set_new_stream();
             update_station_label();
@@ -242,12 +242,14 @@ void MainState::populate_listbox()
     {
         if (station.user_defined_)
         {
-            stations_listbox_.at(static_cast<nana::drawerbase::listbox::size_type>(StationListboxCategories::UserDefined)).append(station);
+            auto category_index = static_cast<std::size_t>(StationListboxCategories::UserDefined);
+            stations_listbox_.at(category_index).append(station);
         }
 
         else
         {
-            stations_listbox_.at(static_cast<nana::drawerbase::listbox::size_type>(StationListboxCategories::Default)).append(station);
+            auto category_index = static_cast<std::size_t>(StationListboxCategories::Default);
+            stations_listbox_.at(category_index).append(station);
         }
     }
     stations_listbox_.sort_col(static_cast<std::size_t>(StationListboxColumns::Favorite), true);
@@ -271,9 +273,16 @@ void MainState::search_stations()
                 if (string_to_lower(listed_station.name_) == name)
                 {
                     if (listed_station.user_defined_)
-                        stations_listbox_.at(static_cast<std::size_t>(StationListboxCategories::UserDefined)).append(listed_station);
+                    {
+                        auto category_index = static_cast<std::size_t>(StationListboxCategories::UserDefined);
+                        stations_listbox_.at(category_index).append(listed_station);
+                    }
                     else
-                        stations_listbox_.at(static_cast<std::size_t>(StationListboxCategories::Default)).append(listed_station);
+                    {
+                        auto category_index = static_cast<std::size_t>(StationListboxCategories::Default);
+                        stations_listbox_.at(category_index).append(listed_station);
+                    }
+
                 }
             }
         }
