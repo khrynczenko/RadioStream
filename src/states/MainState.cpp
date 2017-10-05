@@ -11,8 +11,8 @@ using namespace constants;
 MainState::MainState(StatesManager& manager, Context& context)
 	: State(manager, context)
 	, container_(context.window)
-	, current_song_label_(context.window, "no song is playing")
-	, current_station_label_(context.window, "no station is playing")
+	, current_song_label_(context.window, context.localizer.get_localized_text("no song is playing"))
+	, current_station_label_(context.window, context.localizer.get_localized_text("no station is playing"))
 	, play_button_(context.window)
 	, pause_button_(context.window)
 	, mute_button_(context.window)
@@ -62,19 +62,19 @@ void MainState::build_interface()
             pop_song_title_menu();
         }
     });
-	play_button_.caption("Play");
+	play_button_.caption(context_.localizer.get_localized_text("Play"));
     play_button_.events().click([this]()
     {
         subject_.notify(std::make_any<bool>(true), context_, events::Event::StreamPlay);
         subject_.notify(Observer::placeholder, context_, events::Event::StreamPlayingStatus);
     });
-	pause_button_.caption("Pause");
+	pause_button_.caption(context_.localizer.get_localized_text("Pause"));
 	pause_button_.events().click([this]()
 	{
 		subject_.notify(std::make_any<bool>(true), context_, events::Event::StreamPause);
         subject_.notify(Observer::placeholder, context_, events::Event::StreamPausedStatus);
 	});
-	mute_button_.caption("Mute");
+	mute_button_.caption(context_.localizer.get_localized_text("Mute"));
     mute_button_.enable_pushed(true);
     mute_button_.events().mouse_up([this]()
     {
@@ -109,10 +109,10 @@ void MainState::build_interface()
 	});
 	container_.div(
 		"<content vertical margin=[5%,0,0,0]" 
-		"<buttons weight=12% arrange=[10%,10%,10%,10%] gap=1% margin=1%>"
-		"<labels weight=10% arrange=[49%,48%] gap=1% margin=1% >"
-		"<misc weight=8% arrange=[25%,72%] gap=1% margin=1%>"
-		"<listbox margin=[1%,1%,7%,1%]>"
+			"<buttons weight=12% arrange=[10%,10%,10%,10%] gap=1% margin=1%>"
+			"<labels weight=10% arrange=[49%,48%] gap=1% margin=1% >"
+			"<misc weight=8% arrange=[25%,72%] gap=1% margin=1%>"
+			"<listbox margin=[1%,1%,7%,1%]>"
 		">");
 	container_.field("buttons") << play_button_ << pause_button_ << mute_button_ ;
 	container_.field("labels") << current_station_label_ << current_song_label_;
@@ -123,20 +123,20 @@ void MainState::build_interface()
 
 void MainState::init_contextual_menus()
 {
-    song_label_menu_.append("Copy title to clipboard.", [this](auto&)
+    song_label_menu_.append(context_.localizer.get_localized_text("Copy title to clipboard."), [this](auto&)
     {
         std::string title = current_song_label_.caption();
         copy_to_clipboard(title);
     });
-    listbox_item_menu_.append("Play", [this](auto&)
+    listbox_item_menu_.append(context_.localizer.get_localized_text("Play"), [this](auto&)
     {
         set_new_stream();
     });
-    listbox_item_menu_.append("Subscribe", [this](auto&)
+    listbox_item_menu_.append(context_.localizer.get_localized_text("Subscribe"), [this](auto&)
     {
         subscribe_to_station();
     });
-    listbox_item_menu_.append("Delete from list", [this](auto&)
+    listbox_item_menu_.append(context_.localizer.get_localized_text("Delete from list"), [this](auto&)
     {
         delete_station();
     });
@@ -144,12 +144,12 @@ void MainState::init_contextual_menus()
 
 void MainState::init_listbox()
 {
-	stations_listbox_.append("User stations");
-	stations_listbox_.append("Default stations");
-	stations_listbox_.append_header("Station's name");
-    stations_listbox_.append_header("Ip");
-	stations_listbox_.append_header("Favorite");
-	stations_listbox_.append_header("User defined");
+	stations_listbox_.append(context_.localizer.get_localized_text("User stations"));
+	stations_listbox_.append(context_.localizer.get_localized_text("Default stations"));
+	stations_listbox_.append_header(context_.localizer.get_localized_text("Station's name"));
+    stations_listbox_.append_header(context_.localizer.get_localized_text("Ip"));
+	stations_listbox_.append_header(context_.localizer.get_localized_text("Favorite"));
+	stations_listbox_.append_header(context_.localizer.get_localized_text("User defined"));
 	stations_listbox_.column_at(static_cast<std::size_t>(StationListboxColumns::Name)).width(300u);
     stations_listbox_.column_at(static_cast<std::size_t>(StationListboxColumns::Ip)).width(200u);
 	stations_listbox_.column_at(static_cast<std::size_t>(StationListboxColumns::Favorite)).width(100u);
@@ -350,7 +350,7 @@ void MainState::set_new_stream()
 void MainState::delete_station()
 {
     Station station{};
-    auto indexes = stations_listbox_.selected().at(0);
+    const auto indexes = stations_listbox_.selected().at(0);
     stations_listbox_.at(indexes.cat).at(indexes.item).resolve_to(station);
     subject_.notify(std::make_any<Station>(station), context_, events::Event::DeleteStation);
     populate_listbox();

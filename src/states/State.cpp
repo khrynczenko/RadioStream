@@ -2,15 +2,24 @@
 #include "../../include/states/StatesManager.hpp"
 #include "../../include/StreamManager.hpp"
 #include "../../include/StationsManager.hpp"
+#include "../../include/Config.hpp"
 #include <nana/gui/widgets/form.hpp>
 #include <nana/gui/widgets/menubar.hpp>
 
-State::Context::Context(nana::form& window, nana::menubar& menubar, StreamManager& stream_manager, StationsManager& stations_manager , StatusBar& status)
+State::Context::Context(nana::form& window,
+		nana::menubar& menubar,
+		StreamManager& stream_manager,
+		StationsManager& stations_manager,
+		StatusBar& status,
+		TextLocalizer& localizer,
+		Config& config)
 	: window(window)
 	, menubar(menubar)
 	, stream_manager(stream_manager)
 	, stations_manager(stations_manager)
     , status(status)
+	, localizer(localizer)
+	, config(config)
 {
 
 }

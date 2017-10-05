@@ -1,7 +1,7 @@
 #include "../../include/observers/StatusObserver.hpp"
 #include "../../include/StatusBar.hpp"
 
-void StatusObserver::on_notify(const std::any& any, Context context, events::Event e)
+void StatusObserver::on_notify(const std::any&, Context context, events::Event e)
 {
     switch (e)
     {
@@ -10,7 +10,7 @@ void StatusObserver::on_notify(const std::any& any, Context context, events::Eve
     {
         auto& status = context.status;
         status.change_color(nana::colors::green);
-        status.change_text("Ready");
+        status.change_text(context.localizer.get_localized_text("Ready"));
     }
     break;
 
@@ -18,7 +18,7 @@ void StatusObserver::on_notify(const std::any& any, Context context, events::Eve
     {
         auto& status = context.status;
         status.change_color(nana::colors::orange);
-        status.change_text("Loading station...");
+        status.change_text(context.localizer.get_localized_text("Loading station..."));
     }
     break;
 
@@ -26,7 +26,7 @@ void StatusObserver::on_notify(const std::any& any, Context context, events::Eve
     {
         auto& status = context.status;
         status.change_color(nana::colors::orange);
-        status.change_text("Searching stations...");
+        status.change_text(context.localizer.get_localized_text("Searching stations..."));
     }
     break;
 
@@ -34,7 +34,7 @@ void StatusObserver::on_notify(const std::any& any, Context context, events::Eve
     {
         auto& status = context.status;
         status.change_color(nana::colors::green);
-        status.change_text("Radio playing");
+        status.change_text(context.localizer.get_localized_text("Radio playing"));
     }
     break;
     
@@ -42,7 +42,7 @@ void StatusObserver::on_notify(const std::any& any, Context context, events::Eve
     {
         auto& status = context.status;
         status.change_color(nana::colors::yellow);
-        status.change_text("Radio paused");
+        status.change_text(context.localizer.get_localized_text("Radio paused"));
     }
     break;
     }

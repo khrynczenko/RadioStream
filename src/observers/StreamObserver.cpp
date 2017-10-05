@@ -27,8 +27,8 @@ void StreamObserver::on_notify(const std::any& any, Context context, events::Eve
 
 	case events::Event::StreamSetNew:
 	{
-        auto station_name = std::any_cast<std::string>(any);
-        auto station_ip = context.stations_manager.get_station_ip(station_name);
+        const auto station_name = std::any_cast<std::string>(any);
+        const auto station_ip = context.stations_manager.get_station_ip(station_name);
         context.stream_manager.set_stream(station_ip);
         context.stream_manager.play();
 	}

@@ -5,12 +5,14 @@
 #include "../StreamManager.hpp"
 #include "../StationsManager.hpp"
 #include "../StatusBar.hpp"
-#include <nana/gui/widgets/form.hpp>
+#include "../TextLocalizer.hpp"
 
 
+class Config;
 
 namespace nana {
 	class menubar;
+	class form;
 }
 
 class StatesManager;
@@ -29,12 +31,17 @@ public:
                 nana::menubar& menubar,
                 StreamManager& stream_manager,
                 StationsManager& stations_manager ,
-                StatusBar& status);
+                StatusBar& status,
+				TextLocalizer& localizer,
+				Config& config
+		);
 		nana::form& window;
 		nana::menubar& menubar;
 		StreamManager& stream_manager;
 		StationsManager& stations_manager;
         StatusBar& status;
+		TextLocalizer& localizer;
+		Config& config;
 	};
 	State(StatesManager& state_manager, Context& context);
 	virtual void change_visibility(bool visibile) = 0;

@@ -20,6 +20,8 @@ namespace events
         //StationsObserver events
         AddStation,
         DeleteStation,
+		//TextLoxccalizerObserver events
+		ChangeLanguage
 	};
 }
 

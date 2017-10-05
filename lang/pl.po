@@ -1,0 +1,98 @@
+msgid "File:"
+msgstr "Plik:"
+
+msgid "Tools:"
+msgstr "Narzędzia:"
+
+msgid "URL"
+msgstr "URL"
+
+msgid "Please write correct URL."
+msgstr "Proszę wpisać poprawny URL."
+
+msgid "Open URL"
+msgstr "Otwórz URL"
+
+msgid "Undefined station"
+msgstr "Niezdefiniowana stacja"
+
+msgid "Add station"
+msgstr "Dodaj stację"
+
+msgid "Station name:"
+msgstr "Nazwa stacji:"
+
+msgid "URL"
+msgstr "URL"
+
+msgid "Please write correct URL."
+msgstr "Please write correct URL."
+
+msgid "Settings"
+msgstr "Ustawienia"
+
+msgid "Back"
+msgstr "Powrót"
+
+msgid "Apply"
+msgstr "Zatwierdź"
+
+msgid "no song is playing"
+msgstr "brak utworu"
+
+msgid "no station is playing"
+msgstr "brak stacji"
+
+msgid "Play"
+msgstr "Odtwórz"
+
+msgid "Pause"
+msgstr "Zatrzymaj"
+
+msgid "Mute"
+msgstr "Wycisz"
+
+msgid "Search..."
+msgstr "Szukaj..."
+
+msgid "Copy title to clipboard."
+msgstr "Skopiuj do schowka."
+
+msgid "Subscribe"
+msgstr "Dodaj do ulubionych"
+
+msgid "Delete from list"
+msgstr "Usuń z listy"
+
+msgid "User stations"
+msgstr "Twoje stacje"
+
+msgid "Default stations"
+msgstr "Stacje domyślne"
+
+msgid "Station's name"
+msgstr "Nazwa stacji"
+
+msgid "Ip"
+msgstr "Ip"
+
+msgid "Favorite"
+msgstr "Ulubione"
+
+msgid "User defined"
+msgstr "Zdefiniowane przez użytkownika"
+
+msgid "Ready"
+msgstr "Gotowy"
+
+msgid "Loading station..."
+msgstr "Ładowanie stacji..."
+
+msgid "Searching stations..."
+msgstr "Wyszukiwanie stacji..."
+
+msgid "Radio playing"
+msgstr "Odtwarzanie trwa"
+
+msgid "Radio paused"
+msgstr "Odtwarzanie wstrzymane"

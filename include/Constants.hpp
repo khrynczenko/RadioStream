@@ -32,6 +32,7 @@ namespace constants
 
 	constexpr char* STATIONS_FILE = "stations.data";
 	constexpr char* DEFAULT_STATIONS_FILE = "default_stations.data";
+	constexpr char* CONFIG_FILE_PATH = "config.json";
 
 }
 

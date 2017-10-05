@@ -1,0 +1,98 @@
+msgid "File:"
+msgstr "File:"
+
+msgid "Tools:"
+msgstr "Tools:"
+
+msgid "URL"
+msgstr "URL"
+
+msgid "Please write correct URL."
+msgstr "Please write correct URL."
+
+msgid "Open URL"
+msgstr "Open URL"
+
+msgid "Undefined station"
+msgstr "Undefined station"
+
+msgid "Add station"
+msgstr "Add station"
+
+msgid "Station name:"
+msgstr "Station name:"
+
+msgid "URL"
+msgstr "URL"
+
+msgid "Please write correct URL."
+msgstr "Please write correct URL."
+
+msgid "Settings"
+msgstr "Settings"
+
+msgid "Back"
+msgstr "Back"
+
+msgid "Apply"
+msgstr "Apply"
+
+msgid "no song is playing"
+msgstr "no song is playing"
+
+msgid "no station is playing"
+msgstr "no station is playing"
+
+msgid "Play"
+msgstr "Play"
+
+msgid "Pause"
+msgstr "Pause"
+
+msgid "Mute"
+msgstr "Mute"
+
+msgid "Search..."
+msgstr "Search..."
+
+msgid "Copy title to clipboard."
+msgstr "Copy title to clipboard."
+
+msgid "Subscribe"
+msgstr "Subscribe"
+
+msgid "Delete from list"
+msgstr "Delete from list"
+
+msgid "User stations"
+msgstr "User stations"
+
+msgid "Default stations"
+msgstr "Default stations"
+
+msgid "Station's name"
+msgstr "Station's name"
+
+msgid "Ip"
+msgstr "Ip"
+
+msgid "Favorite"
+msgstr "Favorite"
+
+msgid "User defined"
+msgstr "User defined"
+
+msgid "Ready"
+msgstr "Ready"
+
+msgid "Loading station..."
+msgstr "Loading station..."
+
+msgid "Searching stations..."
+msgstr "Searching stations..."
+
+msgid "Radio playing"
+msgstr "Radio playing"
+
+msgid "Radio paused"
+msgstr "Radio paused"
