@@ -11,6 +11,8 @@
 #include <nana/gui/widgets/menubar.hpp>
 #include "Config.hpp"
 
+class LanguageCode;
+
 /**
  * \class Application
  * \brief Glues each compomnent of a system together. Creates window, sets initial States, initializes menubar etc.
@@ -20,6 +22,11 @@ class Application
 public:
 	Application();
 private:
+    enum
+    {
+        FILE,
+        TOOLS
+    };
     /**
 	 * \brief Gets called in constructor, registers states that are gonna be used througout the application.
 	 */
@@ -27,7 +34,7 @@ private:
 	void init_menubar();
 	void set_language();
 	void set_observers();
-	Language get_language(const std::string& iso_identifier) const;
+	Language get_language(const LanguageCode& iso_identifier) const;
 	nana::form window_;
 	nana::menubar menubar_;
     StreamManager stream_manager_;

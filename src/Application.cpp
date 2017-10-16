@@ -3,8 +3,11 @@
 #include "../include/states/ToolsState.hpp"
 #include "../include/observers/StatusObserver.hpp"
 #include "../include/StatusBar.hpp"
-#include <nana/gui/msgbox.hpp>
 #include "../include/Config.hpp"
+#include "../include/Language.hpp"
+#include "../include/exceptions/NotSupportedLanguageException.hpp"
+#include <nana/gui/msgbox.hpp>
+
 #include <iostream>
 
 
@@ -42,12 +45,6 @@ void Application::register_states()
 
 void Application::init_menubar()
 {
-	enum
-	{
-		FILE,
-		TOOLS
-	};
-
 	menubar_.push_back(localizer_.get_localized_text("File:"));
 	menubar_.push_back(localizer_.get_localized_text("Tools:"));
 
@@ -89,7 +86,7 @@ void Application::init_menubar()
 
 void Application::set_language()
 {
-	const auto language = get_language(config_["language"].get<std::string>());
+	const auto language = get_language(LanguageCode(config_["language"].get<std::string>()));
 	localizer_.switch_language(language);
 }
 
@@ -98,9 +95,9 @@ void Application::set_observers()
 	subject_.attach(std::make_unique<StatusObserver>());
 }
 
-Language Application::get_language(const std::string& iso_identifier) const
+Language Application::get_language(const LanguageCode& iso_identifier) const
 {
-	if (iso_identifier == "en")
+	if (iso_identifier == LanguageCode("en"))
 	{
 		return Language::EN;
 	}
@@ -110,7 +107,6 @@ Language Application::get_language(const std::string& iso_identifier) const
 	}
 	else
 	{
-		throw;
-		//TODO create according expcetion
+        throw NotSupportedLanguageException(iso_identifier);
 	}
 }

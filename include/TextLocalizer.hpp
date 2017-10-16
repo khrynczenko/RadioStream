@@ -29,8 +29,8 @@ public:
 	TextLocalizer();
 	void switch_language(Language lang);
 	template <typename ...Args>
-	std::string get_localized_text(std::string text_id, Args... args);
-	std::string get_localized_text(std::string text_id);
+	std::string get_localized_text(std::string text_id, Args... args) const;
+	std::string get_localized_text(std::string text_id) const;
 private:
 	nana::internationalization localizer_;
 	LanguagesPathsContainer languages_;
@@ -38,7 +38,7 @@ private:
 
 
 template <typename ... Args>
-std::string TextLocalizer::get_localized_text(std::string text_id, Args... args)
+std::string TextLocalizer::get_localized_text(std::string text_id, Args... args) const
 {
 	return localizer_(text_id, args...);
 }

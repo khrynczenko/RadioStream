@@ -1,5 +1,5 @@
 #include "../include/TextLocalizer.hpp"
-
+#include "../include/exceptions/LanguageFileNotFound.hpp"
 LanguagesPathsContainer::LanguagesPathsContainer()
 	: languages_()
 {
@@ -12,7 +12,7 @@ std::experimental::filesystem::path LanguagesPathsContainer::get_path(Language l
 	auto path = languages_.at(static_cast<std::size_t>(lang));
 	if (!exists(path))
 	{
-		throw std::runtime_error("Language not found.");
+        throw LanguageFileNotFound(path);
 	}
 	return path;
 }
@@ -29,7 +29,7 @@ void TextLocalizer::switch_language(Language lang)
 	localizer_.load_utf8(path);
 }
 
-std::string TextLocalizer::get_localized_text(std::string str)
+std::string TextLocalizer::get_localized_text(std::string text_id) const
 {
-	return localizer_.get(str);
+	return localizer_.get(text_id);
 }
