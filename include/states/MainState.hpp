@@ -20,6 +20,11 @@ public:
     void change_visibility(bool visible) override;
     void set_station_name(const std::string& name);
 private:
+    /**
+     * \brief normally when the same row is selected second time it gets unselected, this function prevents that.
+     */
+    void select_row_without_unselect_feature(const nana::arg_listbox& selected_row);
+    bool check_if_row_was_right_clicked(const nana::arg_mouse& arg) const;
     void add_observers();
     void run_concurrent_song_name_updater();
     void build_interface();

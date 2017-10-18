@@ -5,6 +5,7 @@
 #include "../../include/Constants.hpp"
 #include "../../include/Utilities.hpp"
 #include <nana/gui/widgets/menubar.hpp>
+#include <iostream>
 
 using namespace constants;
 
@@ -38,6 +39,24 @@ void MainState::change_visibility(bool visible)
 void MainState::set_station_name(const std::string& name)
 {
     current_station_label_.caption(name);
+}
+
+void MainState::select_row_without_unselect_feature(const nana::arg_listbox& selected_row)
+{
+    auto& arg_item = selected_row.item;
+    if (stations_listbox_.selected().empty())
+    {
+        arg_item.select(true);
+    }
+}
+
+bool MainState::check_if_row_was_right_clicked(const nana::arg_mouse& arg) const
+{
+    if (!arg.is_left_button() && !stations_listbox_.selected().empty() && !stations_listbox_.cast(arg.pos).empty() && !stations_listbox_.cast(arg.pos).is_category())
+    {
+        return true;
+    }
+    return false;
 }
 
 void MainState::add_observers()
@@ -157,9 +176,15 @@ void MainState::init_listbox()
 	stations_listbox_.enable_single(true, false);
     populate_listbox();
 	stations_listbox_.sort_col(static_cast<std::size_t>(StationListboxColumns::Favorite), true);
+   
+    const auto handle = stations_listbox_.events().selected([this](const nana::arg_listbox& arg)
+    {
+        select_row_without_unselect_feature(arg);
+    });
     stations_listbox_.events().mouse_down([this](const nana::arg_mouse& arg)
     {
-        if (!arg.is_left_button() && !stations_listbox_.selected().empty() && !stations_listbox_.cast(arg.pos).empty() && !stations_listbox_.cast(arg.pos).is_category())
+
+        if (check_if_row_was_right_clicked(arg))
             pop_stations_listbox_menu();
     });
 	stations_listbox_.events().dbl_click([this](const nana::arg_mouse& arg)
@@ -196,18 +221,18 @@ void MainState::update_station_label()
         auto selected_item = stations_listbox_.selected().front();
         if (selected_item.cat == static_cast<std::size_t>(StationListboxCategories::Default))
         {
-            auto category_index = static_cast<std::size_t>(StationListboxCategories::Default);
-            auto column_index = static_cast<std::size_t>(StationListboxColumns::Name);
-            auto station_category = stations_listbox_.at(category_index);
-            auto station_name = station_category.at(selected_item.item).text(column_index);
+            const auto category_index = static_cast<std::size_t>(StationListboxCategories::Default);
+            const auto column_index = static_cast<std::size_t>(StationListboxColumns::Name);
+            const auto station_category = stations_listbox_.at(category_index);
+            const auto station_name = station_category.at(selected_item.item).text(column_index);
             current_station_label_.caption(station_name);
         }
         else
         {
-            auto category_index = static_cast<std::size_t>(StationListboxCategories::UserDefined);
-            auto column_index = static_cast<std::size_t>(StationListboxColumns::Name);
-            auto station_category = stations_listbox_.at(category_index);
-            auto station_name = station_category.at(selected_item.item).text(column_index);
+            const auto category_index = static_cast<std::size_t>(StationListboxCategories::UserDefined);
+            const auto column_index = static_cast<std::size_t>(StationListboxColumns::Name);
+            const auto station_category = stations_listbox_.at(category_index);
+            const auto station_name = station_category.at(selected_item.item).text(column_index);
             current_station_label_.caption(station_name);
         }
     }
@@ -221,19 +246,19 @@ void MainState::subscribe_to_station()
     auto selected_item = stations_listbox_.selected().front();
     if (selected_item.cat == static_cast<std::size_t>(StationListboxCategories::Default))
     {
-        auto category_index = static_cast<std::size_t>(StationListboxCategories::Default);
-        auto column_index = static_cast<std::size_t>(StationListboxColumns::Name);
-        auto station_category = stations_listbox_.at(category_index);
-        auto station_name = station_category.at(selected_item.item).text(column_index);
+        const auto category_index = static_cast<std::size_t>(StationListboxCategories::Default);
+        const auto column_index = static_cast<std::size_t>(StationListboxColumns::Name);
+        const auto station_category = stations_listbox_.at(category_index);
+        const auto station_name = station_category.at(selected_item.item).text(column_index);
         context_.stations_manager.set_favorite(station_name);
         populate_listbox();
     }
     else
     {
-        auto category_index = static_cast<std::size_t>(StationListboxCategories::UserDefined);
-        auto column_index = static_cast<std::size_t>(StationListboxColumns::Name);
-        auto station_category = stations_listbox_.at(category_index);
-        auto station_name = station_category.at(selected_item.item).text(column_index);
+        const auto category_index = static_cast<std::size_t>(StationListboxCategories::UserDefined);
+        const auto column_index = static_cast<std::size_t>(StationListboxColumns::Name);
+        const auto station_category = stations_listbox_.at(category_index);
+        const auto station_name = station_category.at(selected_item.item).text(column_index);
         context_.stations_manager.set_favorite(station_name);
         populate_listbox();
     }
@@ -247,13 +272,13 @@ void MainState::populate_listbox()
     {
         if (station.user_defined_)
         {
-            auto category_index = static_cast<std::size_t>(StationListboxCategories::UserDefined);
+            const auto category_index = static_cast<std::size_t>(StationListboxCategories::UserDefined);
             stations_listbox_.at(category_index).append(station);
         }
 
         else
         {
-            auto category_index = static_cast<std::size_t>(StationListboxCategories::Default);
+            const auto category_index = static_cast<std::size_t>(StationListboxCategories::Default);
             stations_listbox_.at(category_index).append(station);
         }
     }

@@ -6,14 +6,14 @@ void StationsObserver::on_notify(const std::any& any, Context context, events::E
     {
     case events::Event::AddStation:
     {
-        auto station = std::any_cast<Station>(any);
+        const auto station = std::any_cast<Station>(any);
         context.stations_manager.add_station(station);
     }
     break;
 
     case events::Event::DeleteStation:
     {
-        auto station = std::any_cast<Station>(any);
+        const auto station = std::any_cast<Station>(any);
         context.stations_manager.delete_station(station);
     }
     break;
