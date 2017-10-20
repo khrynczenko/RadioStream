@@ -41,6 +41,9 @@ src/TextLocalizer.cpp
 src/observers/TextLocalizerObserver.cpp
 src/states/ToolsState.cpp
 src/Language.cpp
+src/exceptions/LanguageFileNotFound.cpp
+src/exceptions/NotSupportedLanguageException.cpp
+src/exceptions/WrongLanguageCodeFormatException.cpp
 include/Application.hpp
 include/Constants.hpp
 include/observers
@@ -65,6 +68,9 @@ include/TextLocalizer.hpp
 include/observers/TextLocalizerObserver.hpp
 include/states/ToolsState.hpp
 include/Language.hpp
+include/exceptions/LanguageFileNotFound.hpp
+include/exceptions/NotSupportedLanguageException.hpp
+include/exceptions/WrongLanguageCodeFormatException.hpp
 )
 target_include_directories(RadioStream PUBLIC ${CMAKE_SOURCE_DIR}/libs/nana/include ${CMAKE_SOURCE_DIR}/libs/json/src  
 ${BASS_LIB_DIR})
