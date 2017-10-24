@@ -9,7 +9,7 @@ class WrongLanguageCodeFormatException : public std::exception
 {
 public:
     WrongLanguageCodeFormatException(std::string_view code);
-    char const* what() const override;
+    char const* what() const noexcept override;
 private:
     std::string message_;
 

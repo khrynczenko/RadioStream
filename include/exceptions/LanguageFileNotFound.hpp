@@ -9,7 +9,7 @@ class LanguageFileNotFound :
 {
 public:
     explicit LanguageFileNotFound(const std::experimental::filesystem::path& path);
-    char const* what() const override;
+    char const* what() const noexcept override;
 private:
     std::string message_;
 };
