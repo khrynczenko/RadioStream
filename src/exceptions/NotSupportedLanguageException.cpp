@@ -1,13 +1,13 @@
-#include "../../include/exceptions/NotSupportedLanguageException.hpp""
+#include "../../include/exceptions/NotSupportedLanguageException.hpp"
 
-NotSupportedLanguageException::NotSupportedLanguageException(const std::string& language)
+NotSupportedLanguageException::NotSupportedLanguageException(const LanguageCode& language)
     : std::exception()
     , message_()
 {
-    message_ = "Language \"" + language + "\" is not supported.";
+    message_ = "Language \"" + language.get_string() + "\" is not supported.";
 }
 
-char const* NotSupportedLanguageException::what() const
+char const* NotSupportedLanguageException::what() const noexcept
 {
     return message_.c_str();
 }

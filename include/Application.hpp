@@ -34,7 +34,7 @@ private:
 	void init_menubar();
 	void set_language();
 	void set_observers();
-	Language get_language(const LanguageCode& iso_identifier) const;
+	Language get_language(const LanguageCode& code) const;
 	nana::form window_;
 	nana::menubar menubar_;
     StreamManager stream_manager_;

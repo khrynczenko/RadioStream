@@ -95,18 +95,18 @@ void Application::set_observers()
 	subject_.attach(std::make_unique<StatusObserver>());
 }
 
-Language Application::get_language(const LanguageCode& iso_identifier) const
+Language Application::get_language(const LanguageCode& code) const
 {
-	if (iso_identifier == LanguageCode("en"))
+	if (code == LanguageCode("en"))
 	{
 		return Language::EN;
 	}
-	else if (iso_identifier == "pl")
+	else if (code == LanguageCode("pl"))
 	{
 		return Language::PL;
 	}
 	else
 	{
-        throw NotSupportedLanguageException(iso_identifier);
+        throw NotSupportedLanguageException(code);
 	}
 }

@@ -2,12 +2,17 @@
 #define LANGUAGE_HPP
 
 #include <string_view>
+#include <string>
 
 
-class LanguageCode : public std::string
+class LanguageCode
 {
 public:
     explicit LanguageCode(std::string_view code);
+    bool operator==(const LanguageCode& rhs) const;
+    std::string get_string() const;
+private:
+    const std::string code_;
 };
 
 

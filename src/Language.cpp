@@ -2,12 +2,18 @@
 #include "../include/exceptions/WrongLanguageCodeFormatException.hpp"
 
 LanguageCode::LanguageCode(std::string_view code)
-    : std::string()
+    : code_(code)
 {
-    if(code.length() != 2)
+    if(code_.length() != 2)
     {
         throw WrongLanguageCodeFormatException(code);
     }
-    resize(2u);
-    insert(0, code);
+}
+
+bool LanguageCode::operator==(const LanguageCode &rhs) const {
+    code_ == rhs.code_;
+}
+
+std::string LanguageCode::get_string() const {
+    return code_;
 }

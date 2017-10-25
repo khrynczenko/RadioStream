@@ -3,10 +3,12 @@
 
 #include <exception>
 #include <string>
+#include "../Language.hpp"
+
 class NotSupportedLanguageException : public std::exception
 {
 public:
-    NotSupportedLanguageException(const std::string& language);
+    NotSupportedLanguageException(const LanguageCode& language);
     char const* what() const noexcept override;
 private:
     std::string message_;

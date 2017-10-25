@@ -6,7 +6,7 @@ WrongLanguageCodeFormatException::WrongLanguageCodeFormatException(std::string_v
         "But " + std::string(code) + " is " + std::to_string(code.length()) + "letters.";
 }
 
-char const* WrongLanguageCodeFormatException::what() const
+char const* WrongLanguageCodeFormatException::what() const noexcept
 {
     return message_.c_str();
 }
