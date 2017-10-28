@@ -19,6 +19,7 @@ public:
     MainState(StatesManager& manager, Context& context);
     void change_visibility(bool visible) override;
     void set_station_name(const std::string& name);
+    void refresh_listbox();
 private:
     /**
      * \brief normally when the same row is selected second time it gets unselected, this function prevents that.

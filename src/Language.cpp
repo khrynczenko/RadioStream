@@ -11,7 +11,7 @@ LanguageCode::LanguageCode(std::string_view code)
 }
 
 bool LanguageCode::operator==(const LanguageCode &rhs) const {
-    code_ == rhs.code_;
+    return code_ == rhs.code_;
 }
 
 std::string LanguageCode::get_string() const {

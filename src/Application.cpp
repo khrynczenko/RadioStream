@@ -75,6 +75,7 @@ void Application::init_menubar()
         if (inbox.show(station_name, url))
         {
             stations_manager_.add_station(Station{ station_name.value(), url.value(), false, true });
+            states_manager_.getState<MainState>(States::ID::Main).refresh_listbox();
         }
     });
 

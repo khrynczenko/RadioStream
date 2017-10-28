@@ -41,6 +41,11 @@ void MainState::set_station_name(const std::string& name)
     current_station_label_.caption(name);
 }
 
+void MainState::refresh_listbox()
+{
+    stations_listbox_.scroll(false, static_cast<std::size_t>(StationListboxCategories::UserDefined));
+}
+
 void MainState::select_row_without_unselect_feature(const nana::arg_listbox& selected_row)
 {
     auto& arg_item = selected_row.item;
@@ -177,7 +182,7 @@ void MainState::init_listbox()
     populate_listbox();
 	stations_listbox_.sort_col(static_cast<std::size_t>(StationListboxColumns::Favorite), true);
    
-    const auto handle = stations_listbox_.events().selected([this](const nana::arg_listbox& arg)
+    stations_listbox_.events().selected([this](const nana::arg_listbox& arg)
     {
         select_row_without_unselect_feature(arg);
     });
@@ -196,6 +201,7 @@ void MainState::init_listbox()
             update_song_label();
 		}
 	});
+    stations_listbox_.auto_draw(true);
 }
 
 void MainState::update_titles()
