@@ -41,8 +41,10 @@ script:
   - mkdir libs/nana
   - mkdir libs/json
   - mkdir libs/bass
+  - mkdir libs/sqlitemoderncpp
   - git clone https://github.com/cnjinhao/nana.git libs/nana
   - git clone https://github.com/nlohmann/json.git libs/json
+  - git clone https://github.com/SqliteModernCpp/sqlite_modern_cpp.git libs/sqlitemoderncpp
   - sudo wget http://us.un4seen.com/files/bass24-linux.zip
   - sudo unzip bass24-linux.zip -d libs/bass
   - mkdir build

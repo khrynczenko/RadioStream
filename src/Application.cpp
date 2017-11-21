@@ -8,18 +8,15 @@
 #include "../include/exceptions/NotSupportedLanguageException.hpp"
 #include <nana/gui/msgbox.hpp>
 
-#include <iostream>
-
-
 Application::Application()
 	: window_(nana::API::make_center(600, 500), nana::appear::decorate<nana::appear::minimize, nana::appear::sizable, nana::appear::maximize, nana::appear::taskbar>())
 	, menubar_(window_)
     , stream_manager_()
-    , stations_manager_()
+    , stations_database_("stations.db")
     , status_(window_)
 	, localizer_()
 	, config_(constants::CONFIG_FILE_PATH)
-    , context_(window_, menubar_, stream_manager_, stations_manager_, status_, localizer_, config_)
+    , context_(window_, menubar_, stream_manager_, stations_database_, status_, localizer_, config_)
     , states_manager_(context_)
     , general_container_(window_)
     , subject_()
@@ -74,7 +71,7 @@ void Application::init_menubar()
         nana::inputbox inbox(window_, localizer_.get_localized_text("Please write correct URL."), localizer_.get_localized_text("Add station"));
         if (inbox.show(station_name, url))
         {
-            stations_manager_.add_station(Station{ station_name.value(), url.value(), false, true });
+            stations_database_.add_station(Station{ station_name.value(), url.value(), false, constants::StationTable::UserDefined }, constants::StationTable::UserDefined);
             states_manager_.getState<MainState>(States::ID::Main).refresh_listbox();
         }
     });

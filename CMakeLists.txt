@@ -24,12 +24,10 @@ src/Constants.cpp
 src/main.cpp
 src/states
 src/Station.cpp
-src/StationsManager.cpp
 src/StatusBar.cpp
 src/StreamManager.cpp
 src/Utilities.cpp
 src/observers/Observer.cpp
-src/observers/StationsObserver.cpp
 src/observers/StatusObserver.cpp
 src/observers/StreamObserver.cpp
 src/observers/Subject.cpp
@@ -44,18 +42,18 @@ src/Language.cpp
 src/exceptions/LanguageFileNotFound.cpp
 src/exceptions/NotSupportedLanguageException.cpp
 src/exceptions/WrongLanguageCodeFormatException.cpp
+src/StationsDatabase.cpp
+src/observers/StationsDatabaseObserver.cpp
 include/Application.hpp
 include/Constants.hpp
 include/observers
 include/states
 include/Station.hpp
-include/StationsManager.hpp
 include/StatusBar.hpp
 include/StreamManager.hpp
 include/Utilities.hpp
 include/observers/Events.hpp
 include/observers/Observer.hpp
-include/observers/StationsObserver.hpp
 include/observers/StatusObserver.hpp
 include/observers/StreamObserver.hpp
 include/observers/Subject.hpp
@@ -71,7 +69,9 @@ include/Language.hpp
 include/exceptions/LanguageFileNotFound.hpp
 include/exceptions/NotSupportedLanguageException.hpp
 include/exceptions/WrongLanguageCodeFormatException.hpp
+include/StationsDatabase.hpp
+include/observers/StationsDatabaseObserver.hpp
 )
 target_include_directories(RadioStream PUBLIC ${CMAKE_SOURCE_DIR}/libs/nana/include ${CMAKE_SOURCE_DIR}/libs/json/src  
-${BASS_LIB_DIR})
+${BASS_LIB_DIR} ${CMAKE_SOURCE_DIR}/libs/sqlitemoderncpp/hdr)
 target_link_libraries(RadioStream nana ${BASS_LIB_FILE} ${FONTCONFIG_LIB} )

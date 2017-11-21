@@ -3,7 +3,7 @@
 
 #include "Observer.hpp"
 
-class StationsObserver :
+class StationsDatabaseObserver :
     public Observer
 {
 public:

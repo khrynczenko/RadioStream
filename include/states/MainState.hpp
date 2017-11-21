@@ -3,6 +3,7 @@
 
 #include "State.hpp"
 #include "../observers/Subject.hpp"
+#include "../Station.hpp"
 #include <nana/gui/place.hpp>
 #include <nana/gui/widgets/button.hpp>
 #include <nana/gui/widgets/listbox.hpp>
@@ -41,6 +42,7 @@ private:
     void pop_stations_listbox_menu();
     void set_new_stream();
     void delete_station();
+    Station get_station_from_listbox(unsigned long long int category_index, unsigned long long int row_index) const;
     nana::place container_;
     nana::label current_song_label_;
     nana::label current_station_label_;

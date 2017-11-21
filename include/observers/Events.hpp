@@ -17,7 +17,7 @@ namespace events
         SearchingStationsStatus,
         StreamPlayingStatus,
         StreamPausedStatus,
-        //StationsObserver events
+        //StationsDatabaseObserver events
         AddStation,
         DeleteStation,
 		//TextLoxccalizerObserver events

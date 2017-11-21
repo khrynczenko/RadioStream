@@ -13,6 +13,14 @@ namespace constants
 		Default
 		
 	};
+
+    enum class StationTable
+    {
+        Default,
+        UserDefined,
+        StationTableCount
+    };
+
 	enum class StationListboxColumns
 	{
 		Name,
@@ -20,6 +28,7 @@ namespace constants
 		Favorite,
 		UserDefined
 	};
+
     enum class ContextualMenus
     {
         StationListbox,

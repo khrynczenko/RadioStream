@@ -3,7 +3,7 @@
 
 #include "StateIdentifiers.hpp"
 #include "../StreamManager.hpp"
-#include "../StationsManager.hpp"
+#include "../StationsDatabase.hpp"
 #include "../StatusBar.hpp"
 #include "../TextLocalizer.hpp"
 
@@ -30,7 +30,7 @@ public:
 		Context(nana::form& window,
                 nana::menubar& menubar,
                 StreamManager& stream_manager,
-                StationsManager& stations_manager ,
+                StationsDatabase& stations_manager ,
                 StatusBar& status,
 				TextLocalizer& localizer,
 				Config& config
@@ -38,7 +38,7 @@ public:
 		nana::form& window;
 		nana::menubar& menubar;
 		StreamManager& stream_manager;
-		StationsManager& stations_manager;
+		StationsDatabase& stations_database;
         StatusBar& status;
 		TextLocalizer& localizer;
 		Config& config;

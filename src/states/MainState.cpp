@@ -1,6 +1,6 @@
 #include "../../include/states/MainState.hpp"
 #include "../../include/observers/StreamObserver.hpp"
-#include "../../include/observers/StationsObserver.hpp"
+#include "../../include/observers/StationsDatabaseObserver.hpp"
 #include "../../include/observers/StatusObserver.hpp"
 #include "../../include/Constants.hpp"
 #include "../../include/Utilities.hpp"
@@ -43,7 +43,7 @@ void MainState::set_station_name(const std::string& name)
 
 void MainState::refresh_listbox()
 {
-    stations_listbox_.scroll(false, static_cast<std::size_t>(StationListboxCategories::UserDefined));
+    populate_listbox();
 }
 
 void MainState::select_row_without_unselect_feature(const nana::arg_listbox& selected_row)
@@ -67,7 +67,7 @@ bool MainState::check_if_row_was_right_clicked(const nana::arg_mouse& arg) const
 void MainState::add_observers()
 {
     subject_.attach(std::make_unique<StreamObserver>());
-    subject_.attach(std::make_unique<StationsObserver>());
+    subject_.attach(std::make_unique<StationsDatabaseObserver>());
     subject_.attach(std::make_unique<StatusObserver>());
 }
 
@@ -224,7 +224,7 @@ void MainState::update_station_label()
 {
     if (!stations_listbox_.selected().empty())
     {
-        auto selected_item = stations_listbox_.selected().front();
+        const auto selected_item = stations_listbox_.selected().front();
         if (selected_item.cat == static_cast<std::size_t>(StationListboxCategories::Default))
         {
             const auto category_index = static_cast<std::size_t>(StationListboxCategories::Default);
@@ -249,23 +249,33 @@ void MainState::update_station_label()
  */
 void MainState::subscribe_to_station()
 {
-    auto selected_item = stations_listbox_.selected().front();
+    const auto selected_item = stations_listbox_.selected().front();
     if (selected_item.cat == static_cast<std::size_t>(StationListboxCategories::Default))
     {
         const auto category_index = static_cast<std::size_t>(StationListboxCategories::Default);
-        const auto column_index = static_cast<std::size_t>(StationListboxColumns::Name);
+        const auto name_column_index = static_cast<std::size_t>(StationListboxColumns::Name);
+        const auto ip_column_index = static_cast<std::size_t>(StationListboxColumns::Ip);
+        const auto favorite_column_index = static_cast<std::size_t>(StationListboxColumns::Favorite);
         const auto station_category = stations_listbox_.at(category_index);
-        const auto station_name = station_category.at(selected_item.item).text(column_index);
-        context_.stations_manager.set_favorite(station_name);
+        const auto station_name = station_category.at(selected_item.item).text(name_column_index);
+        const auto station_ip = station_category.at(selected_item.item).text(ip_column_index);
+        const auto station_favorite = str_to_bool(station_category.at(selected_item.item).text(favorite_column_index));
+        const auto station = Station( station_name, station_ip, station_favorite, constants::StationTable::Default);
+        context_.stations_database.change_station_favorite_status(station, constants::StationTable::Default);
         populate_listbox();
     }
     else
     {
         const auto category_index = static_cast<std::size_t>(StationListboxCategories::UserDefined);
-        const auto column_index = static_cast<std::size_t>(StationListboxColumns::Name);
+        const auto name_column_index = static_cast<std::size_t>(StationListboxColumns::Name);
+        const auto ip_column_index = static_cast<std::size_t>(StationListboxColumns::Ip);
+        const auto favorite_column_index = static_cast<std::size_t>(StationListboxColumns::Favorite);
         const auto station_category = stations_listbox_.at(category_index);
-        const auto station_name = station_category.at(selected_item.item).text(column_index);
-        context_.stations_manager.set_favorite(station_name);
+        const auto station_name = station_category.at(selected_item.item).text(name_column_index);
+        const auto station_ip = station_category.at(selected_item.item).text(ip_column_index);
+        const auto station_favorite = str_to_bool(station_category.at(selected_item.item).text(favorite_column_index));
+        const auto station = Station( station_name, station_ip, station_favorite, constants::StationTable::UserDefined );
+        context_.stations_database.change_station_favorite_status(station, constants::StationTable::UserDefined);
         populate_listbox();
     }
 }
@@ -274,9 +284,9 @@ void MainState::populate_listbox()
 {
     stations_listbox_.auto_draw(false);
     stations_listbox_.clear();
-    for (const auto& station : context_.stations_manager.get_stations())
+    for (const auto& station : context_.stations_database.get_stations())
     {
-        if (station.user_defined_)
+        if (station.table_ == constants::StationTable::UserDefined)
         {
             const auto category_index = static_cast<std::size_t>(StationListboxCategories::UserDefined);
             stations_listbox_.at(category_index).append(station);
@@ -301,24 +311,24 @@ void MainState::search_stations()
     if (!string_to_find.empty())
     {
         stations_listbox_.clear();
-        auto station_names = context_.stations_manager.get_matching_stations(string_to_find);
-        for (const auto& listed_station : context_.stations_manager.get_stations())
+        auto station_names_containing_substring = context_.stations_database.get_stations_names_by_substring(string_to_find);
+        const auto& all_stations = context_.stations_database.get_stations();
+        for (const auto& station : all_stations)
         {
-            for (const auto& name : station_names)
+            for (const auto& name : station_names_containing_substring)
             {
-                if (string_to_lower(listed_station.name_) == name)
+                if (string_to_lower(station.name_) == name)
                 {
-                    if (listed_station.user_defined_)
+                    if (station.table_ == constants::StationTable::UserDefined)
                     {
-                        auto category_index = static_cast<std::size_t>(StationListboxCategories::UserDefined);
-                        stations_listbox_.at(category_index).append(listed_station);
+                        const auto category_index = static_cast<std::size_t>(StationListboxCategories::UserDefined);
+                        stations_listbox_.at(category_index).append(station);
                     }
                     else
                     {
-                        auto category_index = static_cast<std::size_t>(StationListboxCategories::Default);
-                        stations_listbox_.at(category_index).append(listed_station);
+                        const auto category_index = static_cast<std::size_t>(StationListboxCategories::Default);
+                        stations_listbox_.at(category_index).append(station);
                     }
-
                 }
             }
         }
@@ -381,8 +391,26 @@ void MainState::set_new_stream()
 void MainState::delete_station()
 {
     Station station{};
-    const auto indexes = stations_listbox_.selected().at(0);
-    stations_listbox_.at(indexes.cat).at(indexes.item).resolve_to(station);
+    const auto index = stations_listbox_.selected().front();
+    stations_listbox_.at(index.cat).at(index.item).resolve_to(station);
+    std::cout << int(station.table_);
     subject_.notify(std::make_any<Station>(station), context_, events::Event::DeleteStation);
     populate_listbox();
+}
+
+Station MainState::get_station_from_listbox(unsigned long long category_index, unsigned long long row_index) const
+{
+        
+        const auto name_column_index = static_cast<std::size_t>(StationListboxColumns::Name);
+        const auto ip_column_index = static_cast<std::size_t>(StationListboxColumns::Ip);
+        const auto favorite_column_index = static_cast<std::size_t>(StationListboxColumns::Favorite);
+        const auto station_category = stations_listbox_.at(category_index);
+        const auto station_name = station_category.at(row_index).text(name_column_index);
+        const auto station_ip = station_category.at(row_index).text(ip_column_index);
+        const auto station_favorite = str_to_bool(station_category.at(row_index).text(favorite_column_index));
+        auto station_table = constants::StationTable::Default;
+        if (category_index == static_cast<std::size_t>(StationListboxCategories::UserDefined))
+            station_table = constants::StationTable::UserDefined;
+        const auto station = Station( station_name, station_ip, station_favorite, station_table );
+        return station;
 }

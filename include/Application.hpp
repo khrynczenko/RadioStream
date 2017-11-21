@@ -3,13 +3,14 @@
 
 #include "states/StatesManager.hpp"
 #include "StreamManager.hpp"
-#include "StationsManager.hpp"
+#include "StationsDatabase.hpp"
 #include "observers/Subject.hpp"
 #include "StatusBar.hpp"
 #include "TextLocalizer.hpp"
 #include <nana/gui/widgets/form.hpp>
 #include <nana/gui/widgets/menubar.hpp>
 #include "Config.hpp"
+#include <mutex>
 
 class LanguageCode;
 
@@ -38,7 +39,7 @@ private:
 	nana::form window_;
 	nana::menubar menubar_;
     StreamManager stream_manager_;
-    StationsManager stations_manager_;
+    StationsDatabase stations_database_;
     StatusBar status_;
 	TextLocalizer localizer_;
 	Config config_;
