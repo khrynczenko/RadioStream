@@ -1,7 +1,7 @@
 #ifndef STATIONSDATABASE_HPP
 #define STATIONSDATABASE_HPP
 
-#include <sqlite_modern_cpp.h>o
+#include <sqlite_modern_cpp.h>
 #include "Station.hpp"
 
 
