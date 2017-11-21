@@ -15,6 +15,7 @@ addons:
       - libx11-dev
       - libfreetype6
       - libfreetype6-dev
+      - libsqlite3-dev
 script:
   # Link gcc-7 and g++-7 to their standard commands
   - sudo ln -s /usr/bin/gcc-7 /usr/local/bin/gcc
