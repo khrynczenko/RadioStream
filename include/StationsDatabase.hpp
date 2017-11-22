@@ -10,8 +10,8 @@ class StationsDatabase
 public:
 
     explicit StationsDatabase(const std::string& database_name);
-    std::vector<Station> get_stations();
-    std::vector<Station> get_stations(constants::StationTable table);
+    const std::vector<Station>& get_stations() const;
+    const std::vector<Station> get_stations(constants::StationTable table) const;
     void add_station(const Station& station, constants::StationTable table);
     void remove_station(const Station& station, constants::StationTable table);
     void change_station_favorite_status(const Station& station, constants::StationTable table);

@@ -20,7 +20,7 @@ void StreamManager::set_stream(const std::string& url)
         BASS_ChannelStop(main_stream_);
         BASS_StreamFree(main_stream_);
     }
-	main_stream_ = BASS_StreamCreateURL(url.c_str(), 0, 0, 0, 0);    
+	main_stream_ = BASS_StreamCreateURL(url.c_str(), 0, 0, nullptr, nullptr);    
 	BASS_ChannelSetAttribute(main_stream_, BASS_ATTRIB_VOL, current_volume_);
 }
 
@@ -35,7 +35,7 @@ void StreamManager::play()
 {
     if(main_stream_ == NULL)
     {
-        main_stream_ = BASS_StreamCreateURL(url_playing_.c_str(), 0, 0, 0, 0);
+        main_stream_ = BASS_StreamCreateURL(url_playing_.c_str(), 0, 0, nullptr, nullptr);
         BASS_ChannelSetAttribute(main_stream_, BASS_ATTRIB_VOL, current_volume_);
     }
 	BASS_ChannelPlay(main_stream_, false);
@@ -43,14 +43,14 @@ void StreamManager::play()
 
 std::string StreamManager::get_song_title() const
 {
-	auto tags = BASS_ChannelGetTags(main_stream_, BASS_TAG_META);
+    const auto tags = BASS_ChannelGetTags(main_stream_, BASS_TAG_META);
 	if (tags != nullptr)
 	{
 		//string in tags looks something like "StreamTitle='title',url='url'"
 		std::string str = tags;
 		auto first = str.find('\'');
 		first++;
-		auto last = str.substr(first).find('\'');
+	    const auto last = str.substr(first).find('\'');
 		return str.substr(first, last);
 	}
 	return "";

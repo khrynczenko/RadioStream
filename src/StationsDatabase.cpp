@@ -16,11 +16,11 @@ StationsDatabase::StationsDatabase(const std::string& database_name)
     }
 }
 
-std::vector<Station> StationsDatabase::get_stations()
+const std::vector<Station>& StationsDatabase::get_stations() const
 {
     return cached_stations_;
 }
-std::vector<Station> StationsDatabase::get_stations(constants::StationTable table) 
+const std::vector<Station> StationsDatabase::get_stations(constants::StationTable table) const
 {
     return cached_stations_;
 }

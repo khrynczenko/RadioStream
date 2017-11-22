@@ -20,6 +20,7 @@ void StationsDatabaseObserver::on_notify(const std::any& any, Context context, e
         context.stations_database.remove_station(station, station.table_);
     }
     break;
+    default:;
     }
    
 }

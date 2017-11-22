@@ -38,9 +38,7 @@ namespace constants
 	const nana::color VERNIER_COLOR{ 50,50,50,0.5 };
 
     constexpr std::chrono::seconds TIME_TO_CHECK_IF_SONG_CHANGED{ 10 };
-
-	constexpr char* STATIONS_FILE = "stations.data";
-	constexpr char* DEFAULT_STATIONS_FILE = "default_stations.data";
+    constexpr char* STATIONS_DATABASE_FILE = "stations.db";
 	constexpr char* CONFIG_FILE_PATH = "config.json";
 
 }
