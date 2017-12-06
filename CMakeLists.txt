@@ -75,4 +75,5 @@ include/observers/StationsDatabaseObserver.hpp
 )
 target_include_directories(RadioStream PUBLIC ${CMAKE_SOURCE_DIR}/libs/nana/include ${CMAKE_SOURCE_DIR}/libs/json/src  
 ${BASS_LIB_DIR} ${CMAKE_SOURCE_DIR}/libs/sqlitemoderncpp/hdr)
-target_link_libraries(RadioStream nana ${BASS_LIB_FILE} ${FONTCONFIG_LIB} ${SQLITE3_LIB})
+target_link_libraries(RadioStream nana ${BASS_LIB_FILE} ${FONTCONFIG_LIB} ${SQLITE3_LIB} "-lpthread")
+
