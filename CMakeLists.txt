@@ -12,6 +12,7 @@ elseif(UNIX)
 	set(BASS_LIB_FILE ${CMAKE_SOURCE_DIR}/libs/bass/x64/libbass.so)
 	set(FONTCONFIG_LIB "-lfontconfig")
 	set(SQLITE3_LIB "-lsqlite3")
+	set(PTHREAD_LIB "-lpthread")
 endif()
 
 
@@ -75,5 +76,5 @@ include/observers/StationsDatabaseObserver.hpp
 )
 target_include_directories(RadioStream PUBLIC ${CMAKE_SOURCE_DIR}/libs/nana/include ${CMAKE_SOURCE_DIR}/libs/json/src  
 ${BASS_LIB_DIR} ${CMAKE_SOURCE_DIR}/libs/sqlitemoderncpp/hdr)
-target_link_libraries(RadioStream nana ${BASS_LIB_FILE} ${FONTCONFIG_LIB} ${SQLITE3_LIB} "-lpthread")
+target_link_libraries(RadioStream nana ${BASS_LIB_FILE} ${FONTCONFIG_LIB} ${SQLITE3_LIB} ${PTHREAD_LIB})
 
