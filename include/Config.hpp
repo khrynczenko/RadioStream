@@ -1,7 +1,7 @@
 #ifndef CONFIG_HPP
 #define CONFIG_HPP
 
-#include <json.hpp>
+#include <nlohmann/json.hpp>
 
 class Config
 {

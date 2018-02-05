@@ -8,7 +8,6 @@
 class StationsDatabase
 {
 public:
-
     explicit StationsDatabase(const std::string& database_name);
     const std::vector<Station>& get_stations() const;
     const std::vector<Station> get_stations(constants::StationTable table) const;
