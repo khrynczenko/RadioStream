@@ -10,14 +10,14 @@ void StationsDatabaseObserver::on_notify(const std::any& any, Context context, e
     {
         const auto station = std::any_cast<Station>(any);
 
-        context.stations_database.add_station(station, station.table_);
+        context.stations_database.add_station(station);
     }
     break;
 
     case events::Event::DeleteStation:
     {
         const auto station = std::any_cast<Station>(any);
-        context.stations_database.remove_station(station, station.table_);
+        context.stations_database.remove_station(station);
     }
     break;
     default:;

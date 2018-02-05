@@ -6,6 +6,7 @@
 #include "../include/Config.hpp"
 #include "../include/Language.hpp"
 #include "../include/exceptions/NotSupportedLanguageException.hpp"
+#include "../include/Constants.hpp"
 #include <nana/gui/msgbox.hpp>
 
 Application::Application()
@@ -71,7 +72,7 @@ void Application::init_menubar()
         nana::inputbox inbox(window_, localizer_.get_localized_text("Please write correct URL."), localizer_.get_localized_text("Add station"));
         if (inbox.show(station_name, url))
         {
-            stations_database_.add_station(Station{ station_name.value(), url.value(), false, constants::StationTable::UserDefined }, constants::StationTable::UserDefined);
+            stations_database_.add_station(Station{ station_name.value(), url.value(), false });
             states_manager_.getState<MainState>(States::ID::Main).refresh_listbox();
         }
     });

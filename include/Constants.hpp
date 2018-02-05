@@ -9,24 +9,13 @@ namespace constants
 	enum class StationListboxCategories
 	{
 		NanaDefault,
-		UserDefined,
-		Default
-		
 	};
-
-    enum class StationTable
-    {
-        Default,
-        UserDefined,
-        StationTableCount
-    };
 
 	enum class StationListboxColumns
 	{
 		Name,
         Ip,
 		Favorite,
-		UserDefined
 	};
 
     enum class ContextualMenus

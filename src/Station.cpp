@@ -1,11 +1,10 @@
 #include "../include/Station.hpp"
 #include "../include/Utilities.hpp"
 
-Station::Station(const std::string& name, const std::string& ip, bool favorite, constants::StationTable table)
+Station::Station(const std::string& name, const std::string& ip, bool favorite)
 	: name_(name)
 	, ip_(ip)
 	, favorite_(favorite)
-	, table_(table)
 {
 }
 
@@ -18,7 +17,7 @@ bool Station::operator==(const Station& rhs) const
 
 nana::listbox::oresolver& operator<<(nana::listbox::oresolver& ores, const Station& station)
 {
-    return ores << station.name_ << station.ip_ << bool_to_str(station.favorite_) << std::to_string(static_cast<unsigned short int>(station.table_));
+    return ores << station.name_ << station.ip_ << bool_to_str(station.favorite_);
 }
 
 nana::listbox::iresolver& operator>>(nana::listbox::iresolver& ires, Station& station)
@@ -30,6 +29,5 @@ nana::listbox::iresolver& operator>>(nana::listbox::iresolver& ires, Station& st
     ires >> favorite;
     ires >> table;
     station.favorite_ = str_to_bool(favorite);
-    station.table_ = static_cast<constants::StationTable>(std::stoi(table));
     return ires;
 }

@@ -1,7 +1,6 @@
 #include "../include/Application.hpp"
 #include <nana/gui.hpp>
 #include <iostream>
-#include <string>
 
 #ifdef _WIN32 
     #ifndef _DEBUG

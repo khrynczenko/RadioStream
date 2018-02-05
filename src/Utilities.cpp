@@ -49,7 +49,7 @@ void copy_to_clipboard(const std::string& message)
     if (OpenClipboard(nullptr))
     {
         EmptyClipboard();
-        HGLOBAL hg = GlobalAlloc(GHND, message.size() + 1);
+        const HGLOBAL hg = GlobalAlloc(GHND, message.size() + 1);
         
         memcpy(GlobalLock(hg), message.c_str(), message.size() + 1);
         GlobalUnlock(hg);
