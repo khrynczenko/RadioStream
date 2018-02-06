@@ -3,13 +3,23 @@
 #include "../include/Utilities.hpp"
 
 StationsDatabase::StationsDatabase(const std::string& database_name)
-    : database_(database_name)
+    : database_("SQLite", database_name)
 {
-    database_ << "select * from stations"
-        >> [this](int id, std::string name, std::string ip, int favorite)
+    Poco::Data::Statement select(database_);
+    Station station;
+    int id;
+    select << "SELECT * FROM stations",
+        Poco::Data::Keywords::into(id),
+        Poco::Data::Keywords::into(station.name_),
+        Poco::Data::Keywords::into(station.ip_),
+        Poco::Data::Keywords::into(station.favorite_),
+        Poco::Data::Keywords::range(0, 1);
+
+    while(!select.done())
     {
-        cached_stations_.push_back(Station{ name, ip, static_cast<bool>(favorite)});
-    };
+        select.execute();
+        cached_stations_.push_back(station);
+    }
 }
 
 const std::vector<Station>& StationsDatabase::get_stations() const
@@ -19,34 +29,39 @@ const std::vector<Station>& StationsDatabase::get_stations() const
 
 void StationsDatabase::add_station(const Station& station)
 {
-    database_ << "insert into " + std::string("stations") +  " (name, ip, favorite) values (?, ?, ?)"
-        << station.name_
-        << station.ip_
-        << static_cast<int>(station.favorite_);
+    Poco::Data::Statement insert(database_);
+    const auto favorite = static_cast<int>(station.favorite_);
+    insert << "INSERT INTO stations (name, ip, favorite) VALUES(?, ?, ?)",
+        Poco::Data::Keywords::bind(station.name_),
+        Poco::Data::Keywords::bind(station.ip_),
+        Poco::Data::Keywords::bind(favorite);
+    insert.execute();
     cached_stations_.push_back(station);
 }
 
 void StationsDatabase::remove_station(const Station& station)
 {
-    std::cout << station.name_ << ":" << station.ip_;
-    database_ << "delete from " + std::string("stations") + " where name = ? and ip = ?"
-        << station.name_
-        << station.ip_;
+    Poco::Data::Statement delete_statement(database_);
+    delete_statement << "DELETE FROM stations WHERE name = ? and ip = ?",
+        Poco::Data::Keywords::bind(station.name_),
+        Poco::Data::Keywords::bind(station.ip_);
+    delete_statement.execute();
     cached_stations_.erase(std::find(cached_stations_.begin(), cached_stations_.end(), station));
 }
 
 void StationsDatabase::change_station_favorite_status(const Station& station)
 {
-    std::cout << station.name_ << " " << station.ip_;
-    database_ << "update " + std::string("stations") + " set favorite = ? where name = ? and ip = ?"
-        << static_cast<int>(!station.favorite_)
-        << station.name_
-        << station.ip_;
+    Poco::Data::Statement update(database_);
+    update << "UPDATE stations SET favorite = ? WHERE name = ? AND ip = ?",
+        Poco::Data::Keywords::bind(!station.favorite_),
+        Poco::Data::Keywords::bind(station.name_),
+        Poco::Data::Keywords::bind(station.ip_);
+    update.execute();
     const auto station_found = std::find(cached_stations_.begin(), cached_stations_.end(), station);
     station_found->favorite_ = !station_found->favorite_;
 }
 
-std::vector<std::string> StationsDatabase::get_stations_names_by_substring(const std::string& substring) const
+std::vector<std::string> StationsDatabase::get_stations_names_with_substring(const std::string& substring) const
 {
 	std::vector<std::string> matching_station_names;
     const std::string string_to_look_for = string_to_lower(substring);

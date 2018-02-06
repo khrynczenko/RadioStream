@@ -273,7 +273,7 @@ void MainState::search_stations()
     if (!string_to_find.empty())
     {
         stations_listbox_.clear();
-        auto station_names_containing_substring = context_.stations_database.get_stations_names_by_substring(string_to_find);
+        auto station_names_containing_substring = context_.stations_database.get_stations_names_with_substring(string_to_find);
         const auto& all_stations = context_.stations_database.get_stations();
         for (const auto& station : all_stations)
         {

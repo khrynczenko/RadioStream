@@ -1,4 +1,5 @@
 #include "../include/Application.hpp"
+#include "Poco/Data/SQLite/Connector.h"
 #include <nana/gui.hpp>
 #include <iostream>
 
@@ -12,6 +13,7 @@
     int main()
 #endif
 {
+    Poco::Data::SQLite::Connector::registerConnector();
 	try {
 		Application app{};
 		nana::exec();

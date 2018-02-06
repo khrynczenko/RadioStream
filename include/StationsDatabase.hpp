@@ -1,8 +1,8 @@
 #ifndef STATIONSDATABASE_HPP
 #define STATIONSDATABASE_HPP
 
-#include <sqlite_modern_cpp.h>
 #include "Station.hpp"
+#include <Poco/Data/Session.h>
 
 
 class StationsDatabase
@@ -13,10 +13,10 @@ public:
     void add_station(const Station& station);
     void remove_station(const Station& station);
     void change_station_favorite_status(const Station& station);
-    std::vector<std::string> get_stations_names_by_substring(const std::string& substring) const;
+    std::vector<std::string> get_stations_names_with_substring(const std::string& substring) const;
     std::string get_station_ip(const std::string& station_name) const;
 private:
-    sqlite::database database_;
+    Poco::Data::Session database_;
     std::vector<Station> cached_stations_;
 };
 
