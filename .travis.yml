@@ -42,10 +42,10 @@ script:
   - mkdir libs/nana
   - mkdir libs/json
   - mkdir libs/bass
-  - mkdir libs/sqlitemoderncpp
+  - mkdir libs/poco
   - git clone https://github.com/cnjinhao/nana.git libs/nana
   - git clone https://github.com/nlohmann/json.git libs/json
-  - git clone https://github.com/SqliteModernCpp/sqlite_modern_cpp.git libs/sqlitemoderncpp
+  - git clone -b "poco-1.8.2" https://github.com/pocoproject/poco.git libs/poco
   - sudo wget http://us.un4seen.com/files/bass24-linux.zip
   - sudo unzip bass24-linux.zip -d libs/bass
   - mkdir build

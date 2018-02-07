@@ -19,6 +19,7 @@ endif()
 
 SET(MSVC_USE_STATIC_RUNTIME OFF CACHE BOOL "Build nana with static runtime.")
 add_subdirectory(${CMAKE_SOURCE_DIR}/libs/nana)
+add_subdirectory(${CMAKE_SOURCE_DIR}/libs/poco)
 
 add_executable(RadioStream 
 src/Application.cpp
@@ -74,8 +75,13 @@ include/exceptions/WrongLanguageCodeFormatException.hpp
 include/StationsDatabase.hpp
 include/observers/StationsDatabaseObserver.hpp
 )
-target_include_directories(RadioStream PUBLIC ${CMAKE_SOURCE_DIR}/libs/nana/include ${CMAKE_SOURCE_DIR}/libs/json/include
-							${BASS_LIB_DIR} ${CMAKE_SOURCE_DIR}/libs/sqlitemoderncpp/hdr)
 
-target_link_libraries(RadioStream nana ${BASS_LIB_FILE} ${FONTCONFIG_LIB} ${SQLITE3_LIB} ${PTHREAD_LIB})
+target_include_directories(RadioStream PUBLIC
+    ${CMAKE_SOURCE_DIR}/libs/poco/Foundation/include
+    ${CMAKE_SOURCE_DIR}/libs/poco/Data/include
+    ${CMAKE_SOURCE_DIR}/libs/poco/Data/SQLite/include
+    ${CMAKE_SOURCE_DIR}/libs/nana/include ${CMAKE_SOURCE_DIR}/libs/json/include
+    ${BASS_LIB_DIR} ${CMAKE_SOURCE_DIR}/libs/sqlitemoderncpp/hdr)
+
+target_link_libraries(RadioStream nana Foundation Data DataSQLite ${BASS_LIB_FILE} ${FONTCONFIG_LIB} ${SQLITE3_LIB} ${PTHREAD_LIB})
 
