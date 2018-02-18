@@ -1,6 +1,10 @@
 #ifndef STREAMMANGER_HPP
 #define STREAMMANGER_HPP
 
+//Fix for the problem on windows when including windows.h before winsock2.h
+#define WIN32_LEAN_AND_MEAN
+#define _WINSOCKAPI_
+
 #include <bass.h>
 #include <string>
 

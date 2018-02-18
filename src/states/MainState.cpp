@@ -56,11 +56,10 @@ void MainState::select_row_without_unselect_feature(const nana::arg_listbox& sel
 
 bool MainState::check_if_row_was_right_clicked(const nana::arg_mouse& arg) const
 {
-    if (!arg.is_left_button() && !stations_listbox_.selected().empty() && !stations_listbox_.cast(arg.pos).empty() && !stations_listbox_.cast(arg.pos).is_category())
-    {
-        return true;
-    }
-    return false;
+    return !arg.is_left_button()
+        && !stations_listbox_.selected().empty()
+        && !stations_listbox_.cast(arg.pos).empty()
+        && !stations_listbox_.cast(arg.pos).is_category();
 }
 
 void MainState::add_observers()
@@ -189,7 +188,9 @@ void MainState::init_listbox()
     {
 
         if (check_if_row_was_right_clicked(arg))
+        {
             pop_stations_listbox_menu();
+        }
     });
 	stations_listbox_.events().dbl_click([this](const nana::arg_mouse& arg)
 	{
@@ -343,7 +344,6 @@ void MainState::delete_station()
 
 Station MainState::get_station_from_listbox(unsigned long long category_index, unsigned long long row_index) const
 {
-        
         const auto name_column_index = static_cast<std::size_t>(StationListboxColumns::Name);
         const auto ip_column_index = static_cast<std::size_t>(StationListboxColumns::Ip);
         const auto favorite_column_index = static_cast<std::size_t>(StationListboxColumns::Favorite);

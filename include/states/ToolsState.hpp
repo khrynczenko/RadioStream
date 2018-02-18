@@ -10,7 +10,7 @@ class ToolsState : public State
 {
 public:
 	ToolsState(StatesManager& state_manager, Context& context);
-	void change_visibility(bool visibile) override;
+	void change_visibility(bool visible) override;
 private:
 	void add_observers();
 	void build_interface();

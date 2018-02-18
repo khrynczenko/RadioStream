@@ -5,7 +5,7 @@
 
 struct Station
 {
-	Station(const std::string& name_, const std::string& ip_, bool favorite);
+	Station(const std::string& name, const std::string& ip, bool favorite);
     Station() = default;
 	bool operator==(const Station& rhs) const;
 	std::string name_;

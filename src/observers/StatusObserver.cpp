@@ -1,7 +1,7 @@
 #include "../../include/observers/StatusObserver.hpp"
 #include "../../include/StatusBar.hpp"
 
-void StatusObserver::on_notify(const std::any&, Context context, events::Event e)
+void StatusObserver::on_notify(const std::any& any, Context context, events::Event e)
 {
     switch (e)
     {

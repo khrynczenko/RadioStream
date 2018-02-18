@@ -80,9 +80,7 @@ std::string StationsDatabase::get_station_ip(const std::string& station_name) co
 {
     const auto iterator = std::find_if(cached_stations_.cbegin(), cached_stations_.cend(), [&](const Station& station)
     {
-        if (station.name_ == station_name)
-            return true;
-        return false;
+        return station.name_ == station_name;
     });
     if(iterator == cached_stations_.cend())
     {

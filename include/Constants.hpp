@@ -18,6 +18,12 @@ namespace constants
 		Favorite,
 	};
 
+    enum class SearchListboxColumns
+    {
+        Name,
+        Url
+    };
+
     enum class ContextualMenus
     {
         StationListbox,

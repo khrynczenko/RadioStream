@@ -96,3 +96,9 @@ msgstr "Radio playing"
 
 msgid "Radio paused"
 msgstr "Radio paused"
+
+msgid "Stations:"
+msgstr "Stations"
+
+msgid "Find	stations"
+msgstr "Find stations"

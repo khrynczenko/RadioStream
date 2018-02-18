@@ -96,3 +96,9 @@ msgstr "Odtwarzanie trwa"
 
 msgid "Radio paused"
 msgstr "Odtwarzanie wstrzymane"
+
+msgid "Stations:"
+msgstr "Stacje:"
+
+msgid "Find	stations"
+msgstr "Szukaj stacji"

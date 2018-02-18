@@ -15,9 +15,9 @@ ToolsState::ToolsState(StatesManager& state_manager, Context& context)
 	build_interface();
 }
 
-void ToolsState::change_visibility(bool visibile)
+void ToolsState::change_visibility(bool visible)
 {
-	container_.field_display("content", visibile);
+	container_.field_display("content", visible);
 	context_.menubar.show();
 }
 
@@ -70,9 +70,6 @@ std::string ToolsState::get_language_iso_identifier(const std::string& language)
 	{
 		return "en";
 	}
-	else
-	{
-		throw;
-		//TODO Create according exception
-	}
+    throw;
+    //TODO Create according exception
 }

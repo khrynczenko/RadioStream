@@ -8,13 +8,19 @@ StatesManager::StatesManager(Context context)
 
 void StatesManager::switch_state(States::ID id)
 {
-	if (states_.find(id) == states_.end())
+    if (states_.find(id) == states_.end())
+    {
 		throw std::runtime_error("State not registred.");
+    }
 	for (auto& state : states_)
 	{
-		if (state.first == id)
+        if (state.first == id)
+        {
 			state.second->change_visibility(true);
-		else
+        }
+        else
+        {
 			state.second->change_visibility(false);
+        }
 	}
 }

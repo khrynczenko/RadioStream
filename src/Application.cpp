@@ -1,5 +1,6 @@
 #include "../include/Application.hpp"
 #include "../include/states/MainState.hpp"
+#include "../include/states/SearchState.hpp"
 #include "../include/states/ToolsState.hpp"
 #include "../include/observers/StatusObserver.hpp"
 #include "../include/StatusBar.hpp"
@@ -38,12 +39,14 @@ Application::Application()
 void Application::register_states()
 {
 	states_manager_.register_state<MainState>(States::ID::Main);
+	states_manager_.register_state<SearchState>(States::ID::RadioBrowser);
 	states_manager_.register_state<ToolsState>(States::ID::Tools);
 }
 
 void Application::init_menubar()
 {
 	menubar_.push_back(localizer_.get_localized_text("File:"));
+    menubar_.push_back(localizer_.get_localized_text("Stations:"));
 	menubar_.push_back(localizer_.get_localized_text("Tools:"));
 
 	menubar_.at(FILE).append(localizer_.get_localized_text("Open URL"), [this](nana::menu::item_proxy&)
@@ -77,6 +80,11 @@ void Application::init_menubar()
         }
     });
 
+    menubar_.at(RADIOBROWSER).append(localizer_.get_localized_text("Find stations"), [this](nana::menu::item_proxy&)
+    {
+        states_manager_.switch_state(States::ID::RadioBrowser);
+    });
+
 	menubar_.at(TOOLS).append(localizer_.get_localized_text("Settings"), [this](nana::menu::item_proxy&)
 	{
 		states_manager_.switch_state(States::ID::Tools);
@@ -104,8 +112,5 @@ Language Application::get_language(const LanguageCode& code) const
 	{
 		return Language::PL;
 	}
-	else
-	{
-        throw NotSupportedLanguageException(code);
-	}
+    throw NotSupportedLanguageException(code);
 }

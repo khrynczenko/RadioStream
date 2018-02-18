@@ -30,7 +30,7 @@ public:
 		Context(nana::form& window,
                 nana::menubar& menubar,
                 StreamManager& stream_manager,
-                StationsDatabase& stations_manager ,
+                StationsDatabase& stations_database ,
                 StatusBar& status,
 				TextLocalizer& localizer,
 				Config& config
@@ -44,7 +44,7 @@ public:
 		Config& config;
 	};
 	State(StatesManager& state_manager, Context& context);
-	virtual void change_visibility(bool visibile) = 0;
+	virtual void change_visibility(bool visible) = 0;
 protected:
 	void switch_state(States::ID id) const;
 	Context& context_;

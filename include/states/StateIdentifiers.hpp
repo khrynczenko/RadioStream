@@ -5,6 +5,7 @@
 namespace States {
 	enum class ID {
 		Main,
+        RadioBrowser,
 		Tools,
 		StatesCount
 	};

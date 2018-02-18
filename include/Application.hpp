@@ -26,6 +26,7 @@ private:
     enum
     {
         FILE,
+        RADIOBROWSER,
         TOOLS
     };
     /**

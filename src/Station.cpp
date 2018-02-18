@@ -10,8 +10,10 @@ Station::Station(const std::string& name, const std::string& ip, bool favorite)
 
 bool Station::operator==(const Station& rhs) const
 {
-	if (name_ == rhs.name_ && ip_ == rhs.ip_)
+    if (name_ == rhs.name_ && ip_ == rhs.ip_)
+    {
 		return true;
+    }
 	return false;
 }
 
