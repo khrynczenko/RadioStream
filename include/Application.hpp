@@ -7,9 +7,12 @@
 #include "observers/Subject.hpp"
 #include "StatusBar.hpp"
 #include "TextLocalizer.hpp"
+#include "Config.hpp"
+#include "controllers/StreamManagerController.hpp"
+#include "controllers/StationsDatabaseController.hpp"
+#include "controllers/ConfigController.hpp"
 #include <nana/gui/widgets/form.hpp>
 #include <nana/gui/widgets/menubar.hpp>
-#include "Config.hpp"
 #include <mutex>
 
 class LanguageCode;
@@ -18,7 +21,7 @@ class LanguageCode;
  * \class Application
  * \brief Glues each compomnent of a system together. Creates window, sets initial States, initializes menubar etc.
  */
-class Application
+class Application : public Subject
 {
 public:
 	Application();
@@ -36,6 +39,8 @@ private:
 	void init_menubar();
 	void set_language();
 	void set_observers();
+    void build_interface();
+    void init_status();
 	Language get_language(const LanguageCode& code) const;
 	nana::form window_;
 	nana::menubar menubar_;
@@ -47,6 +52,9 @@ private:
     State::Context context_;
     StatesManager states_manager_;
     nana::place general_container_;
+    StreamManagerController stream_manager_controller_;
+    StationsDatabaseController stations_database_controller_;
+    ConfigController config_controller_;
     Subject subject_;
     std::mutex mutex_;
 };

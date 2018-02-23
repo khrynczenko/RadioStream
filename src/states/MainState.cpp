@@ -1,10 +1,9 @@
 #include "../../include/states/MainState.hpp"
-#include "../../include/observers/StreamObserver.hpp"
-#include "../../include/observers/StationsDatabaseObserver.hpp"
-#include "../../include/observers/StatusObserver.hpp"
 #include "../../include/Constants.hpp"
 #include "../../include/Utilities.hpp"
 #include <nana/gui/widgets/menubar.hpp>
+#include <nana/gui/widgets/form.hpp>
+#include "../../include/exceptions/NanaTextboxProcessingException.hpp"
 
 using namespace constants;
 
@@ -22,7 +21,6 @@ MainState::MainState(StatesManager& manager, Context& context)
     , song_label_menu_()
     , listbox_item_menu_()
 {
-    add_observers();
 	build_interface();
     init_contextual_menus();
 	init_listbox();
@@ -62,13 +60,6 @@ bool MainState::check_if_row_was_right_clicked(const nana::arg_mouse& arg) const
         && !stations_listbox_.cast(arg.pos).is_category();
 }
 
-void MainState::add_observers()
-{
-    subject_.attach(std::make_unique<StreamObserver>());
-    subject_.attach(std::make_unique<StationsDatabaseObserver>());
-    subject_.attach(std::make_unique<StatusObserver>());
-}
-
 void MainState::run_concurrent_song_name_updater()
 {
     song_title_updater_ = std::thread(&MainState::update_titles, this);
@@ -87,14 +78,12 @@ void MainState::build_interface()
 	play_button_.caption(context_.localizer.get_localized_text("Play"));
     play_button_.events().click([this]()
     {
-        subject_.notify(std::make_any<bool>(true), context_, events::Event::StreamPlay);
-        subject_.notify(Observer::placeholder, context_, events::Event::StreamPlayingStatus);
+        notify(Observer::placeholder, events::Event::StreamPlay);
     });
 	pause_button_.caption(context_.localizer.get_localized_text("Pause"));
 	pause_button_.events().click([this]()
 	{
-		subject_.notify(std::make_any<bool>(true), context_, events::Event::StreamPause);
-        subject_.notify(Observer::placeholder, context_, events::Event::StreamPausedStatus);
+		notify(Observer::placeholder, events::Event::StreamPause);
 	});
 	mute_button_.caption(context_.localizer.get_localized_text("Mute"));
     mute_button_.enable_pushed(true);
@@ -102,11 +91,11 @@ void MainState::build_interface()
     {
         if(mute_button_.pushed())
         {
-            subject_.notify(std::make_any<unsigned int>(volume_slider_.value()), context_, events::Event::StreamMute);
+            notify(std::make_any<unsigned int>(volume_slider_.value()), events::Event::StreamMute);
         }
         else
         {
-            subject_.notify(std::make_any<unsigned int>(volume_slider_.value()), context_, events::Event::StreamVolumeChanged);
+            notify(std::make_any<unsigned int>(volume_slider_.value()), events::Event::StreamVolumeChanged);
         }
 
     });
@@ -121,7 +110,7 @@ void MainState::build_interface()
 	{
         if (!mute_button_.pushed())
         {
-            subject_.notify(std::make_any<unsigned int>(volume_slider_.value()), context_, events::Event::StreamVolumeChanged);
+            notify(std::make_any<unsigned int>(volume_slider_.value()), events::Event::StreamVolumeChanged);
         }    
 	});
 	search_textbox_.line_wrapped(true).multi_lines(false).tip_string("Search...");
@@ -210,7 +199,7 @@ void MainState::update_titles()
 	while(true)
 	{
 		std::this_thread::sleep_for(TIME_TO_CHECK_IF_SONG_CHANGED);
-		std::lock_guard<std::mutex>{song_title_mutex_};
+		std::lock_guard<std::mutex> lock{song_title_mutex_};
         update_song_label();
 	}
 }
@@ -267,9 +256,11 @@ void MainState::populate_listbox()
 
 void MainState::search_stations()
 {
-    subject_.notify(Observer::placeholder, context_, events::Event::SearchingStationsStatus);
     std::string string_to_find{};
-    search_textbox_.getline(0, string_to_find);
+    if(!search_textbox_.getline(0, string_to_find))
+    {
+        throw NanaTextboxProcessingException();
+    }
     stations_listbox_.auto_draw(false);
     if (!string_to_find.empty())
     {
@@ -294,7 +285,6 @@ void MainState::search_stations()
         populate_listbox();
     }
     stations_listbox_.auto_draw(true);
-    subject_.notify(Observer::placeholder, context_, events::Event::NormalStatus);
 }
 
 void MainState::pop_song_title_menu()
@@ -317,7 +307,6 @@ void MainState::set_new_stream()
     std::thread thread{[&]()
     {
         std::lock_guard<std::mutex> lock(mutex_);
-        subject_.notify(Observer::placeholder, context_, events::Event::LoadingStreamStatus);
         if (!stations_listbox_.selected().empty())
         {
             auto selected_item = stations_listbox_.selected().front();
@@ -326,8 +315,7 @@ void MainState::set_new_stream()
             auto column_index = static_cast<std::size_t>(StationListboxColumns::Name);
             auto station_category = stations_listbox_.at(category_index);
             station_name = station_category.at(selected_item.item).text(column_index);
-            subject_.notify(station_name, context_, events::Event::StreamSetNew);
-            subject_.notify(Observer::placeholder, context_, events::Event::StreamPlayingStatus);
+            notify(station_name, events::Event::StreamSetNewByName);
         }
     } };
     thread.detach();
@@ -338,7 +326,7 @@ void MainState::delete_station()
     Station station{};
     const auto index = stations_listbox_.selected().front();
     stations_listbox_.at(index.cat).at(index.item).resolve_to(station);
-    subject_.notify(std::make_any<Station>(station), context_, events::Event::DeleteStation);
+    notify(std::make_any<Station>(station), events::Event::DeleteStation);
     populate_listbox();
 }
 

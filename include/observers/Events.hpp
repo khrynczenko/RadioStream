@@ -5,23 +5,17 @@ namespace events
 {
 	enum class Event
 	{
-        //StreamObserver events
 		StreamPause,
 		StreamPlay,
-		StreamSetNew,
+		StreamSetNewByName,
+        StreamSetNewByIP,
 		StreamMute,
 		StreamVolumeChanged,
-        //StatusObserver events
-        LoadingStreamStatus,
-        NormalStatus,
-        SearchingStationsStatus,
-        StreamPlayingStatus,
-        StreamPausedStatus,
-        //StationsDatabaseObserver events
+
         AddStation,
         DeleteStation,
-		//TextLoxccalizerObserver events
-		ChangeLanguage
+
+	    ConfigChangeLanguage	
 	};
 }
 

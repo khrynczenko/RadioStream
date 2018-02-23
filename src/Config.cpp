@@ -1,10 +1,16 @@
 #include "../include/Config.hpp"
 #include <fstream>
+#include "../include/Language.hpp"
 
 Config::Config(std::string path)
 	: path_(std::move(path))
 {
 	read_from_file();
+}
+
+void Config::change_language(LanguageCode code)
+{
+    config_["language"] = code.get_string();
 }
 
 Config::~Config()

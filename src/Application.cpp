@@ -2,16 +2,18 @@
 #include "../include/states/MainState.hpp"
 #include "../include/states/SearchState.hpp"
 #include "../include/states/ToolsState.hpp"
-#include "../include/observers/StatusObserver.hpp"
 #include "../include/StatusBar.hpp"
 #include "../include/Config.hpp"
 #include "../include/Language.hpp"
 #include "../include/exceptions/NotSupportedLanguageException.hpp"
 #include "../include/Constants.hpp"
+#include "../include/observers/StreamManagerObserver.hpp"
+#include "../include/observers/StationsDatabaseObserver.hpp"
+#include "../include/observers/ConfigObserver.hpp"
 #include <nana/gui/msgbox.hpp>
 
 Application::Application()
-	: window_(nana::API::make_center(600, 500), nana::appear::decorate<nana::appear::minimize, nana::appear::sizable, nana::appear::maximize, nana::appear::taskbar>())
+	: window_(nana::API::make_center(800, 600), nana::appear::decorate<nana::appear::minimize, nana::appear::sizable, nana::appear::maximize, nana::appear::taskbar>())
 	, menubar_(window_)
     , stream_manager_()
     , stations_database_(constants::STATIONS_DATABASE_FILE)
@@ -21,25 +23,26 @@ Application::Application()
     , context_(window_, menubar_, stream_manager_, stations_database_, status_, localizer_, config_)
     , states_manager_(context_)
     , general_container_(window_)
+    , stream_manager_controller_(states_manager_, context_)
+    , stations_database_controller_(states_manager_, context_)
+    , config_controller_(states_manager_, context_)
     , subject_()
 {
 	window_.caption("RadioStream");
 	set_language();
-	set_observers();
 	init_menubar();
+    init_status();
     register_states();
+	set_observers();
+    build_interface();
 	states_manager_.switch_state(States::ID::Main);
-    subject_.notify(Observer::placeholder, context_, events::Event::NormalStatus);
-    general_container_.div("<status_ weight=100% gap=1% margin=[97%,0%,0%,0%]>");
-    general_container_.field("status_") << status_;
-    general_container_.collocate();
     window_.show();
 }
 
 void Application::register_states()
 {
 	states_manager_.register_state<MainState>(States::ID::Main);
-	states_manager_.register_state<SearchState>(States::ID::RadioBrowser);
+	states_manager_.register_state<SearchState>(States::ID::Search);
 	states_manager_.register_state<ToolsState>(States::ID::Tools);
 }
 
@@ -53,16 +56,12 @@ void Application::init_menubar()
 	{
         std::thread thread([&]()
         {
-		nana::inputbox::text url(localizer_.get_localized_text("URL"));
-		nana::inputbox inbox(window_, localizer_.get_localized_text("Please write correct URL."), localizer_.get_localized_text("Open URL"));
-		if (inbox.show(url))
-		{
-                std::lock_guard<std::mutex> lock(mutex_);
-                subject_.notify(Observer::placeholder, context_, events::Event::LoadingStreamStatus);
-                stream_manager_.set_stream(url.value());
-                stream_manager_.play();
-                states_manager_.getState<MainState>(States::ID::Main).set_station_name(localizer_.get_localized_text("Undefined station"));
-                subject_.notify(Observer::placeholder, context_, events::Event::StreamPlayingStatus);
+            std::lock_guard<std::mutex> lock(mutex_);
+            nana::inputbox::text url(localizer_.get_localized_text("URL"));
+            nana::inputbox inbox(window_, localizer_.get_localized_text("Please write correct URL."), localizer_.get_localized_text("Open URL"));
+            if (inbox.show(url))
+            {
+                notify(std::make_any<std::string>(url.value()), events::Event::StreamSetNewByIP);
             }
         });
         thread.detach();
@@ -75,14 +74,13 @@ void Application::init_menubar()
         nana::inputbox inbox(window_, localizer_.get_localized_text("Please write correct URL."), localizer_.get_localized_text("Add station"));
         if (inbox.show(station_name, url))
         {
-            stations_database_.add_station(Station{ station_name.value(), url.value(), false });
-            states_manager_.getState<MainState>(States::ID::Main).refresh_listbox();
+            notify(std::make_any<Station>(station_name.value(), url.value(), false), events::Event::AddStation);
         }
     });
 
     menubar_.at(RADIOBROWSER).append(localizer_.get_localized_text("Find stations"), [this](nana::menu::item_proxy&)
     {
-        states_manager_.switch_state(States::ID::RadioBrowser);
+        states_manager_.switch_state(States::ID::Search);
     });
 
 	menubar_.at(TOOLS).append(localizer_.get_localized_text("Settings"), [this](nana::menu::item_proxy&)
@@ -99,7 +97,29 @@ void Application::set_language()
 
 void Application::set_observers()
 {
-	subject_.attach(std::make_unique<StatusObserver>());
+    auto& main_state = states_manager_.get_state<MainState>(States::ID::Main);
+    main_state.attach(std::make_unique<StreamManagerObserver>(stream_manager_controller_));
+    main_state.attach(std::make_unique<StationsDatabaseObserver>(stations_database_controller_));
+    auto& search_state = states_manager_.get_state<SearchState>(States::ID::Search);
+    search_state.attach(std::make_unique<StreamManagerObserver>(stream_manager_controller_));
+    search_state.attach(std::make_unique<StationsDatabaseObserver>(stations_database_controller_));
+    auto& tools_state = states_manager_.get_state<ToolsState>(States::ID::Tools);
+    tools_state.attach(std::make_unique<ConfigObserver>(config_controller_));
+    this->attach(std::make_unique<StreamManagerObserver>(stream_manager_controller_));
+    this->attach(std::make_unique<StationsDatabaseObserver>(stations_database_controller_));
+}
+
+void Application::build_interface()
+{
+    general_container_.div("<status_ weight=100% gap=1% margin=[97%,0%,0%,0%]>");
+    general_container_.field("status_") << status_;
+    general_container_.collocate();
+}
+
+void Application::init_status()
+{
+    status_.change_text(localizer_.get_localized_text("Ready"));
+    status_.change_color(StatusBar::Color::FINISHED);
 }
 
 Language Application::get_language(const LanguageCode& code) const

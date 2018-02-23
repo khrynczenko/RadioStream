@@ -21,7 +21,7 @@ public:
 	template<typename T>
 	void register_state(States::ID id);
     template<typename T>
-    T& getState(States::ID id);
+    T& get_state(States::ID id);
 private:
 	Context context_;
 	std::map<States::ID, std::unique_ptr<State>> states_;
@@ -39,7 +39,7 @@ void StatesManager::register_state(States::ID id)
 }
 
 template <typename T>
-T& StatesManager::getState(States::ID id)
+T& StatesManager::get_state(States::ID id)
 {
     return *(static_cast<T*>(states_.at(id).get()));
 }

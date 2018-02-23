@@ -1,13 +1,15 @@
-#ifndef STATIONSOBSERVER_HPP
-#define STATIONSOBSERVER_HPP
-
+#ifndef STATIONSDATABASEOBSERVER_HPP
+#define STATIONSDATABASEOBSERVER_HPP
 #include "Observer.hpp"
+#include "../controllers/StationsDatabaseController.hpp"
 
-class StationsDatabaseObserver :
-    public Observer
+class StationsDatabaseObserver : public Observer
 {
 public:
-    void on_notify(const std::any& any, Context context, events::Event e) override;
+    StationsDatabaseObserver(StationsDatabaseController& controller);
+    void on_notify(const std::any& data, events::Event e) override;
+private:
+    StationsDatabaseController& controller_;
 };
 
 #endif

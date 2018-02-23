@@ -1,26 +1,11 @@
 #include "../../include/observers/StationsDatabaseObserver.hpp"
-#include "../../include/StationsDatabase.hpp"
-#include "../../include/Station.hpp"
 
-void StationsDatabaseObserver::on_notify(const std::any& any, Context context, events::Event e)
+StationsDatabaseObserver::StationsDatabaseObserver(StationsDatabaseController& controller)
+    : controller_(controller)
 {
-    switch (e)
-    {
-    case events::Event::AddStation:
-    {
-        const auto station = std::any_cast<Station>(any);
+}
 
-        context.stations_database.add_station(station);
-    }
-    break;
-
-    case events::Event::DeleteStation:
-    {
-        const auto station = std::any_cast<Station>(any);
-        context.stations_database.remove_station(station);
-    }
-    break;
-    default:;
-    }
-   
+void StationsDatabaseObserver::on_notify(const std::any& data, events::Event e)
+{
+    controller_.process_event_command(e, data);
 }

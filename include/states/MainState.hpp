@@ -27,7 +27,6 @@ private:
      */
     void select_row_without_unselect_feature(const nana::arg_listbox& selected_row);
     bool check_if_row_was_right_clicked(const nana::arg_mouse& arg) const;
-    void add_observers();
     void run_concurrent_song_name_updater();
     void build_interface();
     void init_contextual_menus();
@@ -57,7 +56,6 @@ private:
     nana::menu listbox_category_menu_;
     std::thread song_title_updater_;
     std::mutex song_title_mutex_;
-    Subject subject_;
     std::mutex mutex_;
 };
 

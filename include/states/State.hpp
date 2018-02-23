@@ -6,6 +6,7 @@
 #include "../StationsDatabase.hpp"
 #include "../StatusBar.hpp"
 #include "../TextLocalizer.hpp"
+#include "../observers/Subject.hpp"
 
 
 class Config;
@@ -17,7 +18,7 @@ namespace nana {
 
 class StatesManager;
 
-class State
+class State : public Subject
 {
 public:
 	virtual ~State() = default;

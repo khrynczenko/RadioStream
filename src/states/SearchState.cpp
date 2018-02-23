@@ -4,7 +4,6 @@
 #include "../../include/exceptions/NanaTextboxProcessingException.hpp"
 #include <nana/gui/widgets/form.hpp>
 #include <nana/gui/widgets/menubar.hpp>
-#include "../../include/observers/Events.hpp"
 
 using namespace constants;
 
