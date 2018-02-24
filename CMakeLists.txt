@@ -22,58 +22,69 @@ add_subdirectory(${CMAKE_SOURCE_DIR}/libs/nana)
 add_subdirectory(${CMAKE_SOURCE_DIR}/libs/poco)
 
 add_executable(RadioStream 
-src/Application.cpp
-src/Constants.cpp
-src/main.cpp
-src/states
-src/Station.cpp
-src/StatusBar.cpp
-src/StreamManager.cpp
-src/Utilities.cpp
-src/observers/Observer.cpp
-src/observers/StatusObserver.cpp
-src/observers/StreamObserver.cpp
-src/observers/Subject.cpp
-src/states/MainState.cpp
-src/states/State.cpp
-src/states/StatesManager.cpp
-src/Config.cpp
-src/TextLocalizer.cpp
-src/observers/TextLocalizerObserver.cpp
-src/states/ToolsState.cpp
-src/Language.cpp
-src/exceptions/LanguageFileNotFound.cpp
-src/exceptions/NotSupportedLanguageException.cpp
-src/exceptions/WrongLanguageCodeFormatException.cpp
-src/StationsDatabase.cpp
-src/observers/StationsDatabaseObserver.cpp
 include/Application.hpp
+include/Config.hpp
 include/Constants.hpp
-include/observers
-include/states
+include/Language.hpp
+include/RadioBrowserRequester.hpp
+include/RadioBrowserStation.hpp
 include/Station.hpp
+include/StationsDatabase.hpp
 include/StatusBar.hpp
 include/StreamManager.hpp
+include/TextLocalizer.hpp
 include/Utilities.hpp
+include/controllers/ConfigController.hpp
+include/controllers/Controller.hpp
+include/controllers/StationsDatabaseController.hpp
+include/controllers/StreamManagerController.hpp
+include/exceptions/LanguageFileNotFound.hpp
+include/exceptions/NanaTextboxProcessingException.hpp
+include/exceptions/NotSupportedLanguageException.hpp
+include/exceptions/WrongLanguageCodeFormatException.hpp
+include/observers/ConfigObserver.hpp
 include/observers/Events.hpp
 include/observers/Observer.hpp
-include/observers/StatusObserver.hpp
-include/observers/StreamObserver.hpp
+include/observers/StationsDatabaseObserver.hpp
+include/observers/StreamManagerObserver.hpp
 include/observers/Subject.hpp
 include/states/MainState.hpp
+include/states/SearchState.hpp
 include/states/State.hpp
 include/states/StateIdentifiers.hpp
 include/states/StatesManager.hpp
-include/Config.hpp
-include/TextLocalizer.hpp
-include/observers/TextLocalizerObserver.hpp
 include/states/ToolsState.hpp
-include/Language.hpp
-include/exceptions/LanguageFileNotFound.hpp
-include/exceptions/NotSupportedLanguageException.hpp
-include/exceptions/WrongLanguageCodeFormatException.hpp
-include/StationsDatabase.hpp
-include/observers/StationsDatabaseObserver.hpp
+src/Application.cpp
+src/Config.cpp
+src/Constants.cpp
+src/Language.cpp
+src/main.cpp
+src/RadioBrowserRequester.cpp
+src/RadioBrowserStationcpp.cpp
+src/Station.cpp
+src/StationsDatabase.cpp
+src/StatusBar.cpp
+src/StreamManager.cpp
+src/TextLocalizer.cpp
+src/Utilities.cpp
+src/controllers/ConfigController.cpp
+src/controllers/Controller.cpp
+src/controllers/StationsDatabaseController.cpp
+src/controllers/StreamManagerController.cpp
+src/exceptions/LanguageFileNotFound.cpp
+src/exceptions/NanaTextboxProcessingException.cpp
+src/exceptions/NotSupportedLanguageException.cpp
+src/exceptions/WrongLanguageCodeFormatException.cpp
+src/observers/ConfigObserver.cpp
+src/observers/Observer.cpp
+src/observers/StationsDatabaseObserver.cpp
+src/observers/StreamManagerObserver.cpp
+src/observers/Subject.cpp
+src/states/MainState.cpp
+src/states/SearchState.cpp
+src/states/State.cpp
+src/states/StatesManager.cpp
+src/states/ToolsState.cpp
 )
 
 target_include_directories(RadioStream PUBLIC
@@ -83,5 +94,5 @@ target_include_directories(RadioStream PUBLIC
     ${CMAKE_SOURCE_DIR}/libs/nana/include ${CMAKE_SOURCE_DIR}/libs/json/include
     ${BASS_LIB_DIR} ${CMAKE_SOURCE_DIR}/libs/sqlitemoderncpp/hdr)
 
-target_link_libraries(RadioStream nana Foundation Data DataSQLite ${BASS_LIB_FILE} ${FONTCONFIG_LIB} ${SQLITE3_LIB} ${PTHREAD_LIB})
+target_link_libraries(RadioStream nana Foundation Data DataSQLite Net ${BASS_LIB_FILE} ${FONTCONFIG_LIB} ${SQLITE3_LIB} ${PTHREAD_LIB})
 
