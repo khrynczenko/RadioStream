@@ -91,6 +91,7 @@ target_include_directories(RadioStream PUBLIC
     ${CMAKE_SOURCE_DIR}/libs/poco/Foundation/include
     ${CMAKE_SOURCE_DIR}/libs/poco/Data/include
     ${CMAKE_SOURCE_DIR}/libs/poco/Data/SQLite/include
+    ${CMAKE_SOURCE_DIR}/libs/poco/Net/include
     ${CMAKE_SOURCE_DIR}/libs/nana/include ${CMAKE_SOURCE_DIR}/libs/json/include
     ${BASS_LIB_DIR} ${CMAKE_SOURCE_DIR}/libs/sqlitemoderncpp/hdr)
 
