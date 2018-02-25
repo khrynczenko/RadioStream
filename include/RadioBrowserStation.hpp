@@ -6,11 +6,14 @@
 
 struct RadioBrowserStation
 {
-    RadioBrowserStation(std::string name, std::string url, std::string country, std::string language);
+    RadioBrowserStation(std::string_view name, std::string_view url, std::string_view country,
+                        std::string_view language, std::string_view codec, std::string_view tags);
     std::string name_;
     std::string url_;
     std::string country_;
     std::string language_;
+    std::string codec_;
+    std::string tags_;
 };
 
 

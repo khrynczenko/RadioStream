@@ -1,20 +1,23 @@
 #include "../include/Station.hpp"
 #include "../include/Utilities.hpp"
 
-Station::Station(const std::string& name, const std::string& ip, bool favorite)
+Station::Station(std::string_view name, std::string_view ip, bool favorite)
 	: name_(name)
 	, ip_(ip)
 	, favorite_(favorite)
 {
 }
 
+Station::Station(const RadioBrowserStation& rhs)
+    : name_(rhs.name_)
+    , ip_(rhs.url_)
+    , favorite_(false)
+{
+}
+
 bool Station::operator==(const Station& rhs) const
 {
-    if (name_ == rhs.name_ && ip_ == rhs.ip_)
-    {
-		return true;
-    }
-	return false;
+    return (name_ == rhs.name_) && (ip_ == rhs.ip_);
 }
 
 nana::listbox::oresolver& operator<<(nana::listbox::oresolver& ores, const Station& station)

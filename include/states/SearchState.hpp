@@ -29,6 +29,8 @@ private:
     nana::textbox search_textbox_;
     nana::label sort_by_label_;
     nana::combox sorting_combox_;
+    nana::combox country_combox_;
+    nana::combox language_combox_;
     nana::button search_submit_button_;
     nana::listbox found_stations_listbox_;
     nana::button back_button_;

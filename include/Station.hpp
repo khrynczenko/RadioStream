@@ -1,11 +1,13 @@
 #ifndef STATION_HPP
 #define STATION_HPP
 
+#include "RadioBrowserStation.hpp"
 #include <nana/gui/widgets/listbox.hpp>
 
 struct Station
 {
-	Station(const std::string& name, const std::string& ip, bool favorite);
+	Station(std::string_view name, std::string_view ip, bool favorite);
+    explicit Station(const RadioBrowserStation& rhs);
     Station() = default;
 	bool operator==(const Station& rhs) const;
 	std::string name_;

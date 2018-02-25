@@ -13,6 +13,8 @@ SearchState::SearchState(StatesManager& state_manager, Context& context)
     , search_textbox_(context.window)
     , sort_by_label_(context.window)
     , sorting_combox_(context.window)
+    , country_combox_(context.window)
+    , language_combox_(context.window)
     , search_submit_button_(context.window)
     , found_stations_listbox_(context.window)
     , back_button_(context.window)
@@ -48,8 +50,16 @@ void SearchState::init_listbox()
 {
 	found_stations_listbox_.append_header(context_.localizer.get_localized_text("Station's name"));
     found_stations_listbox_.append_header(context_.localizer.get_localized_text("URL"));
-	found_stations_listbox_.column_at(static_cast<std::size_t>(SearchListboxColumns::Name)).width(300u);
+    found_stations_listbox_.append_header(context_.localizer.get_localized_text("Country"));
+    found_stations_listbox_.append_header(context_.localizer.get_localized_text("Language"));
+    found_stations_listbox_.append_header(context_.localizer.get_localized_text("Codec"));
+    found_stations_listbox_.append_header(context_.localizer.get_localized_text("Tags"));
+	found_stations_listbox_.column_at(static_cast<std::size_t>(SearchListboxColumns::Name)).width(250u);
     found_stations_listbox_.column_at(static_cast<std::size_t>(SearchListboxColumns::Url)).width(200u);
+    found_stations_listbox_.column_at(static_cast<std::size_t>(SearchListboxColumns::Country)).width(70u);
+    found_stations_listbox_.column_at(static_cast<std::size_t>(SearchListboxColumns::Language)).width(70u);
+    found_stations_listbox_.column_at(static_cast<std::size_t>(SearchListboxColumns::Codec)).width(50u);
+    found_stations_listbox_.column_at(static_cast<std::size_t>(SearchListboxColumns::Tags)).width(200u);
 	found_stations_listbox_.enable_single(true, false);
    
     found_stations_listbox_.events().selected([this](const nana::arg_listbox& arg)
@@ -82,8 +92,21 @@ void SearchState::build_interface()
     sort_by_label_.text_align(nana::align::left, nana::align_v::center);
     sort_by_label_.caption(context_.localizer.get_localized_text("Sort by:"));
     sorting_combox_.push_back(context_.localizer.get_localized_text("Popularity")).option(0);
-    sorting_combox_.push_back("Trending");
-    sorting_combox_.push_back("Score");
+    sorting_combox_.push_back(context_.localizer.get_localized_text("Trending"));
+    sorting_combox_.push_back(context_.localizer.get_localized_text("Score"));
+    
+    country_combox_.push_back("Any").option(0);
+    for (const auto& country : parse_countries(requester_.request_countries()))
+    {
+        country_combox_.push_back(country);
+    }
+    
+    language_combox_.push_back("Any").option(0);
+    for(const auto& language : parse_languages(requester_.request_languages()))
+    {
+        language_combox_.push_back(language);
+    }
+
     search_submit_button_.caption(context_.localizer.get_localized_text("Find"));
     search_submit_button_.events().click([this]()
     {
@@ -93,9 +116,11 @@ void SearchState::build_interface()
             throw NanaTextboxProcessingException();
         }
         auto order = static_cast<RadioBrowserRequester::OrderBy>(sorting_combox_.option());
-        const auto j_stations = requester_.request_stations(search_phrase, order);
-        auto requested_stations = requester_.request_stations(search_phrase, order);
-        auto parsed_stations = parse_stations_jsons(requested_stations);
+        const auto j_stations = requester_.request_stations(search_phrase,
+                                                            country_combox_.text(country_combox_.option()),
+                                                            language_combox_.text(language_combox_.option()),
+                                                            order);
+        auto parsed_stations = parse_stations_jsons(j_stations);
         found_stations_listbox_.clear();
         found_stations_listbox_.auto_draw(false);
         for(const auto& station : parsed_stations)
@@ -112,18 +137,17 @@ void SearchState::build_interface()
 
 	container_.div(
 		"<content vertical margin=[5%,0,0,0]" 
-            "<search_form min=5% max=8% arrange=[30%,8%,15%,10%] gap=1% margin=1%>"
+            "<search_form min=5% max=8% arrange=[30%,8%,15%,10%,10%,10%] gap=1% margin=1%>"
 			"<listbox max=83% margin=[1%,1%,1%,1%]>"
             "<buttons_section arrange=[10%] min=4% max=5% weight=1% margin=[0%,1%,5%,1%]>"
 		">");
-	container_.field("search_form") << search_textbox_ << sort_by_label_ << sorting_combox_ << search_submit_button_;
+    container_.field("search_form") << search_textbox_ << sort_by_label_ << sorting_combox_ << country_combox_ << language_combox_ << search_submit_button_;
 	container_.field("listbox") << found_stations_listbox_;
     container_.field("buttons_section") << back_button_;
 	container_.collocate();
 
     listbox_right_click_menu_.append(context_.localizer.get_localized_text("Play"), [this](auto& ev)
     {
-        //play
     });
     listbox_right_click_menu_.append(context_.localizer.get_localized_text("Add to list"), [this](auto& ev)
     {

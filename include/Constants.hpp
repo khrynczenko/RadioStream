@@ -21,7 +21,11 @@ namespace constants
     enum class SearchListboxColumns
     {
         Name,
-        Url
+        Url,
+        Country,
+        Language,
+        Codec,
+        Tags
     };
 
     enum class ContextualMenus

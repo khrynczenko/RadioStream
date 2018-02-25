@@ -16,7 +16,9 @@ public:
         ClickTrend,
         Votes
     };
-    std::vector<nlohmann::json> request_stations(std::string search_phrase, OrderBy order);
+    std::vector<nlohmann::json> request_stations(std::string_view search_phrase, std::string_view country, std::string_view language, OrderBy order);
+    std::vector<nlohmann::json> request_countries();
+    std::vector<nlohmann::json> request_languages();
 private:
     nlohmann::json send_arbitrary_request(Poco::URI request_uri,
         std::vector<std::pair<std::string, std::string>> request_paramters);
@@ -26,4 +28,6 @@ private:
 };
 
 std::vector<RadioBrowserStation> parse_stations_jsons(const std::vector<nlohmann::json>& stations_jsons);
+std::vector<std::string> parse_countries(const std::vector<nlohmann::json> countries_jsons);
+std::vector<std::string> parse_languages(const std::vector<nlohmann::json> languages_jsons);
 #endif
