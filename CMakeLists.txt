@@ -1,23 +1,41 @@
 cmake_minimum_required (VERSION 3.9)
 project(RadioStream)
 
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_REQUIRED ON)
-
 if(WIN32)
-	set(BASS_LIB_DIR ${CMAKE_SOURCE_DIR}/libs/bass/c)
-	set(BASS_LIB_FILE ${CMAKE_SOURCE_DIR}/libs/bass/c/bass.lib)
+        set(BASS_LIB_DIR ${CMAKE_SOURCE_DIR}/libs/bass/c)
+        set(BASS_LIB_FILE ${CMAKE_SOURCE_DIR}/libs/bass/c/bass.lib)
 elseif(UNIX)
-	set(BASS_LIB_DIR ${CMAKE_SOURCE_DIR}/libs/bass)
-	set(BASS_LIB_FILE ${CMAKE_SOURCE_DIR}/libs/bass/x64/libbass.so)
+        set(BASS_LIB_DIR ${CMAKE_SOURCE_DIR}/libs/bass)
+        set(BASS_LIB_FILE ${CMAKE_SOURCE_DIR}/libs/bass/x64/libbass.so)
 	set(FONTCONFIG_LIB "-lfontconfig")
 	set(SQLITE3_LIB "-lsqlite3")
 	set(PTHREAD_LIB "-lpthread")
 endif()
 
+set(MSVC_USE_STATIC_RUNTIME OFF )
 
+set(ENABLE_XML OFF)
+set(ENABLE_JSON ON)
+set(ENABLE_MONGODB OFF)
+set(ENABLE_REDIS OFF)
+set(ENABLE_PDF OFF)
+set(ENABLE_UTIL ON)
+set(ENABLE_NET ON)
+set(ENABLE_NETSSL ON)
+set(ENABLE_NETSSL_WIN OFF)
+set(ENABLE_CRYPTO OFF)
+set(ENABLE_DATA ON)
+set(ENABLE_DATA_SQLITE ON)
+set(ENABLE_DATA_MYSQL OFF)
+set(ENABLE_DATA_ODBC OFF)
+set(ENABLE_SEVENZIP OFF)
+set(ENABLE_ZIP OFF)
+set(ENABLE_APACHECONNECTOR OFF)
+set(ENABLE_CPPPARSER OFF)
+set(ENABLE_POCODOC OFF)
+set(ENABLE_PAGECOMPILER OFF)
+set(ENABLE_PAGECOMPILER_FILE2PAGE OFF)
 
-SET(MSVC_USE_STATIC_RUNTIME OFF CACHE BOOL "Build nana with static runtime.")
 add_subdirectory(${CMAKE_SOURCE_DIR}/libs/nana)
 add_subdirectory(${CMAKE_SOURCE_DIR}/libs/poco)
 
@@ -87,7 +105,15 @@ src/states/StatesManager.cpp
 src/states/ToolsState.cpp
 )
 
-target_include_directories(RadioStream PUBLIC
+if ( CMAKE_COMPILER_IS_GNUCC )
+    target_compile_options(RadioStream PRIVATE "-Wall")
+endif()
+if ( MSVC )
+    target_compile_options(RadioStream PRIVATE "/W4")
+endif()
+target_compile_features(RadioStream PRIVATE cxx_std_17)
+
+target_include_directories(RadioStream PRIVATE
     ${CMAKE_SOURCE_DIR}/libs/poco/Foundation/include
     ${CMAKE_SOURCE_DIR}/libs/poco/Data/include
     ${CMAKE_SOURCE_DIR}/libs/poco/Data/SQLite/include
@@ -95,5 +121,5 @@ target_include_directories(RadioStream PUBLIC
     ${CMAKE_SOURCE_DIR}/libs/nana/include ${CMAKE_SOURCE_DIR}/libs/json/include
     ${BASS_LIB_DIR} ${CMAKE_SOURCE_DIR}/libs/sqlitemoderncpp/hdr)
 
-target_link_libraries(RadioStream nana Foundation Data DataSQLite Net ${BASS_LIB_FILE} ${FONTCONFIG_LIB} ${SQLITE3_LIB} ${PTHREAD_LIB})
+target_link_libraries(RadioStream PRIVATE nana Foundation Data DataSQLite Net ${BASS_LIB_FILE} ${FONTCONFIG_LIB} ${SQLITE3_LIB} ${PTHREAD_LIB})
 

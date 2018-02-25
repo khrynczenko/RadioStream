@@ -15,7 +15,7 @@ float StreamManager::get_current_volume() const
 void StreamManager::set_stream(const std::string& url)
 {
     url_playing_ = url;
-    if(main_stream_ != NULL)
+    if(main_stream_ != 0)
     {
         BASS_ChannelStop(main_stream_);
         BASS_StreamFree(main_stream_);
@@ -28,12 +28,12 @@ void StreamManager::pause()
 {
 	BASS_ChannelStop(main_stream_);
     BASS_StreamFree(main_stream_);
-    main_stream_ = NULL;
+    main_stream_ = 0;
 }
 
 void StreamManager::play()
 {
-    if(main_stream_ == NULL)
+    if(main_stream_ == 0)
     {
         main_stream_ = BASS_StreamCreateURL(url_playing_.c_str(), 0, 0, nullptr, nullptr);
         BASS_ChannelSetAttribute(main_stream_, BASS_ATTRIB_VOL, current_volume_);
