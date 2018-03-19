@@ -148,6 +148,7 @@ void SearchState::build_interface()
 
     listbox_right_click_menu_.append(context_.localizer.get_localized_text("Play"), [this](auto& ev)
     {
+        //notify(std::make_any<std::string>())
     });
     listbox_right_click_menu_.append(context_.localizer.get_localized_text("Add to list"), [this](auto& ev)
     {

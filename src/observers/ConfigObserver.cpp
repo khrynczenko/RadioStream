@@ -5,7 +5,7 @@ ConfigObserver::ConfigObserver(ConfigController& controller)
 {
 }
 
-void ConfigObserver::on_notify(const std::any& data, events::Event e)
+void ConfigObserver::on_notify(const std::any& data, radiostream::Event e)
 {
     controller_.process_event_command(e, data);
 }

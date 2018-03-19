@@ -6,11 +6,11 @@ ConfigController::ConfigController(StatesManager& manager, State::Context contex
 {
 }
 
-void ConfigController::process_event_command(const events::Event e, std::any data)
+void ConfigController::process_event_command(const radiostream::Event e, std::any data)
 {
     switch(e)
     {
-    case events::Event::ConfigChangeLanguage:
+    case radiostream::Event::ConfigChangeLanguage:
     {
         context_.config.change_language(std::any_cast<LanguageCode>(data));
     }

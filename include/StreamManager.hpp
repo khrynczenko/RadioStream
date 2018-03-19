@@ -7,6 +7,7 @@
 
 #include <bass.h>
 #include <string>
+#include <mutex>
 
 /**
  * \brief StreamManager is responsible for creating the stream, associating it with the channel and managing it, it mean changing volume, pausing, playing associating with URL etc.
@@ -26,6 +27,7 @@ private:
 	HSTREAM main_stream_;
 	float current_volume_;
     std::string url_playing_;
+    std::mutex mutex_;
 };
 
 #endif

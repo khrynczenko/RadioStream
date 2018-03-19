@@ -5,18 +5,18 @@ StationsDatabaseController::StationsDatabaseController(StatesManager& manager, S
 {
 }
 
-void StationsDatabaseController::process_event_command(const events::Event e, std::any data)
+void StationsDatabaseController::process_event_command(const radiostream::Event e, std::any data)
 {
     switch (e)
     {
-    case events::Event::AddStation:
+    case radiostream::Event::AddStation:
     {
         const auto station = std::any_cast<Station>(data);
         context_.stations_database.add_station(station);
     }
     break;
 
-    case events::Event::DeleteStation:
+    case radiostream::Event::DeleteStation:
     {
         const auto station = std::any_cast<Station>(data);
         context_.stations_database.remove_station(station);

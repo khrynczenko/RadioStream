@@ -21,19 +21,18 @@ public:
     void change_visibility(bool visible) override;
     void set_station_name(const std::string& name);
     void refresh_listbox();
+    void station_being_played_changed(const Station& changed_station);
+    void song_has_changed(std::string_view song_title);
 private:
     /**
      * \brief normally when the same row is selected second time it gets unselected, this function prevents that.
      */
     void select_row_without_unselect_feature(const nana::arg_listbox& selected_row);
     bool check_if_row_was_right_clicked(const nana::arg_mouse& arg) const;
-    void run_concurrent_song_name_updater();
     void build_interface();
     void init_contextual_menus();
     void init_listbox();
     void update_titles();
-    void update_song_label();
-    void update_station_label();
     void subscribe_to_station();
     void populate_listbox();
     void search_stations();

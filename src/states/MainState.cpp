@@ -1,6 +1,7 @@
 #include "../../include/states/MainState.hpp"
 #include "../../include/Constants.hpp"
 #include "../../include/Utilities.hpp"
+#include "../../include/StationPlayer.hpp"
 #include <nana/gui/widgets/menubar.hpp>
 #include <nana/gui/widgets/form.hpp>
 #include "../../include/exceptions/NanaTextboxProcessingException.hpp"
@@ -24,7 +25,6 @@ MainState::MainState(StatesManager& manager, Context& context)
 	build_interface();
     init_contextual_menus();
 	init_listbox();
-    run_concurrent_song_name_updater();
 }
 
 void MainState::change_visibility(bool visible)
@@ -41,6 +41,16 @@ void MainState::set_station_name(const std::string& name)
 void MainState::refresh_listbox()
 {
     populate_listbox();
+}
+
+void MainState::station_being_played_changed(const Station& changed_station)
+{
+    current_station_label_.caption(changed_station.name_);
+}
+
+void MainState::song_has_changed(std::string_view song_title)
+{
+    current_song_label_.caption(std::string(song_title));
 }
 
 void MainState::select_row_without_unselect_feature(const nana::arg_listbox& selected_row)
@@ -60,12 +70,6 @@ bool MainState::check_if_row_was_right_clicked(const nana::arg_mouse& arg) const
         && !stations_listbox_.cast(arg.pos).is_category();
 }
 
-void MainState::run_concurrent_song_name_updater()
-{
-    song_title_updater_ = std::thread(&MainState::update_titles, this);
-    song_title_updater_.detach();
-}
-
 void MainState::build_interface()
 {
     current_song_label_.events().mouse_up([this](const nana::arg_mouse& arg)
@@ -78,12 +82,12 @@ void MainState::build_interface()
 	play_button_.caption(context_.localizer.get_localized_text("Play"));
     play_button_.events().click([this]()
     {
-        notify(Observer::placeholder, events::Event::StreamPlay);
+        notify(Observer::placeholder, radiostream::Event::StreamPlay);
     });
 	pause_button_.caption(context_.localizer.get_localized_text("Pause"));
 	pause_button_.events().click([this]()
 	{
-		notify(Observer::placeholder, events::Event::StreamPause);
+		notify(Observer::placeholder, radiostream::Event::StreamPause);
 	});
 	mute_button_.caption(context_.localizer.get_localized_text("Mute"));
     mute_button_.enable_pushed(true);
@@ -91,17 +95,17 @@ void MainState::build_interface()
     {
         if(mute_button_.pushed())
         {
-            notify(std::make_any<unsigned int>(volume_slider_.value()), events::Event::StreamMute);
+            notify(std::make_any<unsigned int>(volume_slider_.value()), radiostream::Event::StreamMute);
         }
         else
         {
-            notify(std::make_any<unsigned int>(volume_slider_.value()), events::Event::StreamVolumeChanged);
+            notify(std::make_any<unsigned int>(volume_slider_.value()), radiostream::Event::StreamVolumeChanged);
         }
 
     });
 	volume_slider_.scheme().color_vernier = VERNIER_COLOR;
 	volume_slider_.maximum(100);
-	volume_slider_.value(volume_float_to_int(context_.stream_manager.get_current_volume()));
+	volume_slider_.value(volume_float_to_int(context_.station_player.get_volume()));
 	volume_slider_.vernier([](unsigned int maximum, unsigned int cursor_value)
 	{
 		return std::string(std::to_string(cursor_value) + "/" + std::to_string(maximum));
@@ -110,7 +114,7 @@ void MainState::build_interface()
 	{
         if (!mute_button_.pushed())
         {
-            notify(std::make_any<unsigned int>(volume_slider_.value()), events::Event::StreamVolumeChanged);
+            notify(std::make_any<unsigned int>(volume_slider_.value()), radiostream::Event::StreamVolumeChanged);
         }    
 	});
 	search_textbox_.line_wrapped(true).multi_lines(false).tip_string("Search...");
@@ -186,42 +190,10 @@ void MainState::init_listbox()
 		if(!stations_listbox_.cast(arg.pos).is_category() && arg.is_left_button()) // this condition must be fulfilled because when we click category it selects the last item in it so when we dbl_click category it works just as we would click last item in it
 		{
             set_new_stream();
-            update_station_label();
-            update_song_label();
 		}
 	});
     stations_listbox_.auto_draw(true);
 }
-
-void MainState::update_titles()
-{
-    update_song_label();
-	while(true)
-	{
-		std::this_thread::sleep_for(TIME_TO_CHECK_IF_SONG_CHANGED);
-		std::lock_guard<std::mutex> lock{song_title_mutex_};
-        update_song_label();
-	}
-}
-
-void MainState::update_song_label()
-{
-    current_song_label_.caption(context_.stream_manager.get_song_title());
-}
-
-void MainState::update_station_label()
-{
-    if (!stations_listbox_.selected().empty())
-    {
-        const auto selected_item = stations_listbox_.selected().front();
-            const auto category_index = static_cast<std::size_t>(StationListboxCategories::NanaDefault);
-            const auto column_index = static_cast<std::size_t>(StationListboxColumns::Name);
-            const auto station_category = stations_listbox_.at(category_index);
-            const auto station_name = station_category.at(selected_item.item).text(column_index);
-            current_station_label_.caption(station_name);
-    }
-}
-
 /**
  * \brief Changes favorite value in both listbox and StationsManager::stations_.
  */
@@ -304,21 +276,18 @@ void MainState::pop_stations_listbox_menu()
 void MainState::set_new_stream()
 {
     
-    std::thread thread{[&]()
+    if (!stations_listbox_.selected().empty())
     {
-        std::lock_guard<std::mutex> lock(mutex_);
-        if (!stations_listbox_.selected().empty())
-        {
-            auto selected_item = stations_listbox_.selected().front();
-            std::string station_name;
-            auto category_index = static_cast<std::size_t>(StationListboxCategories::NanaDefault);
-            auto column_index = static_cast<std::size_t>(StationListboxColumns::Name);
-            auto station_category = stations_listbox_.at(category_index);
-            station_name = station_category.at(selected_item.item).text(column_index);
-            notify(station_name, events::Event::StreamSetNewByName);
-        }
-    } };
-    thread.detach();
+        const auto selected_item = stations_listbox_.selected().front();
+        const auto category_index = static_cast<std::size_t>(StationListboxCategories::NanaDefault);
+        const auto column_index = static_cast<std::size_t>(StationListboxColumns::Name);
+        const auto station_category = stations_listbox_.at(category_index);
+        const auto station_name = station_category.at(selected_item.item).text(column_index);
+        const auto station_url = station_category.at(selected_item.item).text(static_cast<std::size_t>(StationListboxColumns::Ip));
+        const bool station_favorite = bool_to_str("true") == station_category.at(selected_item.item).text(static_cast<std::size_t>(StationListboxColumns::Favorite));
+  
+        notify(Station{ station_name,station_url, station_favorite }, radiostream::Event::StreamSetNewStation);
+    }
 }
 
 void MainState::delete_station()
@@ -326,18 +295,18 @@ void MainState::delete_station()
     Station station{};
     const auto index = stations_listbox_.selected().front();
     stations_listbox_.at(index.cat).at(index.item).resolve_to(station);
-    notify(std::make_any<Station>(station), events::Event::DeleteStation);
+    notify(std::make_any<Station>(station), radiostream::Event::DeleteStation);
     populate_listbox();
 }
 
 Station MainState::get_station_from_listbox(unsigned long long category_index, unsigned long long row_index) const
 {
-        const auto name_column_index = static_cast<std::size_t>(StationListboxColumns::Name);
-        const auto ip_column_index = static_cast<std::size_t>(StationListboxColumns::Ip);
-        const auto favorite_column_index = static_cast<std::size_t>(StationListboxColumns::Favorite);
-        const auto station_category = stations_listbox_.at(category_index);
-        const auto station_name = station_category.at(row_index).text(name_column_index);
-        const auto station_ip = station_category.at(row_index).text(ip_column_index);
-        const auto station_favorite = str_to_bool(station_category.at(row_index).text(favorite_column_index));
-        return Station{station_name, station_ip, station_favorite};
+    const auto name_column_index = static_cast<std::size_t>(StationListboxColumns::Name);
+    const auto ip_column_index = static_cast<std::size_t>(StationListboxColumns::Ip);
+    const auto favorite_column_index = static_cast<std::size_t>(StationListboxColumns::Favorite);
+    const auto station_category = stations_listbox_.at(category_index);
+    const auto station_name = station_category.at(row_index).text(name_column_index);
+    const auto station_ip = station_category.at(row_index).text(ip_column_index);
+    const auto station_favorite = str_to_bool(station_category.at(row_index).text(favorite_column_index));
+    return Station{station_name, station_ip, station_favorite};
 }

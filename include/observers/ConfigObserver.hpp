@@ -8,7 +8,7 @@ class ConfigObserver : public Observer
 {
 public:
     explicit ConfigObserver(ConfigController& controller);
-    void on_notify(const std::any& data, events::Event e) override;
+    void on_notify(const std::any& data, radiostream::Event e) override;
 private:
     ConfigController& controller_;
 };

@@ -3,6 +3,7 @@
 
 void StreamManager::set_current_volume(float volume)
 {
+    std::lock_guard<std::mutex> lock(mutex_);
 	BASS_ChannelSetAttribute(main_stream_, BASS_ATTRIB_VOL, volume);
 	current_volume_ = volume;
 }
@@ -14,6 +15,7 @@ float StreamManager::get_current_volume() const
 
 void StreamManager::set_stream(const std::string& url)
 {
+    std::lock_guard<std::mutex> lock(mutex_);
     url_playing_ = url;
     if(main_stream_ != 0)
     {
@@ -26,6 +28,7 @@ void StreamManager::set_stream(const std::string& url)
 
 void StreamManager::pause()
 {
+    std::lock_guard<std::mutex> lock(mutex_);
 	BASS_ChannelStop(main_stream_);
     BASS_StreamFree(main_stream_);
     main_stream_ = 0;
@@ -33,6 +36,7 @@ void StreamManager::pause()
 
 void StreamManager::play()
 {
+    std::lock_guard<std::mutex> lock(mutex_);
     if(main_stream_ == 0)
     {
         main_stream_ = BASS_StreamCreateURL(url_playing_.c_str(), 0, 0, nullptr, nullptr);
@@ -59,7 +63,6 @@ std::string StreamManager::get_song_title() const
 StreamManager::StreamManager()
 	: main_stream_()
 	, current_volume_(1.f)
-    , url_playing_()
 {
 	if(!BASS_Init(-1, 44100, BASS_DEVICE_STEREO, nullptr, nullptr))
 	{

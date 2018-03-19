@@ -9,6 +9,7 @@
 #include "../observers/Subject.hpp"
 
 
+class StationPlayer;
 class Config;
 
 namespace nana {
@@ -30,7 +31,7 @@ public:
 	{
 		Context(nana::form& window,
                 nana::menubar& menubar,
-                StreamManager& stream_manager,
+                StationPlayer& station_player,
                 StationsDatabase& stations_database ,
                 StatusBar& status,
 				TextLocalizer& localizer,
@@ -38,7 +39,7 @@ public:
 		);
 		nana::form& window;
 		nana::menubar& menubar;
-		StreamManager& stream_manager;
+		StationPlayer& station_player;
 		StationsDatabase& stations_database;
         StatusBar& status;
 		TextLocalizer& localizer;

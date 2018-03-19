@@ -7,23 +7,24 @@
 #include "../include/Language.hpp"
 #include "../include/exceptions/NotSupportedLanguageException.hpp"
 #include "../include/Constants.hpp"
-#include "../include/observers/StreamManagerObserver.hpp"
+#include "../include/observers/StationPlayerObserver.hpp"
 #include "../include/observers/StationsDatabaseObserver.hpp"
 #include "../include/observers/ConfigObserver.hpp"
 #include <nana/gui/msgbox.hpp>
+#include "../include/observers/MainStateObserver.hpp"
 
 Application::Application()
 	: window_(nana::API::make_center(800, 600), nana::appear::decorate<nana::appear::minimize, nana::appear::sizable, nana::appear::maximize, nana::appear::taskbar>())
 	, menubar_(window_)
-    , stream_manager_()
+    , station_player_()
     , stations_database_(constants::STATIONS_DATABASE_FILE)
     , status_(window_)
 	, localizer_()
 	, config_(constants::CONFIG_FILE_PATH)
-    , context_(window_, menubar_, stream_manager_, stations_database_, status_, localizer_, config_)
+    , context_(window_, menubar_, station_player_, stations_database_, status_, localizer_, config_)
     , states_manager_(context_)
     , general_container_(window_)
-    , stream_manager_controller_(states_manager_, context_)
+    , station_player_controller(states_manager_, context_)
     , stations_database_controller_(states_manager_, context_)
     , config_controller_(states_manager_, context_)
     , subject_()
@@ -61,7 +62,7 @@ void Application::init_menubar()
             nana::inputbox inbox(window_, localizer_.get_localized_text("Please write correct URL."), localizer_.get_localized_text("Open URL"));
             if (inbox.show(url))
             {
-                notify(std::make_any<std::string>(url.value()), events::Event::StreamSetNewByIP);
+                notify(std::make_any<Station>("Unknown", url.value(), false), radiostream::Event::StreamSetNewStation);
             }
         });
         thread.detach();
@@ -74,7 +75,7 @@ void Application::init_menubar()
         nana::inputbox inbox(window_, localizer_.get_localized_text("Please write correct URL."), localizer_.get_localized_text("Add station"));
         if (inbox.show(station_name, url))
         {
-            notify(std::make_any<Station>(station_name.value(), url.value(), false), events::Event::AddStation);
+            notify(std::make_any<Station>(station_name.value(), url.value(), false), radiostream::Event::AddStation);
         }
     });
 
@@ -98,15 +99,16 @@ void Application::set_language()
 void Application::set_observers()
 {
     auto& main_state = states_manager_.get_state<MainState>(States::ID::Main);
-    main_state.attach(std::make_unique<StreamManagerObserver>(stream_manager_controller_));
+    main_state.attach(std::make_unique<StationPlayerObserver>(station_player_controller));
     main_state.attach(std::make_unique<StationsDatabaseObserver>(stations_database_controller_));
     auto& search_state = states_manager_.get_state<SearchState>(States::ID::Search);
-    search_state.attach(std::make_unique<StreamManagerObserver>(stream_manager_controller_));
+    search_state.attach(std::make_unique<StationPlayerObserver>(station_player_controller));
     search_state.attach(std::make_unique<StationsDatabaseObserver>(stations_database_controller_));
     auto& tools_state = states_manager_.get_state<ToolsState>(States::ID::Tools);
     tools_state.attach(std::make_unique<ConfigObserver>(config_controller_));
-    this->attach(std::make_unique<StreamManagerObserver>(stream_manager_controller_));
+    this->attach(std::make_unique<StationPlayerObserver>(station_player_controller));
     this->attach(std::make_unique<StationsDatabaseObserver>(stations_database_controller_));
+    station_player_.attach(std::make_unique<MainStateObserver>(main_state));
 }
 
 void Application::build_interface()

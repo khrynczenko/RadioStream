@@ -1,6 +1,6 @@
 #include "../../include/states/State.hpp"
 #include "../../include/states/StatesManager.hpp"
-#include "../../include/StreamManager.hpp"
+#include "../../include/StationPlayer.hpp"
 #include "../../include/StationsDatabase.hpp"
 #include "../../include/Config.hpp"
 #include <nana/gui/widgets/form.hpp>
@@ -8,14 +8,14 @@
 
 State::Context::Context(nana::form& window,
 		nana::menubar& menubar,
-		StreamManager& stream_manager,
+		StationPlayer& station_player,
 		StationsDatabase& stations_database,
 		StatusBar& status,
 		TextLocalizer& localizer,
 		Config& config)
 	: window(window)
 	, menubar(menubar)
-	, stream_manager(stream_manager)
+	, station_player(station_player)
 	, stations_database(stations_database)
     , status(status)
 	, localizer(localizer)

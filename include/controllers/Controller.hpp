@@ -4,7 +4,7 @@
 #include "../../include/states/State.hpp"
 #include <any>
 
-namespace events {
+namespace radiostream {
     enum class Event;
 }
 
@@ -15,7 +15,7 @@ class Controller
 {
 public:
     Controller(StatesManager& manager, State::Context context);
-    virtual void process_event_command(const events::Event e, std::any data) = 0;
+    virtual void process_event_command(const radiostream::Event e, std::any data) = 0;
     virtual ~Controller() = default;
 protected:
     StatesManager& manager_;

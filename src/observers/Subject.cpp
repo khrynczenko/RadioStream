@@ -5,7 +5,7 @@ void Subject::attach(std::unique_ptr<Observer> observer)
 	observers_.emplace_back(std::move(observer));
 }
 
-void Subject::notify(const std::any& data, events::Event e)
+void Subject::notify(const std::any& data, radiostream::Event e)
 {
     for (auto& observer : observers_)
     {

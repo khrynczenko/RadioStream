@@ -10,7 +10,7 @@ class Observer
 {
 public:
 	virtual ~Observer() = default;
-	virtual void on_notify(const std::any& data, events::Event e) = 0;
+	virtual void on_notify(const std::any& data, radiostream::Event e) = 0;
     static const std::any placeholder;
 };
 

@@ -2,13 +2,13 @@
 #define APP_HPP
 
 #include "states/StatesManager.hpp"
-#include "StreamManager.hpp"
+#include "StationPlayer.hpp"
 #include "StationsDatabase.hpp"
 #include "observers/Subject.hpp"
 #include "StatusBar.hpp"
 #include "TextLocalizer.hpp"
 #include "Config.hpp"
-#include "controllers/StreamManagerController.hpp"
+#include "controllers/StationPlayerController.hpp"
 #include "controllers/StationsDatabaseController.hpp"
 #include "controllers/ConfigController.hpp"
 #include <nana/gui/widgets/form.hpp>
@@ -44,7 +44,7 @@ private:
 	Language get_language(const LanguageCode& code) const;
 	nana::form window_;
 	nana::menubar menubar_;
-    StreamManager stream_manager_;
+    StationPlayer station_player_;
     StationsDatabase stations_database_;
     StatusBar status_;
 	TextLocalizer localizer_;
@@ -52,7 +52,7 @@ private:
     State::Context context_;
     StatesManager states_manager_;
     nana::place general_container_;
-    StreamManagerController stream_manager_controller_;
+    StationPlayerController station_player_controller;
     StationsDatabaseController stations_database_controller_;
     ConfigController config_controller_;
     Subject subject_;

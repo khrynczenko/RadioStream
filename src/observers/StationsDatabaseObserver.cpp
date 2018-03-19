@@ -5,7 +5,7 @@ StationsDatabaseObserver::StationsDatabaseObserver(StationsDatabaseController& c
 {
 }
 
-void StationsDatabaseObserver::on_notify(const std::any& data, events::Event e)
+void StationsDatabaseObserver::on_notify(const std::any& data, radiostream::Event e)
 {
     controller_.process_event_command(e, data);
 }
