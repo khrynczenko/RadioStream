@@ -1,6 +1,6 @@
 #include "../../include/observers/StationPlayerObserver.hpp"
 
-StationPlayerObserver::StationPlayerObserver(StationPlayerController& controller)
+StationPlayerObserver::StationPlayerObserver(StationPlayerController& controller) noexcept
     : controller_(controller)
 {
 }

@@ -1,6 +1,6 @@
 #include "../include/TextLocalizer.hpp"
 #include "../include/exceptions/LanguageFileNotFound.hpp"
-LanguagesPathsContainer::LanguagesPathsContainer()
+LanguagesPathsContainer::LanguagesPathsContainer() noexcept
 	: languages_()
 {
 	languages_.at(static_cast<std::size_t>(Language::EN)) = "lang/en.po";
@@ -17,7 +17,7 @@ std::experimental::filesystem::path LanguagesPathsContainer::get_path(Language l
 	return path;
 }
 
-TextLocalizer::TextLocalizer()
+TextLocalizer::TextLocalizer() noexcept
 	: localizer_()
 	, languages_()
 {

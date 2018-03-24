@@ -12,7 +12,7 @@ State::Context::Context(nana::form& window,
 		StationsDatabase& stations_database,
 		StatusBar& status,
 		TextLocalizer& localizer,
-		Config& config)
+		Config& config) noexcept
 	: window(window)
 	, menubar(menubar)
 	, station_player(station_player)

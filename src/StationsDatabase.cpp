@@ -22,7 +22,7 @@ StationsDatabase::StationsDatabase(const std::string& database_name)
     }
 }
 
-const std::vector<Station>& StationsDatabase::get_stations() const
+const std::vector<Station>& StationsDatabase::get_stations() const noexcept
 {
     return cached_stations_;
 }
@@ -37,6 +37,7 @@ void StationsDatabase::add_station(const Station& station)
         Poco::Data::Keywords::bind(favorite);
     insert.execute();
     cached_stations_.push_back(station);
+    notify(Observer::placeholder, radiostream::Event::StationAddedToDatabase);
 }
 
 void StationsDatabase::remove_station(const Station& station)
@@ -47,6 +48,7 @@ void StationsDatabase::remove_station(const Station& station)
         Poco::Data::Keywords::bind(station.ip_);
     delete_statement.execute();
     cached_stations_.erase(std::find(cached_stations_.begin(), cached_stations_.end(), station));
+    notify(Observer::placeholder, radiostream::Event::StationDeletedFromDatabase);
 }
 
 void StationsDatabase::change_station_favorite_status(const Station& station)
@@ -78,10 +80,10 @@ std::vector<std::string> StationsDatabase::get_stations_names_with_substring(con
 
 std::string StationsDatabase::get_station_ip(const std::string& station_name) const
 {
-    const auto iterator = std::find_if(cached_stations_.cbegin(), cached_stations_.cend(), [&](const Station& station)
+    const auto iterator = std::find_if(cached_stations_.cbegin(), cached_stations_.cend(), [&](const Station& station) noexcept
     {
         return station.name_ == station_name;
-    });
+    } );
     if(iterator == cached_stations_.cend())
     {
         throw;

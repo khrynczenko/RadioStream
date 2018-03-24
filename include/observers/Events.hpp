@@ -5,14 +5,16 @@ namespace radiostream
 {
     enum class Event
     {
-        StreamPause,
-        StreamPlay,
-        StreamSetNewStation,
-		StreamMute,
-		StreamVolumeChanged,
+        PauseClicked,
+        PlayClicked,
+        NewStationRequested,
+		MuteClicked,
+		VolumeChanged,
 
-        AddStation,
-        DeleteStation,
+        AddStationToDatabase,
+        DeleteStationFromDatabase,
+        StationAddedToDatabase,
+        StationDeletedFromDatabase,
 
 	    ConfigChangeLanguage,
         

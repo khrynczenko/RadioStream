@@ -6,7 +6,7 @@
 class StationsDatabaseObserver : public Observer
 {
 public:
-    StationsDatabaseObserver(StationsDatabaseController& controller);
+    StationsDatabaseObserver(StationsDatabaseController& controller) noexcept;
     void on_notify(const std::any& data, radiostream::Event e) override;
 private:
     StationsDatabaseController& controller_;

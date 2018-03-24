@@ -8,27 +8,27 @@
 
 #endif
 
-float volume_int_to_float(int vol)
+float volume_int_to_float(int vol) noexcept
 {
 	return static_cast<float>(vol) / 100.f;
 }
 
-unsigned int volume_float_to_int(float vol)
+unsigned int volume_float_to_int(float vol) noexcept
 {
 	return static_cast<unsigned int>(vol*100.f);
 }
 
-bool str_to_bool(const std::string& str)
+bool str_to_bool(const std::string& str) noexcept
 {
 	return str == "true";
 }
 
-std::string bool_to_str(bool b)
+std::string bool_to_str(bool b) noexcept
 {
 	return b ? "true" : "false";
 }
 
-char easytolower(char in) {
+char easytolower(char in) noexcept {
     if (in <= 'Z' && in >= 'A')
     {
         return in - ('Z' - 'z');

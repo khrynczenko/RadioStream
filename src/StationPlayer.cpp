@@ -1,5 +1,6 @@
 #include "../include/StationPlayer.hpp"
 #include <iostream>
+#include <thread>
 
 StationPlayer::StationPlayer()
     : current_song_title_("")
@@ -38,7 +39,7 @@ void StationPlayer::set_volume(float volume)
     stream_manager_.set_current_volume(volume);
 }
 
-float StationPlayer::get_volume() const
+float StationPlayer::get_volume() const noexcept
 {
     return stream_manager_.get_current_volume();
 }

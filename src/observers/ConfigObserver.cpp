@@ -1,6 +1,6 @@
 #include "../../include/observers/ConfigObserver.hpp"
 
-ConfigObserver::ConfigObserver(ConfigController& controller)
+ConfigObserver::ConfigObserver(ConfigController& controller) noexcept
     : controller_(controller)
 {
 }

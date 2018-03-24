@@ -9,7 +9,7 @@ struct Station
 	Station(std::string_view name, std::string_view ip, bool favorite);
     explicit Station(const RadioBrowserStation& rhs);
     Station() = default;
-	bool operator==(const Station& rhs) const;
+	bool operator==(const Station& rhs) const noexcept;
 	std::string name_;
 	std::string ip_;
 	bool favorite_;

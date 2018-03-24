@@ -15,7 +15,7 @@ enum class Language
 class LanguagesPathsContainer
 {
 public:
-    LanguagesPathsContainer();
+    LanguagesPathsContainer() noexcept;
     std::experimental::filesystem::path get_path(Language lang);
 
 private:
@@ -25,7 +25,7 @@ private:
 class TextLocalizer
 {
 public:
-    TextLocalizer();
+    TextLocalizer() noexcept;
     void switch_language(Language lang);
     template <typename ...Args>
     std::string get_localized_text(std::string text_id, Args ... args) const;

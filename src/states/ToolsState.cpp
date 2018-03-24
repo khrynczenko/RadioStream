@@ -32,7 +32,7 @@ void ToolsState::build_interface()
 	apply_button_.events().click([this]()
 	{
 		auto choosen_language_index = language_choices_.option();
-		std::string language = language_choices_.text(choosen_language_index);
+		const std::string language = language_choices_.text(choosen_language_index);
 		auto code = get_language_iso_identifier(language);
         notify(std::make_any<LanguageCode>(code), radiostream::Event::ConfigChangeLanguage);
 		//TODO pop a message that for the langauge to change program must be restarted

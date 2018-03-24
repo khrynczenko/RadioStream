@@ -1,8 +1,8 @@
 #include "../../include/observers/SearchStateObserver.hpp"
 #include "../../include/states/SearchState.hpp"
 
-SearchStateObserver::SearchStateObserver(SearchState& state)
-    : state_(state)
+SearchStateObserver::SearchStateObserver(SearchState& state) noexcept
+    : state_(state) 
 {
 }
 

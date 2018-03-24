@@ -15,7 +15,7 @@ Station::Station(const RadioBrowserStation& rhs)
 {
 }
 
-bool Station::operator==(const Station& rhs) const
+bool Station::operator==(const Station& rhs) const noexcept
 {
     return (name_ == rhs.name_) && (ip_ == rhs.ip_);
 }

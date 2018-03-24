@@ -2,14 +2,15 @@
 #define STATIONSDATABASE_HPP
 
 #include "Station.hpp"
+#include "observers/Subject.hpp"
 #include <Poco/Data/Session.h>
 
 
-class StationsDatabase
+class StationsDatabase : public Subject
 {
 public:
     explicit StationsDatabase(const std::string& database_name);
-    const std::vector<Station>& get_stations() const;
+    const std::vector<Station>& get_stations() const noexcept;
     void add_station(const Station& station);
     void remove_station(const Station& station);
     void change_station_favorite_status(const Station& station);

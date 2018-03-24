@@ -6,6 +6,7 @@
 
 struct RadioBrowserStation
 {
+    RadioBrowserStation() = default;
     RadioBrowserStation(std::string_view name, std::string_view url, std::string_view country,
                         std::string_view language, std::string_view codec, std::string_view tags);
     std::string name_;

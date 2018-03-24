@@ -3,12 +3,11 @@
 
 void StreamManager::set_current_volume(float volume)
 {
-    std::lock_guard<std::mutex> lock(mutex_);
 	BASS_ChannelSetAttribute(main_stream_, BASS_ATTRIB_VOL, volume);
 	current_volume_ = volume;
 }
 
-float StreamManager::get_current_volume() const
+float StreamManager::get_current_volume() const noexcept
 {
     return current_volume_;
 }

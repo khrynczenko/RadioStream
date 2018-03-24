@@ -14,7 +14,7 @@ class Controller
    
 {
 public:
-    Controller(StatesManager& manager, State::Context context);
+    Controller(StatesManager& manager, State::Context context) noexcept;
     virtual void process_event_command(const radiostream::Event e, std::any data) = 0;
     virtual ~Controller() = default;
 protected:

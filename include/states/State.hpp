@@ -36,7 +36,7 @@ public:
                 StatusBar& status,
 				TextLocalizer& localizer,
 				Config& config
-		);
+		) noexcept;
 		nana::form& window;
 		nana::menubar& menubar;
 		StationPlayer& station_player;

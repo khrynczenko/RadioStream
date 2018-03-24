@@ -2,9 +2,9 @@
 #include "../../include/Constants.hpp"
 #include "../../include/Utilities.hpp"
 #include "../../include/StationPlayer.hpp"
+#include "../../include/exceptions/NanaTextboxProcessingException.hpp"
 #include <nana/gui/widgets/menubar.hpp>
 #include <nana/gui/widgets/form.hpp>
-#include "../../include/exceptions/NanaTextboxProcessingException.hpp"
 
 using namespace constants;
 
@@ -82,12 +82,12 @@ void MainState::build_interface()
 	play_button_.caption(context_.localizer.get_localized_text("Play"));
     play_button_.events().click([this]()
     {
-        notify(Observer::placeholder, radiostream::Event::StreamPlay);
+        notify(Observer::placeholder, radiostream::Event::PlayClicked);
     });
 	pause_button_.caption(context_.localizer.get_localized_text("Pause"));
 	pause_button_.events().click([this]()
 	{
-		notify(Observer::placeholder, radiostream::Event::StreamPause);
+		notify(Observer::placeholder, radiostream::Event::PauseClicked);
 	});
 	mute_button_.caption(context_.localizer.get_localized_text("Mute"));
     mute_button_.enable_pushed(true);
@@ -95,11 +95,11 @@ void MainState::build_interface()
     {
         if(mute_button_.pushed())
         {
-            notify(std::make_any<unsigned int>(volume_slider_.value()), radiostream::Event::StreamMute);
+            notify(std::make_any<unsigned int>(volume_slider_.value()), radiostream::Event::MuteClicked);
         }
         else
         {
-            notify(std::make_any<unsigned int>(volume_slider_.value()), radiostream::Event::StreamVolumeChanged);
+            notify(std::make_any<unsigned int>(volume_slider_.value()), radiostream::Event::VolumeChanged);
         }
 
     });
@@ -114,7 +114,7 @@ void MainState::build_interface()
 	{
         if (!mute_button_.pushed())
         {
-            notify(std::make_any<unsigned int>(volume_slider_.value()), radiostream::Event::StreamVolumeChanged);
+            notify(std::make_any<unsigned int>(volume_slider_.value()), radiostream::Event::VolumeChanged);
         }    
 	});
 	search_textbox_.line_wrapped(true).multi_lines(false).tip_string("Search...");
@@ -285,8 +285,7 @@ void MainState::set_new_stream()
         const auto station_name = station_category.at(selected_item.item).text(column_index);
         const auto station_url = station_category.at(selected_item.item).text(static_cast<std::size_t>(StationListboxColumns::Ip));
         const bool station_favorite = bool_to_str("true") == station_category.at(selected_item.item).text(static_cast<std::size_t>(StationListboxColumns::Favorite));
-  
-        notify(Station{ station_name,station_url, station_favorite }, radiostream::Event::StreamSetNewStation);
+        notify(Station{ station_name,station_url, station_favorite }, radiostream::Event::NewStationRequested);
     }
 }
 
@@ -295,18 +294,6 @@ void MainState::delete_station()
     Station station{};
     const auto index = stations_listbox_.selected().front();
     stations_listbox_.at(index.cat).at(index.item).resolve_to(station);
-    notify(std::make_any<Station>(station), radiostream::Event::DeleteStation);
-    populate_listbox();
+    notify(std::make_any<Station>(station), radiostream::Event::DeleteStationFromDatabase);
 }
 
-Station MainState::get_station_from_listbox(unsigned long long category_index, unsigned long long row_index) const
-{
-    const auto name_column_index = static_cast<std::size_t>(StationListboxColumns::Name);
-    const auto ip_column_index = static_cast<std::size_t>(StationListboxColumns::Ip);
-    const auto favorite_column_index = static_cast<std::size_t>(StationListboxColumns::Favorite);
-    const auto station_category = stations_listbox_.at(category_index);
-    const auto station_name = station_category.at(row_index).text(name_column_index);
-    const auto station_ip = station_category.at(row_index).text(ip_column_index);
-    const auto station_favorite = str_to_bool(station_category.at(row_index).text(favorite_column_index));
-    return Station{station_name, station_ip, station_favorite};
-}

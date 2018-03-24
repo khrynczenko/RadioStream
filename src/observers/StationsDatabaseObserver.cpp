@@ -1,7 +1,7 @@
 #include "../../include/observers/StationsDatabaseObserver.hpp"
 
-StationsDatabaseObserver::StationsDatabaseObserver(StationsDatabaseController& controller)
-    : controller_(controller)
+StationsDatabaseObserver::StationsDatabaseObserver(StationsDatabaseController& controller) noexcept
+    : controller_(controller) 
 {
 }
 

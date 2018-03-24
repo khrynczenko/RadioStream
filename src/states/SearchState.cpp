@@ -4,6 +4,7 @@
 #include "../../include/exceptions/NanaTextboxProcessingException.hpp"
 #include <nana/gui/widgets/form.hpp>
 #include <nana/gui/widgets/menubar.hpp>
+#include "../../include/Utilities.hpp"
 
 using namespace constants;
 
@@ -78,9 +79,13 @@ void SearchState::init_listbox()
 	{
 		if(!found_stations_listbox_.cast(arg.pos).is_category() && arg.is_left_button()) // this condition must be fulfilled because when we click category it selects the last item in it so when we dbl_click category it works just as we would click last item in it
 		{
-            //set_new_stream();
-            //update_station_label();
-            //update_song_label();
+            if(!found_stations_listbox_.selected().empty())
+            {
+                RadioBrowserStation station;
+                const auto selected_index = found_stations_listbox_.selected().front();
+                found_stations_listbox_.at(selected_index.cat).at(selected_index.item).resolve_to(station);
+                notify(std::make_any<Station>(station), radiostream::Event::NewStationRequested);
+            }
 		}
 	});
     found_stations_listbox_.auto_draw(true);
@@ -115,7 +120,7 @@ void SearchState::build_interface()
         {
             throw NanaTextboxProcessingException();
         }
-        auto order = static_cast<RadioBrowserRequester::OrderBy>(sorting_combox_.option());
+        const auto order = static_cast<RadioBrowserRequester::OrderBy>(sorting_combox_.option());
         const auto j_stations = requester_.request_stations(search_phrase,
                                                             country_combox_.text(country_combox_.option()),
                                                             language_combox_.text(language_combox_.option()),
@@ -148,11 +153,23 @@ void SearchState::build_interface()
 
     listbox_right_click_menu_.append(context_.localizer.get_localized_text("Play"), [this](auto& ev)
     {
-        //notify(std::make_any<std::string>())
+        if(!found_stations_listbox_.selected().empty())
+        {
+            RadioBrowserStation station;
+            const auto selected_index = found_stations_listbox_.selected().front();
+            found_stations_listbox_.at(selected_index.cat).at(selected_index.item).resolve_to(station);
+            notify(std::make_any<Station>(station), radiostream::Event::NewStationRequested);
+        }
     });
     listbox_right_click_menu_.append(context_.localizer.get_localized_text("Add to list"), [this](auto& ev)
     {
-        //add to list
+        if(!found_stations_listbox_.selected().empty())
+        {
+            RadioBrowserStation station;
+            const auto selected_index = found_stations_listbox_.selected().front();
+            found_stations_listbox_.at(selected_index.cat).at(selected_index.item).resolve_to(station);
+            notify(std::make_any<Station>(station), radiostream::Event::AddStationToDatabase);
+        }
     });
 }
 
@@ -161,4 +178,15 @@ void SearchState::pop_stations_listbox_menu()
     auto position = nana::API::cursor_position();
     nana::API::calc_window_point(context_.window, position);
     listbox_right_click_menu_.popup(context_.window, position.x, position.y);
+}
+
+void SearchState::set_new_station()
+{
+    if(!found_stations_listbox_.selected().empty())
+    {
+        RadioBrowserStation station;
+        const auto selected_index = found_stations_listbox_.selected().front();
+        found_stations_listbox_.at(selected_index.cat).at(selected_index.item).resolve_to(station);
+        notify(std::make_any<Station>(station), radiostream::Event::AddStationToDatabase);
+    }
 }

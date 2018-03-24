@@ -23,6 +23,7 @@ public:
     void init_listbox();
     void build_interface();
 private:
+    void set_new_station();
     void pop_stations_listbox_menu();
     RadioBrowserRequester requester_;
     nana::place container_;

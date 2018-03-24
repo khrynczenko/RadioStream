@@ -7,7 +7,7 @@ class SearchState;
 class SearchStateObserver : public Observer
 {
 public:
-    SearchStateObserver(SearchState& state);
+    SearchStateObserver(SearchState& state) noexcept;
     void on_notify(const std::any& data, radiostream::Event e) override;
 private:
     SearchState& state_;

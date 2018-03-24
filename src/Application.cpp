@@ -62,7 +62,7 @@ void Application::init_menubar()
             nana::inputbox inbox(window_, localizer_.get_localized_text("Please write correct URL."), localizer_.get_localized_text("Open URL"));
             if (inbox.show(url))
             {
-                notify(std::make_any<Station>("Unknown", url.value(), false), radiostream::Event::StreamSetNewStation);
+                notify(std::make_any<Station>("Unknown", url.value(), false), radiostream::Event::NewStationRequested);
             }
         });
         thread.detach();
@@ -75,7 +75,7 @@ void Application::init_menubar()
         nana::inputbox inbox(window_, localizer_.get_localized_text("Please write correct URL."), localizer_.get_localized_text("Add station"));
         if (inbox.show(station_name, url))
         {
-            notify(std::make_any<Station>(station_name.value(), url.value(), false), radiostream::Event::AddStation);
+            notify(std::make_any<Station>(station_name.value(), url.value(), false), radiostream::Event::AddStationToDatabase);
         }
     });
 
@@ -109,6 +109,7 @@ void Application::set_observers()
     this->attach(std::make_unique<StationPlayerObserver>(station_player_controller));
     this->attach(std::make_unique<StationsDatabaseObserver>(stations_database_controller_));
     station_player_.attach(std::make_unique<MainStateObserver>(main_state));
+    stations_database_.attach(std::make_unique<MainStateObserver>(main_state));
 }
 
 void Application::build_interface()

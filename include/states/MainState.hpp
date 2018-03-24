@@ -32,7 +32,6 @@ private:
     void build_interface();
     void init_contextual_menus();
     void init_listbox();
-    void update_titles();
     void subscribe_to_station();
     void populate_listbox();
     void search_stations();
@@ -40,7 +39,6 @@ private:
     void pop_stations_listbox_menu();
     void set_new_stream();
     void delete_station();
-    Station get_station_from_listbox(unsigned long long int category_index, unsigned long long int row_index) const;
     nana::place container_;
     nana::label current_song_label_;
     nana::label current_station_label_;

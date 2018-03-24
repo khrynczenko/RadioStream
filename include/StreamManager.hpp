@@ -16,7 +16,7 @@ class StreamManager
 {
 public:
 	void set_current_volume(float);
-	float get_current_volume() const;
+	float get_current_volume() const noexcept;
 	void set_stream(const std::string& url);
 	void pause();
 	void play();
