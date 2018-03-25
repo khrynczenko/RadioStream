@@ -81,7 +81,7 @@ src/Constants.cpp
 src/Language.cpp
 src/main.cpp
 src/RadioBrowserRequester.cpp
-src/RadioBrowserStationcpp.cpp
+src/RadioBrowserStation.cpp
 src/Station.cpp
 src/StationPlayer.cpp
 src/StationsDatabase.cpp
