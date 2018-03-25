@@ -3,6 +3,7 @@
 #include "../../include/StationPlayer.hpp"
 #include "../../include/StationsDatabase.hpp"
 #include "../../include/Config.hpp"
+#include "../../include/RadioBrowserRequester.hpp"
 #include <nana/gui/widgets/form.hpp>
 #include <nana/gui/widgets/menubar.hpp>
 
@@ -12,14 +13,16 @@ State::Context::Context(nana::form& window,
 		StationsDatabase& stations_database,
 		StatusBar& status,
 		TextLocalizer& localizer,
-		Config& config) noexcept
-	: window(window)
-	, menubar(menubar)
-	, station_player(station_player)
-	, stations_database(stations_database)
-    , status(status)
-	, localizer(localizer)
-	, config(config)
+		Config& config,
+        RadioBrowserRequester& requester) noexcept
+	: window_(window)
+	, menubar_(menubar)
+	, station_player_(station_player)
+	, stations_database_(stations_database)
+    , status_(status)
+	, localizer_(localizer)
+	, config_(config)
+    , requester_(requester)
 {
 
 }

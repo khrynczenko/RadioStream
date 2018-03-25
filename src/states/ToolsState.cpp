@@ -5,10 +5,10 @@
 
 ToolsState::ToolsState(StatesManager& state_manager, Context& context)
 	: State(state_manager, context)
-	, container_(context.window)
-	, language_choices_(context.window)
-	, back_button_(context.window)
-	, apply_button_(context.window)
+	, container_(context.window_)
+	, language_choices_(context.window_)
+	, back_button_(context.window_)
+	, apply_button_(context.window_)
 {
 	build_interface();
 }
@@ -16,19 +16,19 @@ ToolsState::ToolsState(StatesManager& state_manager, Context& context)
 void ToolsState::change_visibility(bool visible)
 {
 	container_.field_display("content", visible);
-	context_.menubar.show();
+	context_.menubar_.show();
 }
 void ToolsState::build_interface()
 {
 	language_choices_.push_back("English");
 	language_choices_.push_back("Polski");
-	back_button_.caption(context_.localizer.get_localized_text("Back"));
+	back_button_.caption(context_.localizer_.get_localized_text("Back"));
 	back_button_.events().click([this]()
 	{
 		switch_state(States::ID::Main);
 	});
 
-	apply_button_.caption(context_.localizer.get_localized_text("Apply"));
+	apply_button_.caption(context_.localizer_.get_localized_text("Apply"));
 	apply_button_.events().click([this]()
 	{
 		auto choosen_language_index = language_choices_.option();

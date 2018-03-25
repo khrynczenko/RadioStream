@@ -55,6 +55,7 @@ include/TextLocalizer.hpp
 include/Utilities.hpp
 include/controllers/ConfigController.hpp
 include/controllers/Controller.hpp
+include/controllers/RadioBrowserRequesterController.hpp
 include/controllers/StationPlayerController.hpp
 include/controllers/StationsDatabaseController.hpp
 include/exceptions/LanguageFileNotFound.hpp
@@ -65,6 +66,7 @@ include/observers/ConfigControllerObserver.hpp
 include/observers/Events.hpp
 include/observers/MainStateObserver.hpp
 include/observers/Observer.hpp
+include/observers/RadioBrowserRequesterControllerObserver.hpp
 include/observers/SearchStateObserver.hpp
 include/observers/StationPlayerControllerObserver.hpp
 include/observers/StationsDatabaseControllerObserver.hpp
@@ -91,6 +93,7 @@ src/TextLocalizer.cpp
 src/Utilities.cpp
 src/controllers/ConfigController.cpp
 src/controllers/Controller.cpp
+src/controllers/RadioBrowserRequesterController.cpp
 src/controllers/StationPlayerController.cpp
 src/controllers/StationsDatabaseController.cpp
 src/exceptions/LanguageFileNotFound.cpp
@@ -100,8 +103,9 @@ src/exceptions/WrongLanguageCodeFormatException.cpp
 src/observers/ConfigControllerObserver.cpp
 src/observers/MainStateObserver.cpp
 src/observers/Observer.cpp
+src/observers/RadioBrowserRequesterControllerObserver.cpp
 src/observers/SearchStateObserver.cpp
-src/observers/StationPlayerObserver.cpp
+src/observers/StationPlayerControllerObserver.cpp
 src/observers/StationsDatabaseControllerObserver.cpp
 src/observers/Subject.cpp
 src/states/MainState.cpp

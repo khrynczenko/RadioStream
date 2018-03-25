@@ -12,7 +12,7 @@ void ConfigController::process_event_command(const radiostream::Event e, std::an
     {
     case radiostream::Event::ConfigChangeLanguage:
     {
-        context_.config.change_language(std::any_cast<LanguageCode>(data));
+        context_.config_.change_language(std::any_cast<LanguageCode>(data));
     }
     }
 }

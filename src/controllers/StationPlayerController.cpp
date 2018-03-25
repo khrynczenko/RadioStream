@@ -16,42 +16,42 @@ void StationPlayerController::process_event_command(const radiostream::Event e, 
     {
     case radiostream::Event::PauseClicked:
     {
-        context_.status.change_text(context_.localizer.get_localized_text("Stream paused"));
-        context_.station_player.pause();
-        context_.status.change_color(StatusBar::Color::FINISHED);
+        context_.status_.change_text(context_.localizer_.get_localized_text("Stream paused"));
+        context_.station_player_.pause();
+        context_.status_.change_color(StatusBar::Color::FINISHED);
     }
     break;
 
     case radiostream::Event::PlayClicked:
     {
-        context_.status.change_text(context_.localizer.get_localized_text("Stream playing"));
-        context_.station_player.play();
-        context_.status.change_color(StatusBar::Color::FINISHED);
+        context_.status_.change_text(context_.localizer_.get_localized_text("Stream playing"));
+        context_.station_player_.play();
+        context_.status_.change_color(StatusBar::Color::FINISHED);
     }
     break;
 
     case radiostream::Event::VolumeChanged:
     {
-        context_.station_player.set_volume(volume_int_to_float(std::any_cast<unsigned>(data)));
+        context_.station_player_.set_volume(volume_int_to_float(std::any_cast<unsigned>(data)));
     }
     break;
     
     case radiostream::Event::NewStationRequested:
     {
         const auto station = std::any_cast<Station>(data);
-        context_.status.change_text(context_.localizer.get_localized_text("Loading stream..."));
-        context_.status.change_color(StatusBar::Color::PROCESSING);
-        context_.station_player.set_station(station);
-        context_.station_player.play();
-        context_.status.change_text(context_.localizer.get_localized_text("Stream playing"));
-        context_.status.change_color(StatusBar::Color::FINISHED);
+        context_.status_.change_text(context_.localizer_.get_localized_text("Loading stream..."));
+        context_.status_.change_color(StatusBar::Color::PROCESSING);
+        context_.station_player_.set_station(station);
+        context_.station_player_.play();
+        context_.status_.change_text(context_.localizer_.get_localized_text("Stream playing"));
+        context_.status_.change_color(StatusBar::Color::FINISHED);
     }
     break;
 
     case radiostream::Event::MuteClicked:
     {
-        context_.station_player.set_volume(0.f);
-        context_.status.change_text(context_.localizer.get_localized_text("Stream muted"));
+        context_.station_player_.set_volume(0.f);
+        context_.status_.change_text(context_.localizer_.get_localized_text("Stream muted"));
     }
     break;
     }

@@ -10,6 +10,7 @@
 #include "../include/observers/StationPlayerControllerObserver.hpp"
 #include "../include/observers/StationsDatabaseControllerObserver.hpp"
 #include "../include/observers/ConfigControllerObserver.hpp"
+#include "../include/observers/RadioBrowserRequesterControllerObserver.hpp"
 #include "../include/observers/MainStateObserver.hpp"
 #include <nana/gui/msgbox.hpp>
 
@@ -21,12 +22,13 @@ Application::Application()
     , status_(window_)
 	, localizer_()
 	, config_(constants::CONFIG_FILE_PATH)
-    , context_(window_, menubar_, station_player_, stations_database_, status_, localizer_, config_)
+    , context_(window_, menubar_, station_player_, stations_database_, status_, localizer_, config_, requester_)
     , states_manager_(context_)
     , general_container_(window_)
     , station_player_controller(states_manager_, context_)
     , stations_database_controller_(states_manager_, context_)
     , config_controller_(states_manager_, context_)
+    , radio_browser_requester_controller_(states_manager_, context_)
     , subject_()
 {
 	window_.caption("RadioStream");
@@ -36,6 +38,9 @@ Application::Application()
     register_states();
 	set_observers();
     build_interface();
+    auto& search_state = states_manager_.get_state<SearchState>(States::ID::Search);
+    search_state.initialize_countries_combox();
+    search_state.initialize_language_combox();
 	states_manager_.switch_state(States::ID::Main);
     window_.show();
 }
@@ -104,6 +109,7 @@ void Application::set_observers()
     auto& search_state = states_manager_.get_state<SearchState>(States::ID::Search);
     search_state.attach(std::make_unique<StationPlayerControllerObserver>(station_player_controller));
     search_state.attach(std::make_unique<StationsDatabaseControllerObserver>(stations_database_controller_));
+    search_state.attach(std::make_unique<RadioBrowserRequesterControllerObserver>(radio_browser_requester_controller_));
     auto& tools_state = states_manager_.get_state<ToolsState>(States::ID::Tools);
     tools_state.attach(std::make_unique<ConfigControllerObserver>(config_controller_));
     this->attach(std::make_unique<StationPlayerControllerObserver>(station_player_controller));

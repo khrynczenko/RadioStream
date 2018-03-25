@@ -16,10 +16,14 @@ namespace radiostream
         StationAddedToDatabase,
         StationDeletedFromDatabase,
 
+        SearchStationsRequested,
+        SearchLanguagesRequested,
+        SearchCountriesRequested,
+
 	    ConfigChangeLanguage,
         
         StationBeingPlayedChanged,
-        StationSongHasChanged
+        StationSongHasChanged,
 	};
 }
 

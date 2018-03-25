@@ -17,9 +17,14 @@ class SearchState : public State
 {
 public:
     SearchState(StatesManager& state_manager, Context& context);
+    void initialize_language_combox();
+    void initialize_countries_combox();
     void change_visibility(bool visible) override;
     void init_listbox();
     void build_interface();
+    void insert_stations_to_listbox(const std::vector<RadioBrowserStation>& stations);
+    void insert_possible_languages(const std::vector<std::string>& languages);
+    void insert_possible_countires(const std::vector<std::string>& countries);
 private:
     void set_new_station();
     void pop_stations_listbox_menu();

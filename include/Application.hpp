@@ -8,9 +8,11 @@
 #include "StatusBar.hpp"
 #include "TextLocalizer.hpp"
 #include "Config.hpp"
+#include "RadioBrowserRequester.hpp"
 #include "controllers/StationPlayerController.hpp"
 #include "controllers/StationsDatabaseController.hpp"
 #include "controllers/ConfigController.hpp"
+#include "controllers/RadioBrowserRequesterController.hpp"
 #include <nana/gui/widgets/form.hpp>
 #include <nana/gui/widgets/menubar.hpp>
 #include <mutex>
@@ -49,12 +51,14 @@ private:
     StatusBar status_;
 	TextLocalizer localizer_;
 	Config config_;
+    RadioBrowserRequester requester_;
     State::Context context_;
     StatesManager states_manager_;
     nana::place general_container_;
     StationPlayerController station_player_controller;
     StationsDatabaseController stations_database_controller_;
     ConfigController config_controller_;
+    RadioBrowserRequesterController radio_browser_requester_controller_;
     Subject subject_;
     std::mutex mutex_;
 };

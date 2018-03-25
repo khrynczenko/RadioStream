@@ -18,6 +18,7 @@ namespace nana {
 }
 
 class StatesManager;
+class RadioBrowserRequester;
 
 class State : public Subject
 {
@@ -35,15 +36,17 @@ public:
                 StationsDatabase& stations_database ,
                 StatusBar& status,
 				TextLocalizer& localizer,
-				Config& config
+				Config& config,
+                RadioBrowserRequester& requester
 		) noexcept;
-		nana::form& window;
-		nana::menubar& menubar;
-		StationPlayer& station_player;
-		StationsDatabase& stations_database;
-        StatusBar& status;
-		TextLocalizer& localizer;
-		Config& config;
+		nana::form& window_;
+		nana::menubar& menubar_;
+		StationPlayer& station_player_;
+		StationsDatabase& stations_database_;
+        StatusBar& status_;
+		TextLocalizer& localizer_;
+		Config& config_;
+        RadioBrowserRequester& requester_;
 	};
 	State(StatesManager& state_manager, Context& context);
 	virtual void change_visibility(bool visible) = 0;
