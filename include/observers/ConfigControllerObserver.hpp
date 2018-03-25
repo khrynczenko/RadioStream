@@ -1,13 +1,13 @@
-#ifndef CONFIGOBSERVER_HPP
-#define CONFIGOBSERVER_HPP 
+#ifndef CONFIGCONTROLLEROBSERVER_HPP
+#define CONFIGCONTROLLEROBSERVER_HPP 
 
 #include "Observer.hpp"
 #include "../controllers/ConfigController.hpp"
 
-class ConfigObserver : public Observer
+class ConfigControllerObserver : public Observer
 {
 public:
-    explicit ConfigObserver(ConfigController& controller) noexcept;
+    explicit ConfigControllerObserver(ConfigController& controller) noexcept;
     void on_notify(const std::any& data, radiostream::Event e) override;
 private:
     ConfigController& controller_;

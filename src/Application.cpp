@@ -7,11 +7,11 @@
 #include "../include/Language.hpp"
 #include "../include/exceptions/NotSupportedLanguageException.hpp"
 #include "../include/Constants.hpp"
-#include "../include/observers/StationPlayerObserver.hpp"
-#include "../include/observers/StationsDatabaseObserver.hpp"
-#include "../include/observers/ConfigObserver.hpp"
-#include <nana/gui/msgbox.hpp>
+#include "../include/observers/StationPlayerControllerObserver.hpp"
+#include "../include/observers/StationsDatabaseControllerObserver.hpp"
+#include "../include/observers/ConfigControllerObserver.hpp"
 #include "../include/observers/MainStateObserver.hpp"
+#include <nana/gui/msgbox.hpp>
 
 Application::Application()
 	: window_(nana::API::make_center(800, 600), nana::appear::decorate<nana::appear::minimize, nana::appear::sizable, nana::appear::maximize, nana::appear::taskbar>())
@@ -99,15 +99,15 @@ void Application::set_language()
 void Application::set_observers()
 {
     auto& main_state = states_manager_.get_state<MainState>(States::ID::Main);
-    main_state.attach(std::make_unique<StationPlayerObserver>(station_player_controller));
-    main_state.attach(std::make_unique<StationsDatabaseObserver>(stations_database_controller_));
+    main_state.attach(std::make_unique<StationPlayerControllerObserver>(station_player_controller));
+    main_state.attach(std::make_unique<StationsDatabaseControllerObserver>(stations_database_controller_));
     auto& search_state = states_manager_.get_state<SearchState>(States::ID::Search);
-    search_state.attach(std::make_unique<StationPlayerObserver>(station_player_controller));
-    search_state.attach(std::make_unique<StationsDatabaseObserver>(stations_database_controller_));
+    search_state.attach(std::make_unique<StationPlayerControllerObserver>(station_player_controller));
+    search_state.attach(std::make_unique<StationsDatabaseControllerObserver>(stations_database_controller_));
     auto& tools_state = states_manager_.get_state<ToolsState>(States::ID::Tools);
-    tools_state.attach(std::make_unique<ConfigObserver>(config_controller_));
-    this->attach(std::make_unique<StationPlayerObserver>(station_player_controller));
-    this->attach(std::make_unique<StationsDatabaseObserver>(stations_database_controller_));
+    tools_state.attach(std::make_unique<ConfigControllerObserver>(config_controller_));
+    this->attach(std::make_unique<StationPlayerControllerObserver>(station_player_controller));
+    this->attach(std::make_unique<StationsDatabaseControllerObserver>(stations_database_controller_));
     station_player_.attach(std::make_unique<MainStateObserver>(main_state));
     stations_database_.attach(std::make_unique<MainStateObserver>(main_state));
 }

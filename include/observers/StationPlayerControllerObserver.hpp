@@ -1,12 +1,12 @@
-#ifndef STATIONPLAYEROBSERVER_HPP
-#define STATIONPLAYEROBSERVER_HPP
+#ifndef STATIONPLAYERCONTROLLEROBSERVER_HPP
+#define STATIONPLAYERCONTROLLEROBSERVER_HPP
 #include "Observer.hpp"
 #include "../controllers/StationPlayerController.hpp"
 
-class StationPlayerObserver : public Observer
+class StationPlayerControllerObserver : public Observer
 {
 public:
-    StationPlayerObserver(StationPlayerController& controller) noexcept;
+    StationPlayerControllerObserver(StationPlayerController& controller) noexcept;
     void on_notify(const std::any& data, radiostream::Event e) override;
 private:
     StationPlayerController& controller_;
