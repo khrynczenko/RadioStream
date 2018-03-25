@@ -79,13 +79,7 @@ void SearchState::init_listbox()
 	{
 		if(!found_stations_listbox_.cast(arg.pos).is_category() && arg.is_left_button()) // this condition must be fulfilled because when we click category it selects the last item in it so when we dbl_click category it works just as we would click last item in it
 		{
-            if(!found_stations_listbox_.selected().empty())
-            {
-                RadioBrowserStation station;
-                const auto selected_index = found_stations_listbox_.selected().front();
-                found_stations_listbox_.at(selected_index.cat).at(selected_index.item).resolve_to(station);
-                notify(std::make_any<Station>(station), radiostream::Event::NewStationRequested);
-            }
+            set_new_station();
 		}
 	});
     found_stations_listbox_.auto_draw(true);
@@ -153,13 +147,7 @@ void SearchState::build_interface()
 
     listbox_right_click_menu_.append(context_.localizer.get_localized_text("Play"), [this](auto& ev)
     {
-        if(!found_stations_listbox_.selected().empty())
-        {
-            RadioBrowserStation station;
-            const auto selected_index = found_stations_listbox_.selected().front();
-            found_stations_listbox_.at(selected_index.cat).at(selected_index.item).resolve_to(station);
-            notify(std::make_any<Station>(station), radiostream::Event::NewStationRequested);
-        }
+        set_new_station();
     });
     listbox_right_click_menu_.append(context_.localizer.get_localized_text("Add to list"), [this](auto& ev)
     {
@@ -187,6 +175,6 @@ void SearchState::set_new_station()
         RadioBrowserStation station;
         const auto selected_index = found_stations_listbox_.selected().front();
         found_stations_listbox_.at(selected_index.cat).at(selected_index.item).resolve_to(station);
-        notify(std::make_any<Station>(station), radiostream::Event::AddStationToDatabase);
+        notify(std::make_any<Station>(station), radiostream::Event::NewStationRequested);
     }
 }
