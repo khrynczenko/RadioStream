@@ -53,23 +53,6 @@ void MainState::song_has_changed(std::string_view song_title)
     current_song_label_.caption(std::string(song_title));
 }
 
-void MainState::select_row_without_unselect_feature(const nana::arg_listbox& selected_row)
-{
-    auto& arg_item = selected_row.item;
-    if (stations_listbox_.selected().empty())
-    {
-        arg_item.select(true);
-    }
-}
-
-bool MainState::check_if_row_was_right_clicked(const nana::arg_mouse& arg) const
-{
-    return !arg.is_left_button()
-        && !stations_listbox_.selected().empty()
-        && !stations_listbox_.cast(arg.pos).empty()
-        && !stations_listbox_.cast(arg.pos).is_category();
-}
-
 void MainState::build_interface()
 {
     current_song_label_.events().mouse_up([this](const nana::arg_mouse& arg)
@@ -159,28 +142,20 @@ void MainState::init_contextual_menus()
 
 void MainState::init_listbox()
 {
-//	stations_listbox_.append(context_.localizer.get_localized_text("User stations"));
-//	stations_listbox_.append(context_.localizer.get_localized_text("Default stations"));
 	stations_listbox_.append_header(context_.localizer.get_localized_text("Station's name"));
     stations_listbox_.append_header(context_.localizer.get_localized_text("Ip"));
 	stations_listbox_.append_header(context_.localizer.get_localized_text("Favorite"));
-	stations_listbox_.append_header(context_.localizer.get_localized_text("User defined"));
 	stations_listbox_.column_at(static_cast<std::size_t>(StationListboxColumns::Name)).width(300u);
     stations_listbox_.column_at(static_cast<std::size_t>(StationListboxColumns::Ip)).width(200u);
 	stations_listbox_.column_at(static_cast<std::size_t>(StationListboxColumns::Favorite)).width(100u);
-//	stations_listbox_.column_at(static_cast<std::size_t>(StationListboxColumns::UserDefined)).width(0u); // 0u to make this column invisibe to the user and so that we can check easly whether it is user defined etc.
-	stations_listbox_.enable_single(true, false);
+
     populate_listbox();
 	stations_listbox_.sort_col(static_cast<std::size_t>(StationListboxColumns::Favorite), true);
    
-    stations_listbox_.events().selected([this](const nana::arg_listbox& arg)
-    {
-        select_row_without_unselect_feature(arg);
-    });
     stations_listbox_.events().mouse_down([this](const nana::arg_mouse& arg)
     {
 
-        if (check_if_row_was_right_clicked(arg))
+        if (!arg.is_left_button())
         {
             pop_stations_listbox_menu();
         }

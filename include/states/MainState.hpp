@@ -27,8 +27,6 @@ private:
     /**
      * \brief normally when the same row is selected second time it gets unselected, this function prevents that.
      */
-    void select_row_without_unselect_feature(const nana::arg_listbox& selected_row);
-    bool check_if_row_was_right_clicked(const nana::arg_mouse& arg) const;
     void build_interface();
     void init_contextual_menus();
     void init_listbox();

@@ -30,23 +30,6 @@ void SearchState::change_visibility(bool visible)
 	context_.menubar.show();
 }
 
-void SearchState::select_row_without_unselect_feature(const nana::arg_listbox& selected_row)
-{
-    auto& arg_item = selected_row.item;
-    if (found_stations_listbox_.selected().empty())
-    {
-        arg_item.select(true);
-    }
-}
-
-bool SearchState::check_if_row_was_right_clicked(const nana::arg_mouse& arg) const
-{
-    return (!arg.is_left_button()
-        && !found_stations_listbox_.selected().empty()
-        && !found_stations_listbox_.cast(arg.pos).empty()
-        && !found_stations_listbox_.cast(arg.pos).is_category());
-}
-
 void SearchState::init_listbox()
 {
 	found_stations_listbox_.append_header(context_.localizer.get_localized_text("Station's name"));
@@ -61,19 +44,11 @@ void SearchState::init_listbox()
     found_stations_listbox_.column_at(static_cast<std::size_t>(SearchListboxColumns::Language)).width(70u);
     found_stations_listbox_.column_at(static_cast<std::size_t>(SearchListboxColumns::Codec)).width(50u);
     found_stations_listbox_.column_at(static_cast<std::size_t>(SearchListboxColumns::Tags)).width(200u);
-	found_stations_listbox_.enable_single(true, false);
-   
-    found_stations_listbox_.events().selected([this](const nana::arg_listbox& arg)
-    {
-        select_row_without_unselect_feature(arg);
-    });
+
     found_stations_listbox_.events().mouse_down([this](const nana::arg_mouse& arg)
     {
-
-        if (check_if_row_was_right_clicked(arg))
-        {
+        if(!arg.is_left_button())
             pop_stations_listbox_menu();
-        }
     });
 	found_stations_listbox_.events().dbl_click([this](const nana::arg_mouse& arg)
 	{

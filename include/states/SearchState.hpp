@@ -18,8 +18,6 @@ class SearchState : public State
 public:
     SearchState(StatesManager& state_manager, Context& context);
     void change_visibility(bool visible) override;
-    void select_row_without_unselect_feature(const nana::arg_listbox & selected_row);
-    bool check_if_row_was_right_clicked(const nana::arg_mouse& arg) const;
     void init_listbox();
     void build_interface();
 private:
