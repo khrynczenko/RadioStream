@@ -128,7 +128,7 @@ void MainState::init_contextual_menus()
     });
     listbox_item_menu_.append(context_.localizer_.get_localized_text("Play"), [this](auto&)
     {
-        set_new_stream();
+        set_new_station();
     });
     listbox_item_menu_.append(context_.localizer_.get_localized_text("Subscribe"), [this](auto&)
     {
@@ -148,13 +148,11 @@ void MainState::init_listbox()
 	stations_listbox_.column_at(static_cast<std::size_t>(StationListboxColumns::Name)).width(300u);
     stations_listbox_.column_at(static_cast<std::size_t>(StationListboxColumns::Ip)).width(200u);
 	stations_listbox_.column_at(static_cast<std::size_t>(StationListboxColumns::Favorite)).width(100u);
-
     populate_listbox();
 	stations_listbox_.sort_col(static_cast<std::size_t>(StationListboxColumns::Favorite), true);
    
     stations_listbox_.events().mouse_down([this](const nana::arg_mouse& arg)
     {
-
         if (!arg.is_left_button())
         {
             pop_stations_listbox_menu();
@@ -164,7 +162,7 @@ void MainState::init_listbox()
 	{
 		if(!stations_listbox_.cast(arg.pos).is_category() && arg.is_left_button()) // this condition must be fulfilled because when we click category it selects the last item in it so when we dbl_click category it works just as we would click last item in it
 		{
-            set_new_stream();
+            set_new_station();
 		}
 	});
     stations_listbox_.auto_draw(true);
@@ -248,7 +246,7 @@ void MainState::pop_stations_listbox_menu()
     listbox_item_menu_.popup(context_.window_, position.x, position.y);
 }
 
-void MainState::set_new_stream()
+void MainState::set_new_station()
 {
     
     if (!stations_listbox_.selected().empty())

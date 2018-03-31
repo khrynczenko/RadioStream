@@ -5,7 +5,7 @@
 class ConfigController : public Controller
 {
 public:
-    ConfigController(StatesManager& manager, State::Context context);
+    ConfigController(StatesManager& manager, State::Context context) noexcept;
     void process_event_command(const radiostream::Event e, std::any data) override;
 };
 

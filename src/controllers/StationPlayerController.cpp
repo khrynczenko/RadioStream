@@ -4,7 +4,7 @@
 #include "../../include/Utilities.hpp"
 
 
-StationPlayerController::StationPlayerController(StatesManager& manager, State::Context context)
+StationPlayerController::StationPlayerController(StatesManager& manager, State::Context context) noexcept
     : Controller(manager, context)
 {
 }

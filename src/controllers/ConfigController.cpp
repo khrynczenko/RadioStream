@@ -1,7 +1,7 @@
 #include "../../include/controllers/ConfigController.hpp"
 #include "../../include/Config.hpp"
 
-ConfigController::ConfigController(StatesManager& manager, State::Context context)
+ConfigController::ConfigController(StatesManager& manager, State::Context context) noexcept
     : Controller(manager, context)
 {
 }

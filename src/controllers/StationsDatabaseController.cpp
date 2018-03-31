@@ -1,6 +1,6 @@
 #include "../../include/controllers/StationsDatabaseController.hpp"
 
-StationsDatabaseController::StationsDatabaseController(StatesManager& manager, State::Context context)
+StationsDatabaseController::StationsDatabaseController(StatesManager& manager, State::Context context) noexcept
     : Controller(manager, context)
 {
 }

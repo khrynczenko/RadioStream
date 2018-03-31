@@ -31,7 +31,7 @@ void ToolsState::build_interface()
 	apply_button_.caption(context_.localizer_.get_localized_text("Apply"));
 	apply_button_.events().click([this]()
 	{
-		auto choosen_language_index = language_choices_.option();
+		const auto choosen_language_index = language_choices_.option();
 		const std::string language = language_choices_.text(choosen_language_index);
 		auto code = get_language_iso_identifier(language);
         notify(std::make_any<LanguageCode>(code), radiostream::Event::ConfigChangeLanguage);

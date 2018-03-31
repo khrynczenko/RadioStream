@@ -58,7 +58,9 @@ void SearchState::init_listbox()
     found_stations_listbox_.events().mouse_down([this](const nana::arg_mouse& arg)
     {
         if(!arg.is_left_button())
+        {
             pop_stations_listbox_menu();
+        }
     });
 	found_stations_listbox_.events().dbl_click([this](const nana::arg_mouse& arg)
 	{
@@ -116,11 +118,11 @@ void SearchState::build_interface()
     container_.field("buttons_section") << back_button_;
 	container_.collocate();
 
-    listbox_right_click_menu_.append(context_.localizer_.get_localized_text("Play"), [this](auto& ev)
+    listbox_right_click_menu_.append(context_.localizer_.get_localized_text("Play"), [this]([[maybe_unused]] auto& ev)
     {
         set_new_station();
     });
-    listbox_right_click_menu_.append(context_.localizer_.get_localized_text("Add to list"), [this](auto& ev)
+    listbox_right_click_menu_.append(context_.localizer_.get_localized_text("Add to list"), [this]([[maybe_unused]] auto& ev)
     {
         if(!found_stations_listbox_.selected().empty())
         {
