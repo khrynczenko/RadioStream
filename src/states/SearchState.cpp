@@ -54,6 +54,7 @@ void SearchState::init_listbox()
     found_stations_listbox_.column_at(static_cast<std::size_t>(SearchListboxColumns::Language)).width(70u);
     found_stations_listbox_.column_at(static_cast<std::size_t>(SearchListboxColumns::Codec)).width(50u);
     found_stations_listbox_.column_at(static_cast<std::size_t>(SearchListboxColumns::Tags)).width(200u);
+    found_stations_listbox_.enable_single(true, false);
 
     found_stations_listbox_.events().mouse_down([this](const nana::arg_mouse& arg)
     {
