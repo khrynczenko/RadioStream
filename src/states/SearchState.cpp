@@ -123,13 +123,7 @@ void SearchState::build_interface()
 
     listbox_right_click_menu_.append(context_.localizer_.get_localized_text("Add to list"), [this]([[maybe_unused]] auto& ev)
     {
-        if(!found_stations_listbox_.selected().empty())
-        {
-            RadioBrowserStation station;
-            const auto selected_index = found_stations_listbox_.selected().front();
-            found_stations_listbox_.at(selected_index.cat).at(selected_index.item).resolve_to(station);
-            notify(std::make_any<Station>(station), radiostream::Event::AddStationToDatabase);
-        }
+        add_selected_station_to_database();
     });
 }
 
@@ -164,6 +158,17 @@ void SearchState::pop_stations_listbox_menu()
     auto position = nana::API::cursor_position();
     nana::API::calc_window_point(context_.window_, position);
     listbox_right_click_menu_.popup(context_.window_, position.x, position.y);
+}
+
+void SearchState::add_selected_station_to_database()
+{
+    if(!found_stations_listbox_.selected().empty())
+    {
+        RadioBrowserStation station;
+        const auto selected_index = found_stations_listbox_.selected().front();
+        found_stations_listbox_.at(selected_index.cat).at(selected_index.item).resolve_to(station);
+        notify(std::make_any<Station>(station), radiostream::Event::AddStationToDatabase);
+    }
 }
 
 void SearchState::search_for_stations()
