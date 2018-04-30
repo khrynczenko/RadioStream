@@ -10,6 +10,7 @@ class Config
 public:
 	explicit Config(std::string path);
     void change_language(LanguageCode code);
+    void change_stations_search_limit(unsigned int limit);
 	~Config();
 	nlohmann::json& operator[](const std::string& key);
 private:

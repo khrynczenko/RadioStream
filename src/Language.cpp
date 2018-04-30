@@ -14,6 +14,6 @@ bool LanguageCode::operator==(const LanguageCode &rhs) const noexcept {
     return code_ == rhs.code_;
 }
 
-std::string LanguageCode::get_string() const {
+std::string LanguageCode::as_string() const {
     return code_;
 }

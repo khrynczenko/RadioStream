@@ -4,7 +4,7 @@ NotSupportedLanguageException::NotSupportedLanguageException(const LanguageCode&
     : std::exception()
     , message_()
 {
-    message_ = "Language \"" + language.get_string() + "\" is not supported.";
+    message_ = "Language \"" + language.as_string() + "\" is not supported.";
 }
 
 char const* NotSupportedLanguageException::what() const noexcept

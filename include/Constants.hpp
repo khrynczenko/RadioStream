@@ -3,9 +3,11 @@
 
 #include <nana/gui/detail/color_schemes.hpp>
 #include <chrono>
+#include <map>
 
 namespace constants
 {
+
 	enum class StationListboxCategories
 	{
 		NanaDefault,
