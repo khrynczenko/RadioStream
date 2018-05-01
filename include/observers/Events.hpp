@@ -20,7 +20,7 @@ namespace radiostream
         SearchLanguagesRequested,
         SearchCountriesRequested,
 
-	    ConfigChangeLanguage,
+        ConfigApplyNewChanges,
         
         StationBeingPlayedChanged,
         StationSongHasChanged,

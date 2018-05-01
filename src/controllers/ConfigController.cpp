@@ -10,9 +10,11 @@ void ConfigController::process_event_command(const radiostream::Event e, std::an
 {
     switch(e)
     {
-    case radiostream::Event::ConfigChangeLanguage:
+    case radiostream::Event::ConfigApplyNewChanges:
     {
-        context_.config_.change_language(std::any_cast<LanguageCode>(data));
+        auto options = std::any_cast<ConfigOptions>(data);
+        context_.config_.change_language(options.language);
+        context_.config_.change_stations_search_limit(options.stations_search_limit);
     }
     }
 }

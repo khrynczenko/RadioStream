@@ -6,11 +6,12 @@
 class LanguageCode
 {
 public:
+    LanguageCode() = default;
     explicit LanguageCode(std::string_view code);
     bool operator==(const LanguageCode& rhs) const noexcept;
     std::string as_string() const;
 private:
-    const std::string code_;
+    std::string code_;
 };
 
 
