@@ -2,6 +2,7 @@
 #define TOOLSSTATE_HPP
 
 #include "State.hpp"
+#include "../Config.hpp"
 #include <nana/gui/widgets/button.hpp>
 #include <nana/gui/widgets/combox.hpp>
 #include <nana/gui/place.hpp>
@@ -15,7 +16,8 @@ public:
 private:
 	void build_interface();
 private:
-	std::string get_language_iso_identifier(const std::string& language) const;
+    ConfigOptions gather_options() const;
+	LanguageCode string_to_language_code(const std::string& language) const;
 	nana::place container_;
     nana::label language_label_;
 	nana::combox language_choices_;

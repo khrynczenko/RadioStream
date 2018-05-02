@@ -1,32 +1,27 @@
 #ifndef TEXTLOCALIZER_HPP
 #define TEXTLOCALIZER_HPP
 
+#include "Language.hpp"
 #include <nana/internationalization.hpp>
 #include <array>
 #include <experimental/filesystem>
-
-enum class Language
-{
-    EN,
-    PL,
-    LanguagesCount
-};
+#include <map>
 
 class LanguagesPathsContainer
 {
 public:
     LanguagesPathsContainer() noexcept;
-    std::experimental::filesystem::path get_path(Language lang);
+    std::experimental::filesystem::path get_path(LanguageCode lang);
 
 private:
-    std::array<std::experimental::filesystem::path, static_cast<size_t>(Language::LanguagesCount)> languages_;
+    std::map<const LanguageCode, const std::experimental::filesystem::path, LanguageCodeComparator> languages_filpaths_;
 };
 
 class TextLocalizer
 {
 public:
     TextLocalizer() noexcept;
-    void switch_language(Language lang);
+    void switch_language(LanguageCode lang);
     template <typename ...Args>
     std::string get_localized_text(std::string text_id, Args ... args) const;
     std::string get_localized_text(std::string text_id) const;

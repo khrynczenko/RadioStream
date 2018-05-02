@@ -5,11 +5,19 @@
 #include "Language.hpp"
 #include <nlohmann/json.hpp>
 
+struct ConfigOptions
+{
+    LanguageCode language;
+    unsigned int stations_search_limit;
+};
+
 class Config
 {
 public:
 	explicit Config(std::string path);
     void change_language(LanguageCode code);
+    void change_stations_search_limit(unsigned int limit);
+    ConfigOptions get_all_config_options() const noexcept;
 	~Config();
 	nlohmann::json& operator[](const std::string& key);
 private:

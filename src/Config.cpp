@@ -1,6 +1,6 @@
 #include "../include/Config.hpp"
-#include <fstream>
 #include "../include/Language.hpp"
+#include <fstream>
 
 Config::Config(std::string path)
 	: path_(std::move(path))
@@ -10,14 +10,26 @@ Config::Config(std::string path)
 
 void Config::change_language(LanguageCode code)
 {
-    config_["language"] = code.get_string();
+    config_["language"] = code.as_string();
+}
+
+void Config::change_stations_search_limit(unsigned int limit)
+{
+    config_["stations_search_limit"] = limit;
+}
+
+ConfigOptions Config::get_all_config_options() const noexcept
+{
+    ConfigOptions options;
+    options.language = LanguageCode(config_["language"].get<std::string>());
+    options.stations_search_limit = config_["stations_search_limit"].get<unsigned int>();
+    return options;
 }
 
 Config::~Config()
 {
 	save_to_file();
 }
-
 
 void Config::save_to_file() const
 {

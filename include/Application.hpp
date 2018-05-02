@@ -43,7 +43,6 @@ private:
 	void set_observers();
     void build_interface();
     void init_status();
-	Language get_language(const LanguageCode& code) const;
 	nana::form window_;
 	nana::menubar menubar_;
     StationPlayer station_player_;

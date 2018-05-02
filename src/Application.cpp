@@ -97,7 +97,7 @@ void Application::init_menubar()
 
 void Application::set_language()
 {
-	const auto language = get_language(LanguageCode(config_["language"].get<std::string>()));
+	const auto language = LanguageCode(config_["language"].get<std::string>());
 	localizer_.switch_language(language);
 }
 
@@ -129,17 +129,4 @@ void Application::init_status()
 {
     status_.change_text(localizer_.get_localized_text("Ready"));
     status_.change_color(StatusBar::Color::FINISHED);
-}
-
-Language Application::get_language(const LanguageCode& code) const
-{
-	if (code == LanguageCode("en"))
-	{
-		return Language::EN;
-	}
-	else if (code == LanguageCode("pl"))
-	{
-		return Language::PL;
-	}
-    throw NotSupportedLanguageException(code);
 }

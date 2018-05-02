@@ -3,16 +3,21 @@
 
 #include <string>
 
-
 class LanguageCode
 {
 public:
+    LanguageCode() = default;
     explicit LanguageCode(std::string_view code);
     bool operator==(const LanguageCode& rhs) const noexcept;
-    std::string get_string() const;
+    std::string as_string() const;
 private:
-    const std::string code_;
+    std::string code_;
 };
 
+
+struct LanguageCodeComparator
+{
+    bool operator()(LanguageCode lhs, LanguageCode rhs) const noexcept;
+};
 
 #endif
