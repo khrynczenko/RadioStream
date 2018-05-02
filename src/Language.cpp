@@ -17,3 +17,8 @@ bool LanguageCode::operator==(const LanguageCode &rhs) const noexcept {
 std::string LanguageCode::as_string() const {
     return code_;
 }
+
+bool LanguageCodeComparator::operator()(LanguageCode lhs, LanguageCode rhs) const noexcept
+{
+    return lhs.as_string() < rhs.as_string();
+}

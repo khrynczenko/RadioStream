@@ -7,15 +7,6 @@
 #include <experimental/filesystem>
 #include <map>
 
-using LanguageNativeName = std::string;
-
-struct KeyComparator
-{
-    bool operator()(LanguageCode lhs, LanguageCode rhs) const noexcept;
-};
-
-extern const std::map<const LanguageCode, const LanguageNativeName, KeyComparator> LANGUAGES_CODES_AND_TRANSLATIONS;
-
 class LanguagesPathsContainer
 {
 public:
@@ -23,7 +14,7 @@ public:
     std::experimental::filesystem::path get_path(LanguageCode lang);
 
 private:
-    std::map<const LanguageCode, const std::experimental::filesystem::path, KeyComparator> languages_filpaths_;
+    std::map<const LanguageCode, const std::experimental::filesystem::path, LanguageCodeComparator> languages_filpaths_;
 };
 
 class TextLocalizer

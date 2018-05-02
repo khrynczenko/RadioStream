@@ -1,5 +1,6 @@
 #include "../../include/states/ToolsState.hpp"
 #include "../../include/Config.hpp"
+#include "../../include/Constants.hpp"
 #include <nana/gui/widgets/menubar.hpp>
 #include <nana/gui/widgets/form.hpp>
 
@@ -25,9 +26,9 @@ void ToolsState::build_interface()
 {
     language_label_.caption(context_.localizer_.get_localized_text("Language:"));
     LanguageCode chosen_language(context_.config_["language"].get<std::string>());
-    language_choices_.push_back(LANGUAGES_CODES_AND_TRANSLATIONS.at(chosen_language));
+    language_choices_.push_back(constants::LANGUAGES_CODES_AND_NATIVE_NAMES.at(chosen_language));
     language_choices_.option(0);
-    for (const auto[key, value] : LANGUAGES_CODES_AND_TRANSLATIONS)
+    for (const auto[key, value] : constants::LANGUAGES_CODES_AND_NATIVE_NAMES)
     {
         if (key.as_string() != chosen_language.as_string()) language_choices_.push_back(value);
     }
@@ -78,7 +79,7 @@ ConfigOptions ToolsState::gather_options() const
 
 LanguageCode ToolsState::string_to_language_code(const std::string& language_native_name) const
 {
-    for (const auto&[key, value] : LANGUAGES_CODES_AND_TRANSLATIONS)
+    for (const auto&[key, value] : constants::LANGUAGES_CODES_AND_NATIVE_NAMES)
     {
         if (value == language_native_name)
         {
