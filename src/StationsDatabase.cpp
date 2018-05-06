@@ -65,19 +65,6 @@ std::vector<std::string> StationsDatabase::get_stations_names_with_substring(con
 	return matching_station_names;
 }
 
-std::string StationsDatabase::get_station_ip(const std::string& station_name) const
-{
-    const auto iterator = std::find_if(cached_stations_.cbegin(), cached_stations_.cend(), [&](const Station& station) noexcept
-    {
-        return station.name_ == station_name;
-    } );
-    if(iterator == cached_stations_.cend())
-    {
-        throw;
-    }
-    return iterator->ip_;
-}
-
 void StationsDatabase::create_empty_table_if_does_not_exist()
 {
     Poco::Data::Statement create(database_);
@@ -103,3 +90,4 @@ void StationsDatabase::cache_stations_stored_in_database()
         cached_stations_.push_back(station);
     }
 }
+

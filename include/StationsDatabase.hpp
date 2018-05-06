@@ -15,7 +15,6 @@ public:
     void remove_station(const Station& station);
     void change_station_favorite_status(const Station& station);
     std::vector<std::string> get_stations_names_with_substring(const std::string& substring) const;
-    std::string get_station_ip(const std::string& station_name) const;
 private:
     void create_empty_table_if_does_not_exist();
     void cache_stations_stored_in_database();
