@@ -1,11 +1,18 @@
 #include "../include/Config.hpp"
 #include "../include/Language.hpp"
 #include <fstream>
+#include <experimental/filesystem>
 
+const nlohmann::json DEFAULT_CONFIG_FILE = nlohmann::json::parse("{ \"language\" : \"en\", \"stations_search_limit\" : 50 }");
+    
 Config::Config(std::string path)
 	: path_(std::move(path))
 {
-	read_from_file();
+    if (!std::experimental::filesystem::exists(path_))
+    {
+        create_default_config_file();
+    }
+    read_from_file();
 }
 
 void Config::change_language(LanguageCode code)
@@ -29,6 +36,12 @@ ConfigOptions Config::get_all_config_options() const noexcept
 Config::~Config()
 {
 	save_to_file();
+}
+
+void Config::create_default_config_file() const
+{
+    std::ofstream output(path_);
+    output << DEFAULT_CONFIG_FILE.dump(4);
 }
 
 void Config::save_to_file() const

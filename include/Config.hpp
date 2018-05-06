@@ -21,6 +21,7 @@ public:
 	~Config();
 	nlohmann::json& operator[](const std::string& key);
 private:
+    void create_default_config_file() const;
 	void save_to_file() const;
 	void read_from_file();
 	std::string path_;
