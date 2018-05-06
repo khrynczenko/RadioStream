@@ -15,7 +15,6 @@ public:
     void remove_station(const Station& station);
     void change_station_favorite_status(const Station& station);
     std::vector<std::string> get_stations_names_with_substring(const std::string& substring) const;
-    std::string get_station_ip(const std::string& station_name) const;
 private:
     Poco::Data::Session database_;
     std::vector<Station> cached_stations_;
