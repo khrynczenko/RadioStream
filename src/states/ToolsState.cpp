@@ -3,6 +3,7 @@
 #include "../../include/Constants.hpp"
 #include <nana/gui/widgets/menubar.hpp>
 #include <nana/gui/widgets/form.hpp>
+#include <nana/gui/msgbox.hpp>
 
 ToolsState::ToolsState(StatesManager& state_manager, Context& context)
     : State(state_manager, context)
@@ -47,9 +48,8 @@ void ToolsState::build_interface()
 	apply_button_.caption(context_.localizer_.get_localized_text("Apply"));
 	apply_button_.events().click([this]()
 	{
-        
         notify(std::make_any<ConfigOptions>(gather_options()), radiostream::Event::ConfigApplyNewChanges);
-		//TODO pop a message that for the langauge to change program must be restarted
+        pop_restart_program_message_box();
 	});
 
 	container_.div(
@@ -66,6 +66,13 @@ void ToolsState::build_interface()
     container_.field("found_limit_pair") << found_stations_limit_ << found_stations_values_;
 	container_.field("buttons_section") << back_button_<< apply_button_;
 	container_.collocate();
+}
+
+void ToolsState::pop_restart_program_message_box() const
+{
+    nana::msgbox restart_program_message{ context_.window_, "Restart program" };
+    restart_program_message << context_.localizer_.get_localized_text("In order to apply the changes program needs to be restarted.");
+    restart_program_message.show();
 }
 
 ConfigOptions ToolsState::gather_options() const

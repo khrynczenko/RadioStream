@@ -15,6 +15,7 @@ public:
 	void change_visibility(bool visible) override;
 private:
 	void build_interface();
+    void pop_restart_program_message_box() const;
 private:
     ConfigOptions gather_options() const;
 	LanguageCode string_to_language_code(const std::string& language) const;
