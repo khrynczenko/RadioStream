@@ -37,6 +37,7 @@ private:
     void pop_stations_listbox_menu();
     void set_new_station();
     void delete_station();
+    void sticky_select(const nana::arg_mouse& mouse);
     nana::place container_;
     nana::label current_song_label_;
     nana::label current_station_label_;

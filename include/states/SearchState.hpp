@@ -30,6 +30,7 @@ private:
     void set_new_station();
     void pop_stations_listbox_menu();
     void add_selected_station_to_database();
+    void sticky_select(const nana::arg_mouse & mouse);
     RadioBrowserRequester requester_;
     nana::place container_;
     nana::textbox search_textbox_;
