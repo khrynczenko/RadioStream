@@ -88,3 +88,4 @@ LanguageCode ToolsState::string_to_language_code(const std::string& language_nat
     }
     throw;
 }
+

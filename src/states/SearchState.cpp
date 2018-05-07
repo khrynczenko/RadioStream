@@ -54,10 +54,11 @@ void SearchState::init_listbox()
     found_stations_listbox_.column_at(static_cast<std::size_t>(SearchListboxColumns::Language)).width(70u);
     found_stations_listbox_.column_at(static_cast<std::size_t>(SearchListboxColumns::Codec)).width(50u);
     found_stations_listbox_.column_at(static_cast<std::size_t>(SearchListboxColumns::Tags)).width(200u);
-    found_stations_listbox_.enable_single(true, false);
+    found_stations_listbox_.enable_single(false, false);
 
     found_stations_listbox_.events().mouse_down([this](const nana::arg_mouse& arg)
     {
+        sticky_select(arg);
         if(!arg.is_left_button())
         {
             pop_stations_listbox_menu();
@@ -65,6 +66,7 @@ void SearchState::init_listbox()
     });
 	found_stations_listbox_.events().dbl_click([this](const nana::arg_mouse& arg)
 	{
+        sticky_select(arg);
 		if(!found_stations_listbox_.cast(arg.pos).is_category() && arg.is_left_button()) // this condition must be fulfilled because when we click category it selects the last item in it so when we dbl_click category it works just as we would click last item in it
 		{
             set_new_station();
@@ -195,5 +197,23 @@ void SearchState::set_new_station()
         const auto selected_index = found_stations_listbox_.selected().front();
         found_stations_listbox_.at(selected_index.cat).at(selected_index.item).resolve_to(station);
         notify(std::make_any<Station>(station), radiostream::Event::NewStationRequested);
+    }
+}
+
+void SearchState::sticky_select(const nana::arg_mouse & mouse)
+{
+    if (!found_stations_listbox_.selected().empty())
+    {
+        for (const auto& pair : found_stations_listbox_.selected())
+        {
+            if (pair.item == found_stations_listbox_.selected().front().item)
+            {
+                continue;
+            }
+            else
+            {
+                found_stations_listbox_.at(pair.cat).at(pair.item).select(false);
+            }
+        }
     }
 }

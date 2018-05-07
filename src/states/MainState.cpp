@@ -150,10 +150,11 @@ void MainState::init_listbox()
     stations_listbox_.column_at(static_cast<std::size_t>(StationListboxColumns::Favorite)).width(100u);
     populate_listbox();
     stations_listbox_.sort_col(static_cast<std::size_t>(StationListboxColumns::Favorite), true);
-    stations_listbox_.enable_single(true, false);
+    stations_listbox_.enable_single(false, false);
 
     stations_listbox_.events().mouse_down([this](const nana::arg_mouse& arg)
     {
+        sticky_select(arg);
         if (!arg.is_left_button())
         {
             pop_stations_listbox_menu();
@@ -197,7 +198,6 @@ void MainState::populate_listbox()
         stations_listbox_.at(category_index).append(station);
     }
     stations_listbox_.sort_col(static_cast<std::size_t>(StationListboxColumns::Favorite), true);
-    stations_listbox_.auto_draw(true);
 }
 
 void MainState::search_stations()
@@ -269,5 +269,23 @@ void MainState::delete_station()
     const auto index = stations_listbox_.selected().front();
     stations_listbox_.at(index.cat).at(index.item).resolve_to(station);
     notify(std::make_any<Station>(station), radiostream::Event::DeleteStationFromDatabase);
+}
+
+void MainState::sticky_select(const nana::arg_mouse & mouse)
+{
+    if (!stations_listbox_.selected().empty())
+    {
+        for (const auto& pair : stations_listbox_.selected())
+        {
+            if (pair.item == stations_listbox_.selected().front().item)
+            {
+                continue;
+            }
+            else
+            {
+                stations_listbox_.at(pair.cat).at(pair.item).select(false);
+            }
+        }
+    }
 }
 
