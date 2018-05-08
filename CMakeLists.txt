@@ -58,6 +58,7 @@ include/controllers/Controller.hpp
 include/controllers/RadioBrowserRequesterController.hpp
 include/controllers/StationPlayerController.hpp
 include/controllers/StationsDatabaseController.hpp
+include/controllers/StatusBarController.hpp
 include/exceptions/LanguageFileNotFound.hpp
 include/exceptions/NanaTextboxProcessingException.hpp
 include/exceptions/NotSupportedLanguageException.hpp
@@ -70,6 +71,7 @@ include/observers/RadioBrowserRequesterControllerObserver.hpp
 include/observers/SearchStateObserver.hpp
 include/observers/StationPlayerControllerObserver.hpp
 include/observers/StationsDatabaseControllerObserver.hpp
+include/observers/StatusBarControllerObserver.hpp
 include/observers/Subject.hpp
 include/states/MainState.hpp
 include/states/SearchState.hpp
@@ -96,6 +98,7 @@ src/controllers/Controller.cpp
 src/controllers/RadioBrowserRequesterController.cpp
 src/controllers/StationPlayerController.cpp
 src/controllers/StationsDatabaseController.cpp
+src/controllers/StatusBarController.cpp
 src/exceptions/LanguageFileNotFound.cpp
 src/exceptions/NanaTextboxProcessingException.cpp
 src/exceptions/NotSupportedLanguageException.cpp
@@ -107,6 +110,7 @@ src/observers/RadioBrowserRequesterControllerObserver.cpp
 src/observers/SearchStateObserver.cpp
 src/observers/StationPlayerControllerObserver.cpp
 src/observers/StationsDatabaseControllerObserver.cpp
+src/observers/StatusBarControllerObserver.cpp
 src/observers/Subject.cpp
 src/states/MainState.cpp
 src/states/SearchState.cpp

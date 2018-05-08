@@ -1,10 +1,26 @@
 #include "../include/StreamManager.hpp"
 #include <stdexcept>
+#include <iostream>
+
+void StreamManager::mute()
+{
+	BASS_ChannelSetAttribute(main_stream_, BASS_ATTRIB_VOL, 0.f);
+    muted_ = true;
+}
+
+void StreamManager::unmute()
+{
+	BASS_ChannelSetAttribute(main_stream_, BASS_ATTRIB_VOL, current_volume_);
+    muted_ = false;
+}
 
 void StreamManager::set_current_volume(float volume)
 {
-	BASS_ChannelSetAttribute(main_stream_, BASS_ATTRIB_VOL, volume);
-	current_volume_ = volume;
+    current_volume_ = volume;
+    if (!muted_)
+    {
+        BASS_ChannelSetAttribute(main_stream_, BASS_ATTRIB_VOL, volume);
+    }
 }
 
 float StreamManager::get_current_volume() const noexcept
@@ -12,7 +28,7 @@ float StreamManager::get_current_volume() const noexcept
     return current_volume_;
 }
 
-void StreamManager::set_stream(const std::string& url)
+std::optional<BassErrorCode> StreamManager::set_stream(const std::string& url)
 {
     std::lock_guard<std::mutex> lock(mutex_);
     url_playing_ = url;
@@ -21,8 +37,13 @@ void StreamManager::set_stream(const std::string& url)
         BASS_ChannelStop(main_stream_);
         BASS_StreamFree(main_stream_);
     }
-	main_stream_ = BASS_StreamCreateURL(url.c_str(), 0, 0, nullptr, nullptr);    
+	main_stream_ = BASS_StreamCreateURL(url.c_str(), 0, 0, nullptr, nullptr);
+    BassErrorCode possible_error = BASS_ErrorGetCode();
 	BASS_ChannelSetAttribute(main_stream_, BASS_ATTRIB_VOL, current_volume_);
+    
+    if (main_stream_ == 0)
+        return std::make_optional<BassErrorCode>(possible_error);
+    return std::nullopt;
 }
 
 void StreamManager::pause()
@@ -61,6 +82,7 @@ std::string StreamManager::get_song_title() const
 
 StreamManager::StreamManager()
 	: main_stream_()
+    , muted_(false)
 	, current_volume_(1.f)
 {
 	if(!BASS_Init(-1, 44100, BASS_DEVICE_STEREO, nullptr, nullptr))

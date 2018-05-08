@@ -8,8 +8,14 @@ namespace radiostream
         PauseClicked,
         PlayClicked,
         NewStationRequested,
+        StationStartedPlaying,
+        NewStationLoading,
+        StationMuted,
+        StationUnmuted,
 		MuteClicked,
+        MuteUnclicked,
 		VolumeChanged,
+        StationPaused,
 
         AddStationToDatabase,
         DeleteStationFromDatabase,
@@ -22,8 +28,9 @@ namespace radiostream
 
         ConfigApplyNewChanges,
         
-        StationBeingPlayedChanged,
+        NewStationSet,
         StationSongHasChanged,
+        StreamLoadingError
 	};
 }
 

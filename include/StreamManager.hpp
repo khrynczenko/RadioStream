@@ -8,22 +8,33 @@
 #include <bass.h>
 #include <string>
 #include <mutex>
+#include <optional>
+#include <map>
 
 /**
  * \brief StreamManager is responsible for creating the stream, associating it with the channel and managing it, it mean changing volume, pausing, playing associating with URL etc.
  */
+
+using BassErrorCode = int;
+using BassErrorMessage = std::string;
+
+extern const std::map<BassErrorCode, BassErrorMessage> ERROR_CODES_AND_MESSAGES;
+
 class StreamManager
 {
 public:
+    void mute();
+    void unmute();
 	void set_current_volume(float);
 	float get_current_volume() const noexcept;
-	void set_stream(const std::string& url);
+	std::optional<BassErrorCode> set_stream(const std::string& url);
 	void pause();
 	void play();
 	std::string get_song_title() const;
 	StreamManager();
 	~StreamManager() = default;
 private:
+    bool muted_;
 	HSTREAM main_stream_;
 	float current_volume_;
     std::string url_playing_;
