@@ -23,6 +23,7 @@ private:
     Station station_;
     StreamManager stream_manager_;
     std::string current_song_title_;
+    std::mutex mutex_;
 };
 
 #endif
