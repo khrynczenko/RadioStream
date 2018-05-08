@@ -12,16 +12,17 @@
 #include "../include/observers/ConfigControllerObserver.hpp"
 #include "../include/observers/RadioBrowserRequesterControllerObserver.hpp"
 #include "../include/observers/MainStateObserver.hpp"
+#include "../include/observers/StatusBarControllerObserver.hpp"
 #include <nana/gui/msgbox.hpp>
 
 Application::Application()
-	: window_(nana::API::make_center(800, 600), nana::appear::decorate<nana::appear::minimize, nana::appear::sizable, nana::appear::maximize, nana::appear::taskbar>())
-	, menubar_(window_)
+    : window_(nana::API::make_center(800, 600), nana::appear::decorate<nana::appear::minimize, nana::appear::sizable, nana::appear::maximize, nana::appear::taskbar>())
+    , menubar_(window_)
     , station_player_()
     , stations_database_(constants::STATIONS_DATABASE_FILE)
     , status_(window_)
-	, localizer_()
-	, config_(constants::CONFIG_FILE_PATH)
+    , localizer_()
+    , config_(constants::CONFIG_FILE_PATH)
     , context_(window_, menubar_, station_player_, stations_database_, status_, localizer_, config_, requester_)
     , states_manager_(context_)
     , general_container_(window_)
@@ -29,6 +30,7 @@ Application::Application()
     , stations_database_controller_(states_manager_, context_)
     , config_controller_(states_manager_, context_)
     , radio_browser_requester_controller_(states_manager_, context_)
+    , status_bar_controller_(states_manager_, context_, status_)
     , subject_()
 {
 	window_.caption("RadioStream");
@@ -115,6 +117,7 @@ void Application::set_observers()
     this->attach(std::make_unique<StationPlayerControllerObserver>(station_player_controller));
     this->attach(std::make_unique<StationsDatabaseControllerObserver>(stations_database_controller_));
     station_player_.attach(std::make_unique<MainStateObserver>(main_state));
+    station_player_.attach(std::make_unique<StatusBarControllerObserver>(status_bar_controller_));
     stations_database_.attach(std::make_unique<MainStateObserver>(main_state));
 }
 

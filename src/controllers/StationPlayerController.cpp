@@ -16,17 +16,13 @@ void StationPlayerController::process_event_command(const radiostream::Event e, 
     {
     case radiostream::Event::PauseClicked:
     {
-        context_.status_.change_text(context_.localizer_.get_localized_text("Stream paused"));
         context_.station_player_.pause();
-        context_.status_.change_color(StatusBar::Color::FINISHED);
     }
     break;
 
     case radiostream::Event::PlayClicked:
     {
-        context_.status_.change_text(context_.localizer_.get_localized_text("Stream playing"));
         context_.station_player_.play();
-        context_.status_.change_color(StatusBar::Color::FINISHED);
     }
     break;
 
@@ -39,19 +35,23 @@ void StationPlayerController::process_event_command(const radiostream::Event e, 
     case radiostream::Event::NewStationRequested:
     {
         const auto station = std::any_cast<Station>(data);
-        context_.status_.change_text(context_.localizer_.get_localized_text("Loading stream..."));
-        context_.status_.change_color(StatusBar::Color::PROCESSING);
-        context_.station_player_.set_station(station);
-        context_.station_player_.play();
-        context_.status_.change_text(context_.localizer_.get_localized_text("Stream playing"));
-        context_.status_.change_color(StatusBar::Color::FINISHED);
+        std::thread thread = std::thread([this, station](){
+            if(context_.station_player_.set_station(station))
+                context_.station_player_.play();
+        });
+        thread.detach();
     }
     break;
 
     case radiostream::Event::MuteClicked:
     {
-        context_.station_player_.set_volume(0.f);
-        context_.status_.change_text(context_.localizer_.get_localized_text("Stream muted"));
+        context_.station_player_.mute();
+    }
+    break;
+
+    case radiostream::Event::MuteUnclicked:
+    {
+        context_.station_player_.unmute();
     }
     break;
     }

@@ -13,6 +13,7 @@
 #include "controllers/StationsDatabaseController.hpp"
 #include "controllers/ConfigController.hpp"
 #include "controllers/RadioBrowserRequesterController.hpp"
+#include "controllers/StatusBarController.hpp"
 #include <nana/gui/widgets/form.hpp>
 #include <nana/gui/widgets/menubar.hpp>
 #include <mutex>
@@ -58,6 +59,7 @@ private:
     StationsDatabaseController stations_database_controller_;
     ConfigController config_controller_;
     RadioBrowserRequesterController radio_browser_requester_controller_;
+    StatusBarController status_bar_controller_;
     Subject subject_;
     std::mutex mutex_;
 };

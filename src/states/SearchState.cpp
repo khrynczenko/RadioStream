@@ -38,6 +38,7 @@ void SearchState::change_visibility(bool visible)
 {
 	container_.field_display("content", visible);
 	context_.menubar_.show();
+    container_.collocate();
 }
 
 void SearchState::init_listbox()

@@ -10,7 +10,7 @@ void MainStateObserver::on_notify(const std::any& data, radiostream::Event e)
 {
     switch(e)
     {
-    case radiostream::Event::StationBeingPlayedChanged:
+    case radiostream::Event::NewStationSet:
     {
         const auto station = std::any_cast<Station>(data);
         state_.station_being_played_changed(station);

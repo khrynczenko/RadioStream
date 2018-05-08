@@ -27,32 +27,6 @@ MainState::MainState(StatesManager& manager, Context& context)
     init_listbox();
 }
 
-void MainState::change_visibility(bool visible)
-{
-    container_.field_display("content", visible);
-    context_.menubar_.show();
-}
-
-void MainState::set_station_name(const std::string& name)
-{
-    current_station_label_.caption(name);
-}
-
-void MainState::refresh_listbox()
-{
-    populate_listbox();
-}
-
-void MainState::station_being_played_changed(const Station& changed_station)
-{
-    current_station_label_.caption(changed_station.name_);
-}
-
-void MainState::song_has_changed(std::string_view song_title)
-{
-    current_song_label_.caption(std::string(song_title));
-}
-
 void MainState::build_interface()
 {
     current_song_label_.events().mouse_up([this](const nana::arg_mouse& arg)
@@ -82,9 +56,8 @@ void MainState::build_interface()
         }
         else
         {
-            notify(std::make_any<unsigned int>(volume_slider_.value()), radiostream::Event::VolumeChanged);
+            notify(std::make_any<unsigned int>(volume_slider_.value()), radiostream::Event::MuteUnclicked);
         }
-
     });
     volume_slider_.scheme().color_vernier = VERNIER_COLOR;
     volume_slider_.maximum(100);
@@ -95,10 +68,7 @@ void MainState::build_interface()
     });
     volume_slider_.events().value_changed([this]()
     {
-        if (!mute_button_.pushed())
-        {
-            notify(std::make_any<unsigned int>(volume_slider_.value()), radiostream::Event::VolumeChanged);
-        }
+        notify(std::make_any<unsigned int>(volume_slider_.value()), radiostream::Event::VolumeChanged);
     });
     search_textbox_.line_wrapped(true).multi_lines(false).tip_string("Search...");
     search_textbox_.events().text_changed([this]()
@@ -117,6 +87,34 @@ void MainState::build_interface()
     container_.field("misc") << search_textbox_ << volume_slider_;
     container_.field("listbox") << stations_listbox_;
     container_.collocate();
+}
+
+void MainState::change_visibility(bool visible)
+{
+    container_.erase(context_.window_);
+    container_.field_display("content", visible);
+    context_.menubar_.show();
+    container_.collocate();
+}
+
+void MainState::set_station_name(const std::string& name)
+{
+    current_station_label_.caption(name);
+}
+
+void MainState::refresh_listbox()
+{
+    populate_listbox();
+}
+
+void MainState::station_being_played_changed(const Station& changed_station)
+{
+    current_station_label_.caption(changed_station.name_);
+}
+
+void MainState::song_has_changed(std::string_view song_title)
+{
+    current_song_label_.caption(std::string(song_title));
 }
 
 void MainState::init_contextual_menus()

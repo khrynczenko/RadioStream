@@ -9,11 +9,13 @@ class StationPlayer : public Subject
 {
 public:
     StationPlayer();
+    void mute();
+    void unmute();
     void play();
     void pause();
     void set_volume(float volume);
     float get_volume() const noexcept;
-    void set_station(const Station& station);
+    bool set_station(const Station& station);
     Station get_station() const;
     std::string get_song_title() const;
 private:
@@ -21,7 +23,6 @@ private:
     Station station_;
     StreamManager stream_manager_;
     std::string current_song_title_;
-    std::mutex mutex_;
 };
 
 #endif

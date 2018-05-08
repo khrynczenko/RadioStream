@@ -22,6 +22,7 @@ void ToolsState::change_visibility(bool visible)
 {
 	container_.field_display("content", visible);
 	context_.menubar_.show();
+    container_.collocate();
 }
 void ToolsState::build_interface()
 {
@@ -84,7 +85,7 @@ ConfigOptions ToolsState::gather_options() const
     return options;
 }
 
-LanguageCode ToolsState::string_to_language_code(const std::string& language_native_name) const
+LanguageCode ToolsState::string_to_language_code(std::string_view language_native_name) const
 {
     for (const auto&[key, value] : constants::LANGUAGES_CODES_AND_NATIVE_NAMES)
     {

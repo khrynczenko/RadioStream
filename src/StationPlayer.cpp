@@ -9,34 +9,44 @@ StationPlayer::StationPlayer()
     {
         while(true)
         {
-            std::this_thread::sleep_for(std::chrono::duration<int>(std::chrono::seconds(5)));
+            std::this_thread::sleep_for(std::chrono::duration<int>(std::chrono::seconds(2)));
             check_if_song_title_has_changed();
         }
     });
     thread.detach();
 }
 
+void StationPlayer::mute()
+{
+    stream_manager_.mute();
+    notify(Observer::placeholder, radiostream::Event::StationMuted);
+}
+
+void StationPlayer::unmute()
+{
+    stream_manager_.unmute();
+    notify(Observer::placeholder, radiostream::Event::StationUnmuted);
+}
+
 void StationPlayer::play()
 {
-    auto thread = std::thread([this]()
-    {
-        stream_manager_.play();
-    });
-    thread.detach();
+    stream_manager_.play();
+    notify(Observer::placeholder, radiostream::Event::StationStartedPlaying);
 }
 
 void StationPlayer::pause()
 {
-    auto thread = std::thread([this]()
-    {
-        stream_manager_.pause();
-    });
-    thread.detach();
+    stream_manager_.pause();
+    notify(Observer::placeholder, radiostream::Event::StationPaused);
 }
 
 void StationPlayer::set_volume(float volume)
 {
     stream_manager_.set_current_volume(volume);
+    if (volume == 0.f)
+    {
+        notify(Observer::placeholder, radiostream::Event::StationMuted);
+    }
 }
 
 float StationPlayer::get_volume() const noexcept
@@ -44,16 +54,19 @@ float StationPlayer::get_volume() const noexcept
     return stream_manager_.get_current_volume();
 }
 
-void StationPlayer::set_station(const Station& station)
+bool StationPlayer::set_station(const Station& station)
 {
     station_ = station;
-    auto thread = std::thread([this]()
+    notify(Observer::placeholder, radiostream::Event::NewStationLoading);
+    const auto& possible_error = stream_manager_.set_stream(station_.ip_);
+    if (possible_error.has_value())
     {
-        stream_manager_.set_stream(station_.ip_);
-        check_if_song_title_has_changed();
-        notify(std::make_any<Station>(station_), radiostream::Event::StationBeingPlayedChanged);
-    });
-    thread.detach();
+        notify(std::make_any<BassErrorCode>(possible_error.value()), radiostream::Event::StreamLoadingError);
+        return false;
+    }
+    notify(std::make_any<Station>(station_), radiostream::Event::NewStationSet);
+    check_if_song_title_has_changed();
+    return true;
 }
 
 std::string StationPlayer::get_song_title() const
