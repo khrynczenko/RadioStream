@@ -43,10 +43,6 @@ void StationPlayer::pause()
 void StationPlayer::set_volume(float volume)
 {
     stream_manager_.set_current_volume(volume);
-    if (volume == 0.f)
-    {
-        notify(Observer::placeholder, radiostream::Event::StationMuted);
-    }
 }
 
 float StationPlayer::get_volume() const noexcept
