@@ -4,6 +4,7 @@
 #include "StreamManager.hpp"
 #include "Station.hpp"
 #include "observers/Subject.hpp"
+#include <mutex>
 
 class StationPlayer : public Subject
 {
