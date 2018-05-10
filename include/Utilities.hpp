@@ -3,6 +3,8 @@
 
 #include <string>
 
+bool ends_with(std::string_view text, std::string_view ending);
+
 float volume_int_to_float(int vol) noexcept;
 unsigned int volume_float_to_int(float vol) noexcept;
 

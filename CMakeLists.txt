@@ -63,6 +63,12 @@ include/exceptions/LanguageFileNotFound.hpp
 include/exceptions/NanaTextboxProcessingException.hpp
 include/exceptions/NotSupportedLanguageException.hpp
 include/exceptions/WrongLanguageCodeFormatException.hpp
+include/multimedia_playlists/HTTPMultimediaPlaylistsDownlader.hpp
+include/multimedia_playlists/M3UReader.hpp
+include/multimedia_playlists/MultimediaPlaylistReader.hpp
+include/multimedia_playlists/MultimediaPlaylistReaderFactory.hpp
+include/multimedia_playlists/PLSReader.hpp
+include/multimedia_playlists/PocoHTTPDownloader.hpp
 include/observers/ConfigControllerObserver.hpp
 include/observers/Events.hpp
 include/observers/MainStateObserver.hpp
@@ -103,6 +109,10 @@ src/exceptions/LanguageFileNotFound.cpp
 src/exceptions/NanaTextboxProcessingException.cpp
 src/exceptions/NotSupportedLanguageException.cpp
 src/exceptions/WrongLanguageCodeFormatException.cpp
+src/multimedia_playlists/M3UReader.cpp
+src/multimedia_playlists/MultimediaPlaylistReaderFactory.cpp
+src/multimedia_playlists/PLSReader.cpp
+src/multimedia_playlists/PocoHTTPDownloader.cpp
 src/observers/ConfigControllerObserver.cpp
 src/observers/MainStateObserver.cpp
 src/observers/Observer.cpp

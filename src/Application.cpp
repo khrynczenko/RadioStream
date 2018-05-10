@@ -13,6 +13,7 @@
 #include "../include/observers/RadioBrowserRequesterControllerObserver.hpp"
 #include "../include/observers/MainStateObserver.hpp"
 #include "../include/observers/StatusBarControllerObserver.hpp"
+#include "../include/multimedia_playlists/PocoHTTPDownloader.hpp"
 #include <nana/gui/msgbox.hpp>
 
 Application::Application()
@@ -26,7 +27,7 @@ Application::Application()
     , context_(window_, menubar_, station_player_, stations_database_, status_, localizer_, config_, requester_)
     , states_manager_(context_)
     , general_container_(window_)
-    , station_player_controller(states_manager_, context_)
+    , station_player_controller(states_manager_, context_, std::make_unique<PocoHTTPDownloader>())
     , stations_database_controller_(states_manager_, context_)
     , config_controller_(states_manager_, context_)
     , radio_browser_requester_controller_(states_manager_, context_)
