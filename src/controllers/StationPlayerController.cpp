@@ -2,11 +2,17 @@
 #include "../../include/StationPlayer.hpp"
 #include "../../include/Constants.hpp"
 #include "../../include/Utilities.hpp"
+#include "../../include/multimedia_playlists/HTTPMultimediaPlaylistsDownlader.hpp"
+#include "../../include/multimedia_playlists/PLSReader.hpp"
+#include "../../include/multimedia_playlists/MultimediaPlaylistReaderFactory.hpp"
 #include <thread>
 
 
-StationPlayerController::StationPlayerController(StatesManager& manager, State::Context context) noexcept
+StationPlayerController::StationPlayerController(StatesManager& manager,
+    State::Context context,
+    std::unique_ptr<HTTPMultimediaPlaylistsDownloader> downloader) noexcept
     : Controller(manager, context)
+    , downloader_(std::move(downloader))
 {
 }
 
@@ -35,7 +41,12 @@ void StationPlayerController::process_event_command(const radiostream::Event e, 
     
     case radiostream::Event::NewStationRequested:
     {
-        const auto station = std::any_cast<Station>(data);
+        auto station = std::any_cast<Station>(data);
+        if (ends_with(station.ip_, ".pls") || ends_with(station.ip_, ".m3u"))
+        {
+            std::stringstream playlist_data{ downloader_->download(station.ip_) };
+            station.ip_ = MultimediaPlaylistReaderFactory::make_converter(Poco::URI(station.ip_))->get_station_url(playlist_data);
+        }
         std::thread thread = std::thread([this, station](){
             if(context_.station_player_.set_station(station))
                 context_.station_player_.play();

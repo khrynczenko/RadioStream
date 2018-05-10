@@ -8,6 +8,11 @@
 
 #endif
 
+bool ends_with(std::string_view text, std::string_view ending)
+{
+    return text.substr(text.size() - ending.size(), ending.size()) == ending;
+}
+
 float volume_int_to_float(int vol) noexcept
 {
 	return static_cast<float>(vol) / 100.f;
