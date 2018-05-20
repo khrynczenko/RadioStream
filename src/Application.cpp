@@ -17,13 +17,13 @@
 #include <nana/gui/msgbox.hpp>
 
 Application::Application()
-    : window_(nana::API::make_center(800, 600), nana::appear::decorate<nana::appear::minimize, nana::appear::sizable, nana::appear::maximize, nana::appear::taskbar>())
+    : config_(constants::CONFIG_FILE_PATH)
+    , window_(nana::API::make_center(config_["width"].get<unsigned short int>(), config_["height"].get<unsigned short int>()), nana::appear::decorate<nana::appear::minimize, nana::appear::sizable, nana::appear::maximize, nana::appear::taskbar>())
     , menubar_(window_)
     , station_player_()
     , stations_database_(constants::STATIONS_DATABASE_FILE)
     , status_(window_)
     , localizer_()
-    , config_(constants::CONFIG_FILE_PATH)
     , context_(window_, menubar_, station_player_, stations_database_, status_, localizer_, config_, requester_)
     , states_manager_(context_)
     , general_container_(window_)
@@ -34,7 +34,6 @@ Application::Application()
     , status_bar_controller_(states_manager_, context_, status_)
     , subject_()
 {
-	window_.caption("RadioStream");
 	set_language();
 	init_menubar();
     init_status();
@@ -45,7 +44,7 @@ Application::Application()
     search_state.initialize_countries_combox();
     search_state.initialize_language_combox();
 	states_manager_.switch_state(States::ID::Main);
-    window_.show();
+    set_window();
 }
 
 void Application::register_states()
@@ -120,6 +119,22 @@ void Application::set_observers()
     station_player_.attach(std::make_unique<MainStateObserver>(main_state));
     station_player_.attach(std::make_unique<StatusBarControllerObserver>(status_bar_controller_));
     stations_database_.attach(std::make_unique<MainStateObserver>(main_state));
+}
+
+void Application::set_window_events()
+{
+    window_.events().resized([this](const nana::arg_resized& arg)
+    {
+        config_["height"] = arg.height;
+        config_["width"] = arg.width;
+    });
+}
+
+void Application::set_window()
+{
+	window_.caption("RadioStream");
+    window_.show();
+    set_window_events();
 }
 
 void Application::build_interface()

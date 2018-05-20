@@ -9,6 +9,8 @@ struct ConfigOptions
 {
     LanguageCode language;
     unsigned int stations_search_limit;
+    unsigned short int window_width;
+    unsigned short int window_height;
 };
 
 class Config
