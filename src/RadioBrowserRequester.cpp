@@ -73,9 +73,9 @@ nlohmann::json RadioBrowserRequester::send_arbitrary_request(Poco::URI request_u
 
 }
 
-std::vector<RadioBrowserStation> parse_stations_jsons(const std::vector<nlohmann::json>& stations_jsons)
+std::vector<Station> parse_stations_jsons(const std::vector<nlohmann::json>& stations_jsons)
 {
-    std::vector<RadioBrowserStation> stations;
+    std::vector<Station> stations;
     stations.reserve(stations_jsons.size());
     for(const auto& station_json : stations_jsons)
     {
@@ -84,6 +84,7 @@ std::vector<RadioBrowserStation> parse_stations_jsons(const std::vector<nlohmann
             station_json["country"].get<std::string>(),
             station_json["language"].get<std::string>(),
             station_json["codec"].get<std::string>(),
+            station_json["bitrate"].get<std::string>() + std::string(" kbps"),
             station_json["tags"].get<std::string>());
     }
     return stations;

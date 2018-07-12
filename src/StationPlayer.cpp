@@ -54,7 +54,7 @@ bool StationPlayer::set_station(const Station& station)
 {
     station_ = station;
     notify(Observer::placeholder, radiostream::Event::NewStationLoading);
-    const auto& possible_error = stream_manager_.set_stream(station_.ip_);
+    const auto& possible_error = stream_manager_.set_stream(station_.url_);
     if (possible_error.has_value())
     {
         notify(std::make_any<BassErrorCode>(possible_error.value()), radiostream::Event::StreamLoadingError);

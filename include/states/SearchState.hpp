@@ -22,7 +22,7 @@ public:
     void change_visibility(bool visible) override;
     void init_listbox();
     void build_interface();
-    void insert_stations_to_listbox(const std::vector<RadioBrowserStation>& stations);
+    void insert_stations_to_listbox(const std::vector<Station>& stations);
     void insert_possible_languages(const std::vector<std::string>& languages);
     void insert_possible_countires(const std::vector<std::string>& countries);
 private:

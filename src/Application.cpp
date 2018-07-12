@@ -69,7 +69,7 @@ void Application::init_menubar()
             nana::inputbox inbox(window_, localizer_.get_localized_text("Please write correct URL."), localizer_.get_localized_text("Open URL"));
             if (inbox.show(url))
             {
-                notify(std::make_any<Station>("Unknown", url.value()), radiostream::Event::NewStationRequested);
+                notify(std::make_any<Station>("Unknown", url.value(), "", "", "", "", ""), radiostream::Event::NewStationRequested);
             }
         });
         thread.detach();
@@ -79,10 +79,16 @@ void Application::init_menubar()
     {   
         nana::inputbox::text station_name(localizer_.get_localized_text("Station name:"));
         nana::inputbox::text url(localizer_.get_localized_text("URL:"));
+        nana::inputbox::text country(localizer_.get_localized_text("Country:"));
+        nana::inputbox::text language(localizer_.get_localized_text("Language:"));
+        nana::inputbox::text codec(localizer_.get_localized_text("Codec:"));
+        nana::inputbox::text bitrate(localizer_.get_localized_text("Bitrate:"));
+        nana::inputbox::text tags(localizer_.get_localized_text("Tags:"));
         nana::inputbox inbox(window_, localizer_.get_localized_text("Please write correct URL."), localizer_.get_localized_text("Add station"));
-        if (inbox.show(station_name, url))
+        if (inbox.show(station_name, url, country, language, codec, bitrate, tags))
         {
-            notify(std::make_any<Station>(station_name.value(), url.value()), radiostream::Event::AddStationToDatabase);
+            notify(std::make_any<Station>(station_name.value(), url.value(), country.value(), language.value(),
+                codec.value(), bitrate.value(), tags.value()), radiostream::Event::AddStationToDatabase);
         }
     });
 

@@ -45,7 +45,6 @@ include/Config.hpp
 include/Constants.hpp
 include/Language.hpp
 include/RadioBrowserRequester.hpp
-include/RadioBrowserStation.hpp
 include/Station.hpp
 include/StationPlayer.hpp
 include/StationsDatabase.hpp
@@ -91,7 +90,6 @@ src/Constants.cpp
 src/Language.cpp
 src/main.cpp
 src/RadioBrowserRequester.cpp
-src/RadioBrowserStation.cpp
 src/Station.cpp
 src/StationPlayer.cpp
 src/StationsDatabase.cpp

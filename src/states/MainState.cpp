@@ -137,9 +137,19 @@ void MainState::init_contextual_menus()
 void MainState::init_listbox()
 {
     stations_listbox_.append_header(context_.localizer_.get_localized_text("Station's name"));
-    stations_listbox_.append_header(context_.localizer_.get_localized_text("Ip"));
+    stations_listbox_.append_header(context_.localizer_.get_localized_text("URL"));
+    stations_listbox_.append_header(context_.localizer_.get_localized_text("Country"));
+    stations_listbox_.append_header(context_.localizer_.get_localized_text("Language"));
+    stations_listbox_.append_header(context_.localizer_.get_localized_text("Codec"));
+    stations_listbox_.append_header(context_.localizer_.get_localized_text("Bitrate"));
+    stations_listbox_.append_header(context_.localizer_.get_localized_text("Tags"));
     stations_listbox_.column_at(static_cast<std::size_t>(StationListboxColumns::Name)).width(300u);
-    stations_listbox_.column_at(static_cast<std::size_t>(StationListboxColumns::Ip)).width(200u);
+    stations_listbox_.column_at(static_cast<std::size_t>(StationListboxColumns::Url)).width(200u);
+    stations_listbox_.column_at(static_cast<std::size_t>(StationListboxColumns::Country)).width(50u);
+    stations_listbox_.column_at(static_cast<std::size_t>(StationListboxColumns::Language)).width(50u);
+    stations_listbox_.column_at(static_cast<std::size_t>(StationListboxColumns::Codec)).width(20u);
+    stations_listbox_.column_at(static_cast<std::size_t>(StationListboxColumns::Bitrate)).width(20u);
+    stations_listbox_.column_at(static_cast<std::size_t>(StationListboxColumns::Tags)).width(100u);
     populate_listbox();
     stations_listbox_.enable_single(false, false);
 
@@ -229,9 +239,14 @@ void MainState::set_new_station()
         const auto category_index = static_cast<std::size_t>(StationListboxCategories::NanaDefault);
         const auto column_index = static_cast<std::size_t>(StationListboxColumns::Name);
         const auto station_category = stations_listbox_.at(category_index);
-        const auto station_name = station_category.at(selected_item.item).text(column_index);
-        const auto station_url = station_category.at(selected_item.item).text(static_cast<std::size_t>(StationListboxColumns::Ip));
-        notify(Station{ station_name,station_url}, radiostream::Event::NewStationRequested);
+        const auto name = station_category.at(selected_item.item).text(column_index);
+        const auto url = station_category.at(selected_item.item).text(static_cast<std::size_t>(StationListboxColumns::Url));
+        const auto country = station_category.at(selected_item.item).text(static_cast<std::size_t>(StationListboxColumns::Country));
+        const auto language = station_category.at(selected_item.item).text(static_cast<std::size_t>(StationListboxColumns::Language));
+        const auto codec = station_category.at(selected_item.item).text(static_cast<std::size_t>(StationListboxColumns::Codec));
+        const auto bitrate = station_category.at(selected_item.item).text(static_cast<std::size_t>(StationListboxColumns::Bitrate));
+        const auto tags = station_category.at(selected_item.item).text(static_cast<std::size_t>(StationListboxColumns::Tags));
+        notify(Station{ name, url, country, language, codec, bitrate, tags}, radiostream::Event::NewStationRequested);
     }
 }
 
