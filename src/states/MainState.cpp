@@ -128,10 +128,6 @@ void MainState::init_contextual_menus()
     {
         set_new_station();
     });
-    listbox_item_menu_.append(context_.localizer_.get_localized_text("Subscribe"), [this](auto&)
-    {
-        subscribe_to_station();
-    });
     listbox_item_menu_.append(context_.localizer_.get_localized_text("Delete from list"), [this](auto&)
     {
         delete_station();
@@ -142,12 +138,9 @@ void MainState::init_listbox()
 {
     stations_listbox_.append_header(context_.localizer_.get_localized_text("Station's name"));
     stations_listbox_.append_header(context_.localizer_.get_localized_text("Ip"));
-    stations_listbox_.append_header(context_.localizer_.get_localized_text("Favorite"));
     stations_listbox_.column_at(static_cast<std::size_t>(StationListboxColumns::Name)).width(300u);
     stations_listbox_.column_at(static_cast<std::size_t>(StationListboxColumns::Ip)).width(200u);
-    stations_listbox_.column_at(static_cast<std::size_t>(StationListboxColumns::Favorite)).width(100u);
     populate_listbox();
-    stations_listbox_.sort_col(static_cast<std::size_t>(StationListboxColumns::Favorite), true);
     stations_listbox_.enable_single(false, false);
 
     stations_listbox_.events().mouse_down([this](const nana::arg_mouse& arg)
@@ -167,24 +160,6 @@ void MainState::init_listbox()
     });
     stations_listbox_.auto_draw(true);
 }
-/**
- * \brief Changes favorite value in both listbox and StationsManager::stations_.
- */
-void MainState::subscribe_to_station()
-{
-    const auto selected_item = stations_listbox_.selected().front();
-    const auto category_index = static_cast<std::size_t>(StationListboxCategories::NanaDefault);
-    const auto name_column_index = static_cast<std::size_t>(StationListboxColumns::Name);
-    const auto ip_column_index = static_cast<std::size_t>(StationListboxColumns::Ip);
-    const auto favorite_column_index = static_cast<std::size_t>(StationListboxColumns::Favorite);
-    const auto station_category = stations_listbox_.at(category_index);
-    const auto station_name = station_category.at(selected_item.item).text(name_column_index);
-    const auto station_ip = station_category.at(selected_item.item).text(ip_column_index);
-    const auto station_favorite = str_to_bool(station_category.at(selected_item.item).text(favorite_column_index));
-    const auto station = Station(station_name, station_ip, station_favorite);
-    context_.stations_database_.change_station_favorite_status(station);
-    populate_listbox();
-}
 
 void MainState::populate_listbox()
 {
@@ -195,7 +170,6 @@ void MainState::populate_listbox()
         const auto category_index = static_cast<std::size_t>(StationListboxCategories::NanaDefault);
         stations_listbox_.at(category_index).append(station);
     }
-    stations_listbox_.sort_col(static_cast<std::size_t>(StationListboxColumns::Favorite), true);
     stations_listbox_.auto_draw(true);
 }
 
@@ -257,8 +231,7 @@ void MainState::set_new_station()
         const auto station_category = stations_listbox_.at(category_index);
         const auto station_name = station_category.at(selected_item.item).text(column_index);
         const auto station_url = station_category.at(selected_item.item).text(static_cast<std::size_t>(StationListboxColumns::Ip));
-        const bool station_favorite = bool_to_str("true") == station_category.at(selected_item.item).text(static_cast<std::size_t>(StationListboxColumns::Favorite));
-        notify(Station{ station_name,station_url, station_favorite }, radiostream::Event::NewStationRequested);
+        notify(Station{ station_name,station_url}, radiostream::Event::NewStationRequested);
     }
 }
 

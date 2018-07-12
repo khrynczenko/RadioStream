@@ -69,7 +69,7 @@ void Application::init_menubar()
             nana::inputbox inbox(window_, localizer_.get_localized_text("Please write correct URL."), localizer_.get_localized_text("Open URL"));
             if (inbox.show(url))
             {
-                notify(std::make_any<Station>("Unknown", url.value(), false), radiostream::Event::NewStationRequested);
+                notify(std::make_any<Station>("Unknown", url.value()), radiostream::Event::NewStationRequested);
             }
         });
         thread.detach();
@@ -82,7 +82,7 @@ void Application::init_menubar()
         nana::inputbox inbox(window_, localizer_.get_localized_text("Please write correct URL."), localizer_.get_localized_text("Add station"));
         if (inbox.show(station_name, url))
         {
-            notify(std::make_any<Station>(station_name.value(), url.value(), false), radiostream::Event::AddStationToDatabase);
+            notify(std::make_any<Station>(station_name.value(), url.value()), radiostream::Event::AddStationToDatabase);
         }
     });
 

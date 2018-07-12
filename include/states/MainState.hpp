@@ -30,7 +30,6 @@ private:
     void build_interface();
     void init_contextual_menus();
     void init_listbox();
-    void subscribe_to_station();
     void populate_listbox();
     void search_stations();
     void pop_song_title_menu();
