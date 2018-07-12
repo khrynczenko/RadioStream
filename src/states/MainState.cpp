@@ -196,6 +196,7 @@ void MainState::populate_listbox()
         stations_listbox_.at(category_index).append(station);
     }
     stations_listbox_.sort_col(static_cast<std::size_t>(StationListboxColumns::Favorite), true);
+    stations_listbox_.auto_draw(true);
 }
 
 void MainState::search_stations()
