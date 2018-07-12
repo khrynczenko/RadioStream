@@ -23,7 +23,6 @@ namespace constants
 	{
 		Name,
         Ip,
-		Favorite,
 	};
 
     enum class SearchListboxColumns

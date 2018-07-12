@@ -17,11 +17,9 @@ const std::vector<Station>& StationsDatabase::get_stations() const noexcept
 void StationsDatabase::add_station(const Station& station)
 {
     Poco::Data::Statement insert(database_);
-    const auto favorite = static_cast<int>(station.favorite_);
-    insert << "INSERT INTO stations (name, ip, favorite) VALUES(?, ?, ?)",
+    insert << "INSERT INTO stations (name, ip) VALUES(?, ?)",
         Poco::Data::Keywords::bind(station.name_),
-        Poco::Data::Keywords::bind(station.ip_),
-        Poco::Data::Keywords::bind(favorite);
+        Poco::Data::Keywords::bind(station.ip_);
     insert.execute();
     cached_stations_.push_back(station);
     notify(Observer::placeholder, radiostream::Event::StationAddedToDatabase);
@@ -36,18 +34,6 @@ void StationsDatabase::remove_station(const Station& station)
     delete_statement.execute();
     cached_stations_.erase(std::find(cached_stations_.begin(), cached_stations_.end(), station));
     notify(Observer::placeholder, radiostream::Event::StationDeletedFromDatabase);
-}
-
-void StationsDatabase::change_station_favorite_status(const Station& station)
-{
-    Poco::Data::Statement update(database_);
-    update << "UPDATE stations SET favorite = ? WHERE name = ? AND ip = ?",
-        Poco::Data::Keywords::bind(!station.favorite_),
-        Poco::Data::Keywords::bind(station.name_),
-        Poco::Data::Keywords::bind(station.ip_);
-    update.execute();
-    const auto station_found = std::find(cached_stations_.begin(), cached_stations_.end(), station);
-    station_found->favorite_ = !station_found->favorite_;
 }
 
 std::vector<std::string> StationsDatabase::get_stations_names_with_substring(const std::string& substring) const
@@ -68,7 +54,7 @@ std::vector<std::string> StationsDatabase::get_stations_names_with_substring(con
 void StationsDatabase::create_empty_table_if_does_not_exist()
 {
     Poco::Data::Statement create(database_);
-    create << "CREATE TABLE IF NOT EXISTS `stations` ( `id` INTEGER PRIMARY KEY AUTOINCREMENT, `name` TEXT, `ip` TEXT, `favorite` INTEGER )";
+    create << "CREATE TABLE IF NOT EXISTS `stations` ( `id` INTEGER PRIMARY KEY AUTOINCREMENT, `name` TEXT, `ip` TEXT )";
     create.execute();
 }
 
@@ -81,7 +67,6 @@ void StationsDatabase::cache_stations_stored_in_database()
         Poco::Data::Keywords::into(id),
         Poco::Data::Keywords::into(station.name_),
         Poco::Data::Keywords::into(station.ip_),
-        Poco::Data::Keywords::into(station.favorite_),
         Poco::Data::Keywords::range(0, 1);
 
     while(!select.done())

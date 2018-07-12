@@ -6,13 +6,12 @@
 
 struct Station
 {
-	Station(std::string_view name, std::string_view ip, bool favorite);
+	Station(std::string_view name, std::string_view ip);
     explicit Station(const RadioBrowserStation& rhs);
     Station() = default;
 	bool operator==(const Station& rhs) const noexcept;
 	std::string name_;
 	std::string ip_;
-	bool favorite_;
 };
 
 nana::listbox::oresolver& operator<<(nana::listbox::oresolver& ores, const Station& station);
