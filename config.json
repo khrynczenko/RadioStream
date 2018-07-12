@@ -1,4 +1,6 @@
 {
+    "height": 654,
     "language": "en",
-    "stations_search_limit": 150
+    "stations_search_limit": 50,
+    "width": 1053
 }
