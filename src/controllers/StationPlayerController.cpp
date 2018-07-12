@@ -29,7 +29,11 @@ void StationPlayerController::process_event_command(const radiostream::Event e, 
 
     case radiostream::Event::PlayClicked:
     {
-        context_.station_player_.play();
+        std::thread thread = std::thread([this]()
+        {
+            context_.station_player_.play();
+        });
+        thread.detach();
     }
     break;
 
