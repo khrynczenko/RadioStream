@@ -21,6 +21,7 @@ namespace radiostream
         DeleteStationFromDatabase,
         StationAddedToDatabase,
         StationDeletedFromDatabase,
+        SearchForStationsInDatabase,
 
         SearchStationsRequested,
         SearchLanguagesRequested,

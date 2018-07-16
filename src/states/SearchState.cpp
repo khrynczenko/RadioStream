@@ -17,10 +17,10 @@ SearchState::SearchState(StatesManager& state_manager, Context& context)
     , country_combox_(context.window_)
     , language_combox_(context.window_)
     , search_submit_button_(context.window_)
-    , found_stations_listbox_(context.window_)
+    , found_stations_listbox_(context.window_, context_)
     , back_button_(context.window_)
 {
-    init_listbox();
+    set_listbox_events();
     build_interface();
 }
 
@@ -41,27 +41,10 @@ void SearchState::change_visibility(bool visible)
     container_.collocate();
 }
 
-void SearchState::init_listbox()
+void SearchState::set_listbox_events()
 {
-	found_stations_listbox_.append_header(context_.localizer_.get_localized_text("Station's name"));
-    found_stations_listbox_.append_header(context_.localizer_.get_localized_text("URL"));
-    found_stations_listbox_.append_header(context_.localizer_.get_localized_text("Country"));
-    found_stations_listbox_.append_header(context_.localizer_.get_localized_text("Language"));
-    found_stations_listbox_.append_header(context_.localizer_.get_localized_text("Codec"));
-    found_stations_listbox_.append_header(context_.localizer_.get_localized_text("Bitrate"));
-    found_stations_listbox_.append_header(context_.localizer_.get_localized_text("Tags"));
-	found_stations_listbox_.column_at(static_cast<std::size_t>(SearchListboxColumns::Name)).width(250u);
-    found_stations_listbox_.column_at(static_cast<std::size_t>(SearchListboxColumns::Url)).width(200u);
-    found_stations_listbox_.column_at(static_cast<std::size_t>(SearchListboxColumns::Country)).width(70u);
-    found_stations_listbox_.column_at(static_cast<std::size_t>(SearchListboxColumns::Language)).width(70u);
-    found_stations_listbox_.column_at(static_cast<std::size_t>(SearchListboxColumns::Codec)).width(50u);
-    found_stations_listbox_.column_at(static_cast<std::size_t>(SearchListboxColumns::Bitrate)).width(50u);
-    found_stations_listbox_.column_at(static_cast<std::size_t>(SearchListboxColumns::Tags)).width(200u);
-    found_stations_listbox_.enable_single(false, false);
-
     found_stations_listbox_.events().mouse_down([this](const nana::arg_mouse& arg)
     {
-        sticky_select(arg);
         if(!arg.is_left_button())
         {
             pop_stations_listbox_menu();
@@ -69,13 +52,8 @@ void SearchState::init_listbox()
     });
 	found_stations_listbox_.events().dbl_click([this](const nana::arg_mouse& arg)
 	{
-        sticky_select(arg);
-		if(!found_stations_listbox_.cast(arg.pos).is_category() && arg.is_left_button()) // this condition must be fulfilled because when we click category it selects the last item in it so when we dbl_click category it works just as we would click last item in it
-		{
             set_new_station();
-		}
 	});
-    found_stations_listbox_.auto_draw(true);
 }
 
 void SearchState::build_interface()
@@ -134,12 +112,7 @@ void SearchState::build_interface()
 
 void SearchState::insert_stations_to_listbox(const std::vector<Station>& stations)
 {
-    found_stations_listbox_.clear(); found_stations_listbox_.auto_draw(false);
-    for(const auto& station : stations)
-    {
-        found_stations_listbox_.at(static_cast<std::size_t>(StationListboxCategories::NanaDefault)).append(station);
-    }
-    found_stations_listbox_.auto_draw(true);
+    found_stations_listbox_.populate_listbox(stations);
 }
 
 void SearchState::insert_possible_languages(const std::vector<std::string>& languages)
@@ -167,12 +140,9 @@ void SearchState::pop_stations_listbox_menu()
 
 void SearchState::add_selected_station_to_database()
 {
-    if(!found_stations_listbox_.selected().empty())
+    if (auto station = found_stations_listbox_.get_selected_station(); station.has_value())
     {
-        Station station;
-        const auto selected_index = found_stations_listbox_.selected().front();
-        found_stations_listbox_.at(selected_index.cat).at(selected_index.item).resolve_to(station);
-        notify(std::make_any<Station>(station), radiostream::Event::AddStationToDatabase);
+        notify(station.value(), radiostream::Event::AddStationToDatabase);
     }
 }
 
@@ -188,35 +158,15 @@ void SearchState::search_for_stations()
                                         country_combox_.text(country_combox_.option()),
                                         language_combox_.text(language_combox_.option()),
                                         order);
-        auto any = std::make_any<std::tuple<std::string, std::string, std::string, RadioBrowserRequester::OrderBy>>(arguments);
+        const auto any = std::make_any<std::tuple<std::string, std::string, std::string, RadioBrowserRequester::OrderBy>>(arguments);
         notify(any, radiostream::Event::SearchStationsRequested);
 }
 
 void SearchState::set_new_station()
 {
-    if(!found_stations_listbox_.selected().empty())
+    auto station = found_stations_listbox_.get_selected_station();
+    if(station.has_value())
     {
-        Station station;
-        const auto selected_index = found_stations_listbox_.selected().front();
-        found_stations_listbox_.at(selected_index.cat).at(selected_index.item).resolve_to(station);
-        notify(std::make_any<Station>(station), radiostream::Event::NewStationRequested);
-    }
-}
-
-void SearchState::sticky_select(const nana::arg_mouse & mouse)
-{
-    if (!found_stations_listbox_.selected().empty())
-    {
-        for (const auto& pair : found_stations_listbox_.selected())
-        {
-            if (pair.item == found_stations_listbox_.selected().front().item)
-            {
-                continue;
-            }
-            else
-            {
-                found_stations_listbox_.at(pair.cat).at(pair.item).select(false);
-            }
-        }
+        notify(station.value(), radiostream::Event::NewStationRequested);
     }
 }
