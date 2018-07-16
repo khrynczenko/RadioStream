@@ -22,7 +22,12 @@ namespace constants
 	enum class StationListboxColumns
 	{
 		Name,
-        Ip,
+        Url,
+        Country,
+        Language,
+        Codec,
+        Bitrate,
+        Tags
 	};
 
     enum class SearchListboxColumns
@@ -32,6 +37,7 @@ namespace constants
         Country,
         Language,
         Codec,
+        Bitrate,
         Tags
     };
 

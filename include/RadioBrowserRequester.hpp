@@ -1,7 +1,7 @@
 #ifndef RADIOBROWSEREQUESTER_HPP
 #define RADIOBROWSEREQUESTER_HPP
 
-#include "RadioBrowserStation.hpp"
+#include "Station.hpp"
 #include <Poco/Net/HTTPClientSession.h>
 #include <Poco/URI.h>
 #include <nlohmann/json.hpp>
@@ -27,7 +27,7 @@ private:
     Poco::Net::HTTPClientSession session_{"www.radio-browser.info"};
 };
 
-std::vector<RadioBrowserStation> parse_stations_jsons(const std::vector<nlohmann::json>& stations_jsons);
+std::vector<Station> parse_stations_jsons(const std::vector<nlohmann::json>& stations_jsons);
 std::vector<std::string> parse_countries(const std::vector<nlohmann::json> countries_jsons);
 std::vector<std::string> parse_languages(const std::vector<nlohmann::json> languages_jsons);
 #endif

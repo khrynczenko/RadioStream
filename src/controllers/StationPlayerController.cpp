@@ -46,10 +46,10 @@ void StationPlayerController::process_event_command(const radiostream::Event e, 
     case radiostream::Event::NewStationRequested:
     {
         auto station = std::any_cast<Station>(data);
-        if (ends_with(station.ip_, ".pls") || ends_with(station.ip_, ".m3u"))
+        if (ends_with(station.url_, ".pls") || ends_with(station.url_, ".m3u"))
         {
-            std::stringstream playlist_data{ downloader_->download(station.ip_) };
-            station.ip_ = MultimediaPlaylistReaderFactory::make_converter(Poco::URI(station.ip_))->get_station_url(playlist_data);
+            std::stringstream playlist_data{ downloader_->download(station.url_) };
+            station.url_ = MultimediaPlaylistReaderFactory::make_converter(Poco::URI(station.url_))->get_station_url(playlist_data);
         }
         std::thread thread = std::thread([this, station](){
             if(context_.station_player_.set_station(station))

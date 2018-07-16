@@ -48,12 +48,14 @@ void SearchState::init_listbox()
     found_stations_listbox_.append_header(context_.localizer_.get_localized_text("Country"));
     found_stations_listbox_.append_header(context_.localizer_.get_localized_text("Language"));
     found_stations_listbox_.append_header(context_.localizer_.get_localized_text("Codec"));
+    found_stations_listbox_.append_header(context_.localizer_.get_localized_text("Bitrate"));
     found_stations_listbox_.append_header(context_.localizer_.get_localized_text("Tags"));
 	found_stations_listbox_.column_at(static_cast<std::size_t>(SearchListboxColumns::Name)).width(250u);
     found_stations_listbox_.column_at(static_cast<std::size_t>(SearchListboxColumns::Url)).width(200u);
     found_stations_listbox_.column_at(static_cast<std::size_t>(SearchListboxColumns::Country)).width(70u);
     found_stations_listbox_.column_at(static_cast<std::size_t>(SearchListboxColumns::Language)).width(70u);
     found_stations_listbox_.column_at(static_cast<std::size_t>(SearchListboxColumns::Codec)).width(50u);
+    found_stations_listbox_.column_at(static_cast<std::size_t>(SearchListboxColumns::Bitrate)).width(50u);
     found_stations_listbox_.column_at(static_cast<std::size_t>(SearchListboxColumns::Tags)).width(200u);
     found_stations_listbox_.enable_single(false, false);
 
@@ -130,7 +132,7 @@ void SearchState::build_interface()
     });
 }
 
-void SearchState::insert_stations_to_listbox(const std::vector<RadioBrowserStation>& stations)
+void SearchState::insert_stations_to_listbox(const std::vector<Station>& stations)
 {
     found_stations_listbox_.clear(); found_stations_listbox_.auto_draw(false);
     for(const auto& station : stations)
@@ -167,7 +169,7 @@ void SearchState::add_selected_station_to_database()
 {
     if(!found_stations_listbox_.selected().empty())
     {
-        RadioBrowserStation station;
+        Station station;
         const auto selected_index = found_stations_listbox_.selected().front();
         found_stations_listbox_.at(selected_index.cat).at(selected_index.item).resolve_to(station);
         notify(std::make_any<Station>(station), radiostream::Event::AddStationToDatabase);
@@ -194,7 +196,7 @@ void SearchState::set_new_station()
 {
     if(!found_stations_listbox_.selected().empty())
     {
-        RadioBrowserStation station;
+        Station station;
         const auto selected_index = found_stations_listbox_.selected().front();
         found_stations_listbox_.at(selected_index.cat).at(selected_index.item).resolve_to(station);
         notify(std::make_any<Station>(station), radiostream::Event::NewStationRequested);
