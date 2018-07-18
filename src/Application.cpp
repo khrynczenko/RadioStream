@@ -20,10 +20,8 @@ Application::Application()
     : config_(constants::CONFIG_FILE_PATH)
     , window_(nana::API::make_center(config_["width"].get<unsigned short int>(), config_["height"].get<unsigned short int>()), nana::appear::decorate<nana::appear::minimize, nana::appear::sizable, nana::appear::maximize, nana::appear::taskbar>())
     , menubar_(window_)
-    , station_player_()
     , stations_database_(constants::STATIONS_DATABASE_FILE)
     , status_(window_)
-    , localizer_()
     , context_(window_, menubar_, station_player_, stations_database_, status_, localizer_, config_, requester_)
     , states_manager_(context_)
     , general_container_(window_)
@@ -32,7 +30,6 @@ Application::Application()
     , config_controller_(states_manager_, context_)
     , radio_browser_requester_controller_(states_manager_, context_)
     , status_bar_controller_(states_manager_, context_, status_)
-    , subject_()
 {
 	set_language();
 	init_menubar();

@@ -2,7 +2,6 @@
 #define MAINSTATE_HPP
 
 #include "State.hpp"
-#include "../observers/Subject.hpp"
 #include "../Station.hpp"
 #include "../widgets/StationListbox.hpp"
 #include <nana/gui/place.hpp>

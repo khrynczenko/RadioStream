@@ -14,10 +14,10 @@ StationListbox::StationListbox(nana::form& handle, State::Context context)
     this->append_header(context_.localizer_.get_localized_text("Tags"));
     this->column_at(Columns::Name).width(300u);
     this->column_at(Columns::Url).width(200u);
-    this->column_at(Columns::Country).width(50u);
-    this->column_at(Columns::Language).width(50u);
-    this->column_at(Columns::Codec).width(20u);
-    this->column_at(Columns::Bitrate).width(20u);
+    this->column_at(Columns::Country).width(100u);
+    this->column_at(Columns::Language).width(100u);
+    this->column_at(Columns::Codec).width(50u);
+    this->column_at(Columns::Bitrate).width(100u);
     this->column_at(Columns::Tags).width(100u);
     this->enable_single(false, false);
 }

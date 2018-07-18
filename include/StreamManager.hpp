@@ -32,7 +32,6 @@ public:
 	void play();
 	std::string get_song_title() const;
 	StreamManager();
-	~StreamManager() = default;
 private:
     bool muted_;
 	HSTREAM main_stream_;

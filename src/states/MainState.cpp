@@ -61,7 +61,7 @@ void MainState::build_interface()
     volume_slider_.scheme().color_vernier = VERNIER_COLOR;
     volume_slider_.maximum(100);
     volume_slider_.value(volume_float_to_int(context_.station_player_.get_volume()));
-    volume_slider_.vernier([](unsigned int maximum, unsigned int cursor_value)
+    volume_slider_.vernier([](const unsigned int maximum, const unsigned int cursor_value)
     {
         return std::string(std::to_string(cursor_value) + "/" + std::to_string(maximum));
     });
@@ -160,19 +160,8 @@ void MainState::search_stations()
     if (!string_to_find.empty())
     {
         stations_listbox_.clear();
-        auto station_names_containing_substring = context_.stations_database_.get_stations_names_with_substring(string_to_find);
-        const auto& all_stations = context_.stations_database_.get_stations();
-        for (const auto& station : all_stations)
-        {
-            for (const auto& name : station_names_containing_substring)
-            {
-                if (string_to_lower(station.name_) == name)
-                {
-                    const auto category_index = static_cast<std::size_t>(StationListboxCategories::NanaDefault);
-                    stations_listbox_.at(category_index).append(station);
-                }
-            }
-        }
+        const auto& stations = context_.stations_database_.get_stations_by_substring(string_to_find);
+        stations_listbox_.populate_listbox(stations);
     }
     else
     {

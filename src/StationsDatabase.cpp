@@ -41,19 +41,19 @@ void StationsDatabase::remove_station(const Station& station)
     notify(Observer::placeholder, radiostream::Event::StationDeletedFromDatabase);
 }
 
-std::vector<std::string> StationsDatabase::get_stations_names_with_substring(const std::string& substring) const
+std::vector<Station> StationsDatabase::get_stations_by_substring(const std::string& substring) const
 {
-	std::vector<std::string> matching_station_names;
-    const std::string string_to_look_for = string_to_lower(substring);
+    std::vector<Station> matching_stations;
+    const auto string_to_look_for = string_to_lower(substring);
 	for(const auto& station : cached_stations_)
 	{
         std::string lower_cased_station_name = string_to_lower(station.name_);
 		if (lower_cased_station_name.find(string_to_look_for) != std::string::npos)
 		{
-            matching_station_names.push_back(lower_cased_station_name);
+            matching_stations.push_back(station);
 		}
 	}
-	return matching_station_names;
+	return matching_stations;
 }
 
 void StationsDatabase::create_empty_table_if_does_not_exist()
