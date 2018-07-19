@@ -6,7 +6,7 @@
 class RadioBrowserRequesterControllerObserver : public Observer
 {
 public:
-    RadioBrowserRequesterControllerObserver(RadioBrowserRequesterController& controller) noexcept;
+    explicit RadioBrowserRequesterControllerObserver(RadioBrowserRequesterController& controller) noexcept;
     void on_notify(const std::any& data, radiostream::Event e) override;
 private:
     RadioBrowserRequesterController& controller_;

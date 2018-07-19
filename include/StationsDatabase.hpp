@@ -13,7 +13,7 @@ public:
     const std::vector<Station>& get_stations() const noexcept;
     void add_station(const Station& station);
     void remove_station(const Station& station);
-    std::vector<std::string> get_stations_names_with_substring(const std::string& substring) const;
+    std::vector<Station> get_stations_by_substring(const std::string& substring) const;
 private:
     void create_empty_table_if_does_not_exist();
     void cache_stations_stored_in_database();

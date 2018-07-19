@@ -7,7 +7,8 @@
 class HTTPMultimediaPlaylistsDownloader
 {
 public:
-   virtual std::string download(std::string_view url) const = 0;
+    virtual ~HTTPMultimediaPlaylistsDownloader() = default;
+    virtual std::string download(std::string_view url) const = 0;
 };
 
 #endif

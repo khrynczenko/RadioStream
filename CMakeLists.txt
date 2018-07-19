@@ -84,6 +84,7 @@ include/states/State.hpp
 include/states/StateIdentifiers.hpp
 include/states/StatesManager.hpp
 include/states/ToolsState.hpp
+include/widgets/StationListbox.hpp
 src/Application.cpp
 src/Config.cpp
 src/Constants.cpp
@@ -125,6 +126,7 @@ src/states/SearchState.cpp
 src/states/State.cpp
 src/states/StatesManager.cpp
 src/states/ToolsState.cpp
+src/widgets/StationListbox.cpp
 )
 
 if ( CMAKE_COMPILER_IS_GNUCC )
