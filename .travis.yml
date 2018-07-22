@@ -30,7 +30,7 @@ script:
   - tar -xzf cmake-3.10.1.tar.gz
   - cd cmake-3.10.1/
   - ./bootstrap
-  - make -j4
+  - make
   - sudo make install
   - cd ..
   - cd ..
