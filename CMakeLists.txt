@@ -1,89 +1,43 @@
-cmake_minimum_required (VERSION 3.9)
-project(RadioStream)
+cmake_minimum_required (VERSION 3.10)
+project(RadioStream VERSION 0.1.0)
 
 if(WIN32)
         set(BASS_LIB_DIR ${CMAKE_SOURCE_DIR}/libs/bass/c)
-        set(BASS_LIB_FILE ${CMAKE_SOURCE_DIR}/libs/bass/c/bass.lib)
+        set(BASS_LIB_FILE ${CMAKE_SOURCE_DIR}/libs/bass/c/x64/bass.lib)
+        set(shared_lib "dll")
 elseif(UNIX)
         set(BASS_LIB_DIR ${CMAKE_SOURCE_DIR}/libs/bass)
         set(BASS_LIB_FILE ${CMAKE_SOURCE_DIR}/libs/bass/x64/libbass.so)
 	set(FONTCONFIG_LIB "-lfontconfig")
-	set(SQLITE3_LIB "-lsqlite3")
 	set(PTHREAD_LIB "-lpthread")
+        set(shared_lib "so")
 endif()
 
-set(MSVC_USE_STATIC_RUNTIME OFF )
 
-set(ENABLE_XML OFF)
-set(ENABLE_JSON ON)
-set(ENABLE_MONGODB OFF)
-set(ENABLE_REDIS OFF)
-set(ENABLE_PDF OFF)
-set(ENABLE_UTIL ON)
-set(ENABLE_NET ON)
-set(ENABLE_NETSSL ON)
-set(ENABLE_NETSSL_WIN OFF)
-set(ENABLE_CRYPTO OFF)
-set(ENABLE_DATA ON)
-set(ENABLE_DATA_SQLITE ON)
-set(ENABLE_DATA_MYSQL OFF)
-set(ENABLE_DATA_ODBC OFF)
-set(ENABLE_SEVENZIP OFF)
-set(ENABLE_ZIP OFF)
-set(ENABLE_APACHECONNECTOR OFF)
-set(ENABLE_CPPPARSER OFF)
-set(ENABLE_POCODOC OFF)
-set(ENABLE_PAGECOMPILER OFF)
-set(ENABLE_PAGECOMPILER_FILE2PAGE OFF)
+set(MSVC_USE_STATIC_RUNTIME FALSE)
+set(ENABLE_XML FALSE)
+set(ENABLE_JSTRUE TRUE)
+set(ENABLE_MONGODB FALSE)
+set(ENABLE_REDIS FALSE)
+set(ENABLE_PDF FALSE)
+set(ENABLE_UTIL TRUE)
+set(ENABLE_NET TRUE)
+set(ENABLE_NETSSL TRUE)
+set(ENABLE_NETSSL_WIN FALSE)
+set(ENABLE_CRYPTO FALSE)
+set(ENABLE_DATA TRUE)
+set(ENABLE_DATA_SQLITE TRUE)
+set(ENABLE_DATA_MYSQL FALSE)
+set(ENABLE_DATA_ODBC FALSE)
+set(ENABLE_SEVENZIP FALSE)
+set(ENABLE_ZIP FALSE)
+set(ENABLE_APACHECONNECTOR FALSE)
+set(ENABLE_CPPPARSER FALSE)
+set(ENABLE_POCODOC FALSE)
+set(ENABLE_PAGECOMPILER FALSE)
+set(ENABLE_PAGECOMPILER_FILE2PAGE FALSE)
 
-add_subdirectory(${CMAKE_SOURCE_DIR}/libs/nana)
-add_subdirectory(${CMAKE_SOURCE_DIR}/libs/poco)
-
-add_executable(RadioStream 
-include/Application.hpp
-include/Config.hpp
-include/Constants.hpp
-include/Language.hpp
-include/RadioBrowserRequester.hpp
-include/Station.hpp
-include/StationPlayer.hpp
-include/StationsDatabase.hpp
-include/StatusBar.hpp
-include/StreamManager.hpp
-include/TextLocalizer.hpp
-include/Utilities.hpp
-include/controllers/ConfigController.hpp
-include/controllers/Controller.hpp
-include/controllers/RadioBrowserRequesterController.hpp
-include/controllers/StationPlayerController.hpp
-include/controllers/StationsDatabaseController.hpp
-include/controllers/StatusBarController.hpp
-include/exceptions/LanguageFileNotFound.hpp
-include/exceptions/NanaTextboxProcessingException.hpp
-include/exceptions/NotSupportedLanguageException.hpp
-include/exceptions/WrongLanguageCodeFormatException.hpp
-include/multimedia_playlists/HTTPMultimediaPlaylistsDownlader.hpp
-include/multimedia_playlists/M3UReader.hpp
-include/multimedia_playlists/MultimediaPlaylistReader.hpp
-include/multimedia_playlists/MultimediaPlaylistReaderFactory.hpp
-include/multimedia_playlists/PLSReader.hpp
-include/multimedia_playlists/PocoHTTPDownloader.hpp
-include/observers/ConfigControllerObserver.hpp
-include/observers/Events.hpp
-include/observers/MainStateObserver.hpp
-include/observers/Observer.hpp
-include/observers/RadioBrowserRequesterControllerObserver.hpp
-include/observers/SearchStateObserver.hpp
-include/observers/StationPlayerControllerObserver.hpp
-include/observers/StationsDatabaseControllerObserver.hpp
-include/observers/StatusBarControllerObserver.hpp
-include/observers/Subject.hpp
-include/states/MainState.hpp
-include/states/SearchState.hpp
-include/states/State.hpp
-include/states/StateIdentifiers.hpp
-include/states/StatesManager.hpp
-include/states/ToolsState.hpp
+set(SOURCEFILES 
 src/Application.cpp
 src/Config.cpp
 src/Constants.cpp
@@ -126,13 +80,10 @@ src/states/State.cpp
 src/states/StatesManager.cpp
 src/states/ToolsState.cpp
 )
+add_subdirectory(${CMAKE_SOURCE_DIR}/libs/nana EXCLUDE_FROM_ALL)
+add_subdirectory(${CMAKE_SOURCE_DIR}/libs/poco EXCLUDE_FROM_ALL)
 
-if ( CMAKE_COMPILER_IS_GNUCC )
-    target_compile_options(RadioStream PRIVATE "-Wall")
-endif()
-if ( MSVC )
-    target_compile_options(RadioStream PRIVATE "/W4")
-endif()
+add_executable(RadioStream ${SOURCEFILES})
 target_compile_features(RadioStream PRIVATE cxx_std_17)
 
 target_include_directories(RadioStream PRIVATE
@@ -141,7 +92,43 @@ target_include_directories(RadioStream PRIVATE
     ${CMAKE_SOURCE_DIR}/libs/poco/Data/SQLite/include
     ${CMAKE_SOURCE_DIR}/libs/poco/Net/include
     ${CMAKE_SOURCE_DIR}/libs/nana/include ${CMAKE_SOURCE_DIR}/libs/json/include
-    ${BASS_LIB_DIR} ${CMAKE_SOURCE_DIR}/libs/sqlitemoderncpp/hdr)
+    ${BASS_LIB_DIR} )
 
 target_link_libraries(RadioStream PRIVATE nana Foundation Data DataSQLite Net ${BASS_LIB_FILE} ${FONTCONFIG_LIB} ${SQLITE3_LIB} ${PTHREAD_LIB})
+
+if(UNIX)
+        set(BASS_INSTALL_LIB "${BASS_LIB_FILE}")
+elseif(WIN32)
+        set(BASS_INSTAL_LIB "${CMAKE_SOURCE_DIR}/libs/bass/x64/bass.dll")
+endif()
+        
+
+install(TARGETS RadioStream
+        RUNTIME
+                DESTINATION "."
+                )
+install(FILES 
+        "${CMAKE_BINARY_DIR}/bin/Release/PocoData.${shared_lib}"
+        "${CMAKE_BINARY_DIR}/bin/Release/PocoDataSQLite.${shared_lib}"
+        "${CMAKE_BINARY_DIR}/bin/Release/PocoFoundation.${shared_lib}"
+        "${CMAKE_BINARY_DIR}/bin/Release/PocoNet.${shared_lib}"
+        "${BASS_INSTALL_LIB}"
+        DESTINATION ".")
+install(DIRECTORY "${CMAKE_SOURCE_DIR}/lang"
+        DESTINATION "." )
+
+        
+SET(CPACK_PACKAGE_NAME "RadioStream")
+SET(CPACK_PACKAGE_VENDOR "https://github.com/JenioPY")
+SET(CPACK_PACKAGE_VERSION_MAJOR ${CMAKE_PROJECT_VERSION_MAJOR})
+SET(CPACK_PACKAGE_VERSION_MINOR ${CMAKE_PROJECT_VERSION_MINOR})
+SET(CPACK_PACKAGE_VERSION_PATCH ${CMAKE_PROJECT_VERSION_PATCH})
+SET(CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_CURRENT_SOURCE_DIR}/README.md")
+SET(CPACK_PACKAGE_DESCRIPTION_SUMMARY "RadioStream")
+SET(CPACK_PACKAGE_HOMEPAGE_URL "https://github.com/JenioPY/RadioStream")
+SET(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE")
+SET(CPACK_PACKAGE_INSTALL_DIRECTORY "RadioStream")
+SET(CPACK_PACKAGE_EXECUTABLES "RadioStream;RadioStream")
+
+include(CPack)
 
