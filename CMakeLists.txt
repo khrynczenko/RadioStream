@@ -1,18 +1,16 @@
 cmake_minimum_required (VERSION 3.10)
-project(RadioStream VERSION 0.1.0)
+project(RadioStream VERSION "0.1.0")
 
 if(WIN32)
-        set(BASS_LIB_DIR ${CMAKE_SOURCE_DIR}/libs/bass/c)
-        set(BASS_LIB_FILE ${CMAKE_SOURCE_DIR}/libs/bass/c/x64/bass.lib)
-        set(shared_lib "dll")
+    set(BASS_LIB_DIR ${CMAKE_SOURCE_DIR}/libs/bass/c)
+    set(BASS_LIB_FILE ${CMAKE_SOURCE_DIR}/libs/bass/c/x64/bass.lib)
+    set(shared_lib "dll")
 elseif(UNIX)
-        set(BASS_LIB_DIR ${CMAKE_SOURCE_DIR}/libs/bass)
-        set(BASS_LIB_FILE ${CMAKE_SOURCE_DIR}/libs/bass/x64/libbass.so)
+    set(BASS_LIB_DIR ${CMAKE_SOURCE_DIR}/libs/bass)
+    set(BASS_LIB_FILE ${CMAKE_SOURCE_DIR}/libs/bass/x64/libbass.so)
 	set(FONTCONFIG_LIB "-lfontconfig")
 	set(PTHREAD_LIB "-lpthread")
-        set(shared_lib "so")
 endif()
-
 
 set(MSVC_USE_STATIC_RUNTIME FALSE)
 set(ENABLE_XML FALSE)
@@ -80,6 +78,7 @@ src/states/State.cpp
 src/states/StatesManager.cpp
 src/states/ToolsState.cpp
 )
+
 add_subdirectory(${CMAKE_SOURCE_DIR}/libs/nana EXCLUDE_FROM_ALL)
 add_subdirectory(${CMAKE_SOURCE_DIR}/libs/poco EXCLUDE_FROM_ALL)
 
@@ -91,44 +90,65 @@ target_include_directories(RadioStream PRIVATE
     ${CMAKE_SOURCE_DIR}/libs/poco/Data/include
     ${CMAKE_SOURCE_DIR}/libs/poco/Data/SQLite/include
     ${CMAKE_SOURCE_DIR}/libs/poco/Net/include
-    ${CMAKE_SOURCE_DIR}/libs/nana/include ${CMAKE_SOURCE_DIR}/libs/json/include
+    ${CMAKE_SOURCE_DIR}/libs/nana/include
+    ${CMAKE_SOURCE_DIR}/libs/json/include
     ${BASS_LIB_DIR} )
 
-target_link_libraries(RadioStream PRIVATE nana Foundation Data DataSQLite Net ${BASS_LIB_FILE} ${FONTCONFIG_LIB} ${SQLITE3_LIB} ${PTHREAD_LIB})
+target_link_libraries(RadioStream PRIVATE nana Foundation Data DataSQLite Net ${BASS_LIB_FILE} ${FONTCONFIG_LIB} ${PTHREAD_LIB})
 
 if(UNIX)
         set(BASS_INSTALL_LIB "${BASS_LIB_FILE}")
 elseif(WIN32)
-        set(BASS_INSTAL_LIB "${CMAKE_SOURCE_DIR}/libs/bass/x64/bass.dll")
+        set(BASS_INSTALL_LIB "${CMAKE_SOURCE_DIR}/libs/bass/x64/bass.dll")
 endif()
-        
 
-install(TARGETS RadioStream
-        RUNTIME
-                DESTINATION "."
-                )
-install(FILES 
-        "${CMAKE_BINARY_DIR}/bin/Release/PocoData.${shared_lib}"
-        "${CMAKE_BINARY_DIR}/bin/Release/PocoDataSQLite.${shared_lib}"
-        "${CMAKE_BINARY_DIR}/bin/Release/PocoFoundation.${shared_lib}"
-        "${CMAKE_BINARY_DIR}/bin/Release/PocoNet.${shared_lib}"
-        "${BASS_INSTALL_LIB}"
-        DESTINATION ".")
-install(DIRECTORY "${CMAKE_SOURCE_DIR}/lang"
-        DESTINATION "." )
+#INSTALL SCRIPT
+if(WIN32)
+    install(TARGETS RadioStream
+            RUNTIME
+            DESTINATION "."
+            )
+    install(FILES
+            "${CMAKE_BINARY_DIR}/bin/Release/PocoData.${shared_lib}"
+            "${CMAKE_BINARY_DIR}/bin/Release/PocoDataSQLite.${shared_lib}"
+            "${CMAKE_BINARY_DIR}/bin/Release/PocoFoundation.${shared_lib}"
+            "${CMAKE_BINARY_DIR}/bin/Release/PocoNet.${shared_lib}"
+            "${BASS_INSTALL_LIB}"
+            DESTINATION ".")
+    install(DIRECTORY "${CMAKE_SOURCE_DIR}/lang"
+            DESTINATION "." )
+elseif(UNIX)
+    install(TARGETS RadioStream
+            RUNTIME
+            DESTINATION "${CMAKE_INSTALL_PREFIX}/bin/"
+            )
+    install(FILES
+            "${CMAKE_BINARY_DIR}/lib/libPocoData.so.52"
+            "${CMAKE_BINARY_DIR}/lib/libPocoDataSQLite.so.52"
+            "${CMAKE_BINARY_DIR}/lib/libPocoFoundation.so.52"
+            "${CMAKE_BINARY_DIR}/lib/libPocoNet.so.52"
+            "${BASS_INSTALL_LIB}"
+            DESTINATION /usr/lib)
+    install(DIRECTORY "${CMAKE_SOURCE_DIR}/lang"
+            DESTINATION "${CMAKE_INSTALL_PREFIX}/bin/" )
 
-        
+endif()
+
+#CPACK SCRIPT
 SET(CPACK_PACKAGE_NAME "RadioStream")
+SET(CPACK_PACKAGE_VERSION "${PROJECT_VERSION}")
 SET(CPACK_PACKAGE_VENDOR "https://github.com/JenioPY")
-SET(CPACK_PACKAGE_VERSION_MAJOR ${CMAKE_PROJECT_VERSION_MAJOR})
-SET(CPACK_PACKAGE_VERSION_MINOR ${CMAKE_PROJECT_VERSION_MINOR})
-SET(CPACK_PACKAGE_VERSION_PATCH ${CMAKE_PROJECT_VERSION_PATCH})
+SET(CPACK_PACKAGE_CONTACT "https://github.com/JenioPY")
+SET(CPACK_PACKAGE_VERSION_MAJOR ${PROJECT_VERSION_MAJOR})
+SET(CPACK_PACKAGE_VERSION_MINOR ${PROJECT_VERSION_MINOR})
+SET(CPACK_PACKAGE_VERSION_PATCH ${PROJECT_VERSION_PATCH})
 SET(CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_CURRENT_SOURCE_DIR}/README.md")
 SET(CPACK_PACKAGE_DESCRIPTION_SUMMARY "RadioStream")
 SET(CPACK_PACKAGE_HOMEPAGE_URL "https://github.com/JenioPY/RadioStream")
 SET(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE")
 SET(CPACK_PACKAGE_INSTALL_DIRECTORY "RadioStream")
 SET(CPACK_PACKAGE_EXECUTABLES "RadioStream;RadioStream")
+
 
 include(CPack)
 
