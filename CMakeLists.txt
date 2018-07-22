@@ -68,15 +68,8 @@ include/multimedia_playlists/MultimediaPlaylistReader.hpp
 include/multimedia_playlists/MultimediaPlaylistReaderFactory.hpp
 include/multimedia_playlists/PLSReader.hpp
 include/multimedia_playlists/PocoHTTPDownloader.hpp
-include/observers/ConfigControllerObserver.hpp
 include/observers/Events.hpp
-include/observers/MainStateObserver.hpp
 include/observers/Observer.hpp
-include/observers/RadioBrowserRequesterControllerObserver.hpp
-include/observers/SearchStateObserver.hpp
-include/observers/StationPlayerControllerObserver.hpp
-include/observers/StationsDatabaseControllerObserver.hpp
-include/observers/StatusBarControllerObserver.hpp
 include/observers/Subject.hpp
 include/states/MainState.hpp
 include/states/SearchState.hpp
@@ -112,22 +105,14 @@ src/multimedia_playlists/M3UReader.cpp
 src/multimedia_playlists/MultimediaPlaylistReaderFactory.cpp
 src/multimedia_playlists/PLSReader.cpp
 src/multimedia_playlists/PocoHTTPDownloader.cpp
-src/observers/ConfigControllerObserver.cpp
-src/observers/MainStateObserver.cpp
 src/observers/Observer.cpp
-src/observers/RadioBrowserRequesterControllerObserver.cpp
-src/observers/SearchStateObserver.cpp
-src/observers/StationPlayerControllerObserver.cpp
-src/observers/StationsDatabaseControllerObserver.cpp
-src/observers/StatusBarControllerObserver.cpp
 src/observers/Subject.cpp
 src/states/MainState.cpp
 src/states/SearchState.cpp
 src/states/State.cpp
 src/states/StatesManager.cpp
 src/states/ToolsState.cpp
-src/widgets/StationListbox.cpp
-)
+src/widgets/StationListbox.cpp)
 
 if ( CMAKE_COMPILER_IS_GNUCC )
     target_compile_options(RadioStream PRIVATE "-Wall")

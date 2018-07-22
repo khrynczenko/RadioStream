@@ -4,7 +4,7 @@
 
 std::string M3UReader::get_station_url(std::istream & input) const
 {
-    std::string read_line = "";
+    std::string read_line;
     while (!input.eof())
     {
         std::getline(input, read_line);

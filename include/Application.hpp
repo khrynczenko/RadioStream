@@ -36,7 +36,7 @@ private:
         TOOLS
     };
     /**
-	 * \brief Gets called in constructor, registers states that are gonna be used througout the application.
+	 * \brief Gets called in constructor, registers states that are gonna be used throughout the application.
 	 */
 	void register_states();
 	void init_menubar();
@@ -57,11 +57,11 @@ private:
     State::Context context_;
     StatesManager states_manager_;
     nana::place general_container_;
-    StationPlayerController station_player_controller;
-    StationsDatabaseController stations_database_controller_;
-    ConfigController config_controller_;
-    RadioBrowserRequesterController radio_browser_requester_controller_;
-    StatusBarController status_bar_controller_;
+    std::shared_ptr<StationPlayerController> station_player_controller;
+    std::shared_ptr<StationsDatabaseController> stations_database_controller_;
+    std::shared_ptr<ConfigController> config_controller_;
+    std::shared_ptr<RadioBrowserRequesterController> radio_browser_requester_controller_;
+    std::shared_ptr<StatusBarController> status_bar_controller_;
     Subject subject_;
     std::mutex mutex_;
 };

@@ -7,12 +7,6 @@
 #include "../include/Language.hpp"
 #include "../include/exceptions/NotSupportedLanguageException.hpp"
 #include "../include/Constants.hpp"
-#include "../include/observers/StationPlayerControllerObserver.hpp"
-#include "../include/observers/StationsDatabaseControllerObserver.hpp"
-#include "../include/observers/ConfigControllerObserver.hpp"
-#include "../include/observers/RadioBrowserRequesterControllerObserver.hpp"
-#include "../include/observers/MainStateObserver.hpp"
-#include "../include/observers/StatusBarControllerObserver.hpp"
 #include "../include/multimedia_playlists/PocoHTTPDownloader.hpp"
 #include <nana/gui/msgbox.hpp>
 
@@ -25,11 +19,11 @@ Application::Application()
     , context_(window_, menubar_, station_player_, stations_database_, status_, localizer_, config_, requester_)
     , states_manager_(context_)
     , general_container_(window_)
-    , station_player_controller(states_manager_, context_, std::make_unique<PocoHTTPDownloader>())
-    , stations_database_controller_(states_manager_, context_)
-    , config_controller_(states_manager_, context_)
-    , radio_browser_requester_controller_(states_manager_, context_)
-    , status_bar_controller_(states_manager_, context_, status_)
+    , station_player_controller(std::make_shared<StationPlayerController>(states_manager_, context_, std::make_unique<PocoHTTPDownloader>()))
+    , stations_database_controller_(std::make_shared<StationsDatabaseController>(states_manager_, context_))
+    , config_controller_(std::make_shared<ConfigController>(states_manager_, context_))
+    , radio_browser_requester_controller_(std::make_shared<RadioBrowserRequesterController>(states_manager_, context_))
+    , status_bar_controller_(std::make_shared<StatusBarController>(states_manager_, context_, status_))
 {
 	set_language();
 	init_menubar();
@@ -37,9 +31,9 @@ Application::Application()
     register_states();
 	set_observers();
     build_interface();
-    auto& search_state = states_manager_.get_state<SearchState>(States::ID::Search);
-    search_state.initialize_countries_combox();
-    search_state.initialize_language_combox();
+    auto search_state = states_manager_.get_state<SearchState>(States::ID::Search);
+    search_state->initialize_countries_combox();
+    search_state->initialize_language_combox();
 	states_manager_.switch_state(States::ID::Main);
     set_window();
 }
@@ -108,20 +102,20 @@ void Application::set_language()
 
 void Application::set_observers()
 {
-    auto& main_state = states_manager_.get_state<MainState>(States::ID::Main);
-    main_state.attach(std::make_unique<StationPlayerControllerObserver>(station_player_controller));
-    main_state.attach(std::make_unique<StationsDatabaseControllerObserver>(stations_database_controller_));
-    auto& search_state = states_manager_.get_state<SearchState>(States::ID::Search);
-    search_state.attach(std::make_unique<StationPlayerControllerObserver>(station_player_controller));
-    search_state.attach(std::make_unique<StationsDatabaseControllerObserver>(stations_database_controller_));
-    search_state.attach(std::make_unique<RadioBrowserRequesterControllerObserver>(radio_browser_requester_controller_));
-    auto& tools_state = states_manager_.get_state<ToolsState>(States::ID::Tools);
-    tools_state.attach(std::make_unique<ConfigControllerObserver>(config_controller_));
-    this->attach(std::make_unique<StationPlayerControllerObserver>(station_player_controller));
-    this->attach(std::make_unique<StationsDatabaseControllerObserver>(stations_database_controller_));
-    station_player_.attach(std::make_unique<MainStateObserver>(main_state));
-    station_player_.attach(std::make_unique<StatusBarControllerObserver>(status_bar_controller_));
-    stations_database_.attach(std::make_unique<MainStateObserver>(main_state));
+    auto main_state = states_manager_.get_state<MainState>(States::ID::Main);
+    main_state->attach(station_player_controller);
+    main_state->attach(stations_database_controller_);
+    auto search_state = states_manager_.get_state<SearchState>(States::ID::Search);
+    search_state->attach(station_player_controller);
+    search_state->attach(stations_database_controller_);
+    search_state->attach(radio_browser_requester_controller_);
+    auto tools_state = states_manager_.get_state<ToolsState>(States::ID::Tools);
+    tools_state->attach(config_controller_);
+    this->attach(station_player_controller);
+    this->attach(stations_database_controller_);
+    station_player_.attach(main_state);
+    station_player_.attach(status_bar_controller_);
+    stations_database_.attach(main_state);
 }
 
 void Application::set_window_events()

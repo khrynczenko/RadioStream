@@ -9,10 +9,10 @@
 class Subject
 {
 public:
-	void attach(std::unique_ptr<Observer> observer);
+	void attach(std::shared_ptr<Observer> observer);
 	void notify(const std::any& data, radiostream::Event e);
 private:
-	std::vector<std::unique_ptr<Observer>> observers_;
+	std::vector<std::shared_ptr<Observer>> observers_;
 };
 
 #endif

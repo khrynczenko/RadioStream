@@ -16,7 +16,7 @@ StationPlayerController::StationPlayerController(StatesManager& manager,
 {
 }
 
-void StationPlayerController::process_event_command(const radiostream::Event e, std::any data)
+void StationPlayerController::on_notify(const radiostream::Event e, const std::any &data)
 {
     using namespace constants;
     switch (e)

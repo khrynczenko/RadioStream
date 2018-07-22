@@ -9,7 +9,7 @@ RadioBrowserRequesterController::RadioBrowserRequesterController(StatesManager& 
 {
 }
 
-void RadioBrowserRequesterController::process_event_command(const radiostream::Event e, std::any data)
+void RadioBrowserRequesterController::on_notify(const radiostream::Event e, const std::any &data)
 {
     switch(e)
     {
@@ -18,21 +18,21 @@ void RadioBrowserRequesterController::process_event_command(const radiostream::E
         auto[search_phrase, country, language, order] = std::any_cast<std::tuple<std::string, std::string, std::string, RadioBrowserRequester::OrderBy>>(data);
         const auto requested_stations = context_.requester_.request_stations(search_phrase, country, language, order);
         const auto parsed_stations = parse_stations_jsons(requested_stations);
-        manager_.get_state<SearchState>(States::ID::Search).insert_stations_to_listbox(parsed_stations);
+        manager_.get_state<SearchState>(States::ID::Search)->insert_stations_to_listbox(parsed_stations);
     }
     break;
     case radiostream::Event::SearchLanguagesRequested:
     {
     const auto requested_languages = context_.requester_.request_languages();
     const auto parsed_languages = parse_languages(requested_languages);
-    manager_.get_state<SearchState>(States::ID::Search).insert_possible_languages(parsed_languages);
+    manager_.get_state<SearchState>(States::ID::Search)->insert_possible_languages(parsed_languages);
     }
     break;
     case radiostream::Event::SearchCountriesRequested:
     {
     const auto requested_countries = context_.requester_.request_countries();
     const auto parsed_countries = parse_languages(requested_countries);
-    manager_.get_state<SearchState>(States::ID::Search).insert_possible_countires(parsed_countries);
+    manager_.get_state<SearchState>(States::ID::Search)->insert_possible_countires(parsed_countries);
     }
     break;
 

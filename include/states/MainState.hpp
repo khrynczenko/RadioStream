@@ -14,7 +14,8 @@
 #include <thread>
 
 class MainState :
-    public State
+    public State,
+    public Observer
 {
 public:
     MainState(StatesManager& manager, Context& context);
@@ -23,6 +24,7 @@ public:
     void refresh_listbox();
     void station_being_played_changed(const Station& changed_station);
     void song_has_changed(std::string_view song_title);
+    void on_notify(radiostream::Event e, const std::any& data) override;
 private:
     /**
      * \brief normally when the same row is selected second time it gets unselected, this function prevents that.

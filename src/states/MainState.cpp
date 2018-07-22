@@ -202,4 +202,31 @@ void MainState::on_new_station_request()
     }
 }
 
+void MainState::on_notify(radiostream::Event e, const std::any &data)
+{
+    switch(e)
+    {
+        case radiostream::Event::NewStationSet:
+        {
+            const auto station = std::any_cast<Station>(data);
+            station_being_played_changed(station);
+        }
+        break;
+        case radiostream::Event::StationSongHasChanged:
+        {
+            song_has_changed(std::any_cast<std::string>(data));
+        }
+        case radiostream::Event::StationAddedToDatabase:
+        {
+            refresh_listbox();
+        }
+        break;
+        case radiostream::Event::StationDeletedFromDatabase:
+        {
+            refresh_listbox();
+        }
+        break;
+    }
+}
+
 

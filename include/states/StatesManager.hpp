@@ -21,10 +21,10 @@ public:
 	template<typename T>
 	void register_state(States::ID id);
     template<typename T>
-    T& get_state(States::ID id);
+    std::shared_ptr<T> get_state(States::ID id);
 private:
 	Context context_;
-	std::map<States::ID, std::unique_ptr<State>> states_;
+	std::map<States::ID, std::shared_ptr<State>> states_;
 };
 
 /**
@@ -35,13 +35,13 @@ private:
 template <typename T>
 void StatesManager::register_state(States::ID id)
 {
-	states_.insert(std::make_pair(id, std::make_unique<T>(*this, context_)));
+	states_.insert(std::make_pair(id, std::make_shared<T>(*this, context_)));
 }
 
 template <typename T>
-T& StatesManager::get_state(States::ID id)
+std::shared_ptr<T> StatesManager::get_state(States::ID id)
 {
-    return *(dynamic_cast<T*>(states_.at(id).get()));
+    return std::dynamic_pointer_cast<T>(states_.at(id));
 }
 
 #endif
