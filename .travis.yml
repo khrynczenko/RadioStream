@@ -35,8 +35,6 @@ script:
   - sudo make install
   - cd ..
   - cd ..
-  # Check versions of gcc, g++ and cmake
-  - gcc -v && g++ -v && cmake --version
   # Run your build commands next
   - mkdir libs
   - mkdir libs/nana
@@ -50,6 +48,6 @@ script:
   - sudo unzip bass24-linux.zip -d libs/bass
   - mkdir build
   - cd build
-  - cmake ..
+  - /usr/local/bin/cmake  ..
   - make
-  - cpack -G DEB
+  - /usr/local/bin/cpack -G DEB
