@@ -23,6 +23,7 @@ script:
   - export CC=/usr/bin/gcc-7
   - export CXX=/usr/bin/g++-7
   # Get newest cmake
+  - sudo apt remove cmake
   - sudo apt-get purge cmake
   - mkdir temp
   - cd temp
