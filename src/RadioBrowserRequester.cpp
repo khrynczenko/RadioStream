@@ -1,8 +1,7 @@
-#include "../../include/RadioBrowserRequester.hpp"
+#include "../include/RadioBrowserRequester.hpp"
 #include <Poco/Net/HTTPRequest.h>
 #include <Poco/Net/HTTPResponse.h>
 #include <Poco/StreamCopier.h>
-#include <nlohmann/detail/conversions/from_json.hpp>
 #include <nlohmann/detail/conversions/from_json.hpp>
 
 std::vector<nlohmann::json> RadioBrowserRequester::request_stations(std::string_view search_phrase, std::string_view country, std::string_view language, OrderBy order)
@@ -54,7 +53,7 @@ std::string RadioBrowserRequester::correct_json_response(std::string response) c
 nlohmann::json RadioBrowserRequester::send_arbitrary_request(Poco::URI request_uri,
     std::vector<std::pair<std::string, std::string>> request_paramters)
 {
-    Poco::Net::HTTPRequest request(Poco::Net::HTTPRequest::HTTP_POST, request_uri.toString());
+    Poco::Net::HTTPRequest request("POST", request_uri.toString());
     std::string request_body;
     for(const auto& [parameter_name, parameter_value] : request_paramters)
     {
