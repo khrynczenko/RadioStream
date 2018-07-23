@@ -33,8 +33,8 @@ public:
 	std::string get_song_title() const;
 	StreamManager();
 private:
-    bool muted_;
 	HSTREAM main_stream_;
+	bool muted_;
 	float current_volume_;
     std::string url_playing_;
     std::mutex mutex_;
