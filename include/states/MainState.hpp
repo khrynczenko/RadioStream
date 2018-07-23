@@ -20,7 +20,6 @@ class MainState :
 public:
     MainState(StatesManager& manager, Context& context);
     void change_visibility(bool visible) override;
-    void set_station_name(const std::string& name);
     void refresh_listbox();
     void station_being_played_changed(const Station& changed_station);
     void song_has_changed(std::string_view song_title);

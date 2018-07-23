@@ -2,7 +2,7 @@
 #define CONTROLLER_HPP
 
 #include "../../include/states/State.hpp"
-#include "../observers/Observer.hpp"
+#include "../Observer.hpp"
 #include <any>
 
 namespace radiostream {

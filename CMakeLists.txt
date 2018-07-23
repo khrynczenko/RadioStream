@@ -68,9 +68,9 @@ include/multimedia_playlists/MultimediaPlaylistReader.hpp
 include/multimedia_playlists/MultimediaPlaylistReaderFactory.hpp
 include/multimedia_playlists/PLSReader.hpp
 include/multimedia_playlists/PocoHTTPDownloader.hpp
-include/observers/Events.hpp
-include/observers/Observer.hpp
-include/observers/Subject.hpp
+include/Events.hpp
+include/Observer.hpp
+include/Subject.hpp
 include/states/MainState.hpp
 include/states/SearchState.hpp
 include/states/State.hpp
@@ -105,8 +105,8 @@ src/multimedia_playlists/M3UReader.cpp
 src/multimedia_playlists/MultimediaPlaylistReaderFactory.cpp
 src/multimedia_playlists/PLSReader.cpp
 src/multimedia_playlists/PocoHTTPDownloader.cpp
-src/observers/Observer.cpp
-src/observers/Subject.cpp
+src/Observer.cpp
+src/Subject.cpp
 src/states/MainState.cpp
 src/states/SearchState.cpp
 src/states/State.cpp

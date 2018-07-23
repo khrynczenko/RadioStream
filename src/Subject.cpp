@@ -1,4 +1,4 @@
-#include "../../include/observers/Subject.hpp"
+#include "../include/Subject.hpp"
 
 void Subject::attach(std::shared_ptr<Observer> observer)
 {

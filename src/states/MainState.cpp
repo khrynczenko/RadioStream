@@ -96,11 +96,6 @@ void MainState::change_visibility(bool visible)
     container_.collocate();
 }
 
-void MainState::set_station_name(const std::string& name)
-{
-    current_station_label_.caption(name);
-}
-
 void MainState::refresh_listbox()
 {
    const auto& stations = context_.stations_database_.get_stations();
@@ -215,6 +210,7 @@ void MainState::on_notify(radiostream::Event e, const std::any &data)
         case radiostream::Event::StationSongHasChanged:
         {
             song_has_changed(std::any_cast<std::string>(data));
+
         }
         case radiostream::Event::StationAddedToDatabase:
         {

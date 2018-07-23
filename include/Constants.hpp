@@ -8,50 +8,14 @@
 #include <map>
 
 
-using LanguageNativeName = std::string; 
+using LanguageNativeName = std::string;
 
-namespace constants
-{
+namespace constants {
     extern const std::map<const LanguageCode, const LanguageNativeName, LanguageCodeComparator> LANGUAGES_CODES_AND_NATIVE_NAMES;
 
-	enum class StationListboxCategories
-	{
-		NanaDefault,
-	};
-
-	enum class StationListboxColumns
-	{
-		Name,
-        Url,
-        Country,
-        Language,
-        Codec,
-        Bitrate,
-        Tags
-	};
-
-    enum class SearchListboxColumns
-    {
-        Name,
-        Url,
-        Country,
-        Language,
-        Codec,
-        Bitrate,
-        Tags
-    };
-
-    enum class ContextualMenus
-    {
-        StationListbox,
-        SongLabel
-    };
-
-	const nana::color VERNIER_COLOR{ 50,50,50,0.5 };
-
-    constexpr std::chrono::seconds TIME_TO_CHECK_IF_SONG_CHANGED{ 10 };
-    constexpr char* STATIONS_DATABASE_FILE = "stations.db";
-    constexpr char* CONFIG_FILE_PATH = "config.json";
+    inline const nana::color VERNIER_COLOR{50, 50, 50, 0.5};
+    inline constexpr const char* const STATIONS_DATABASE_FILE = "stations.db";
+    inline constexpr const char* const CONFIG_FILE_PATH = "config.json";
 
 }
 

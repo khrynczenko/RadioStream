@@ -4,7 +4,7 @@
 #include "states/StatesManager.hpp"
 #include "StationPlayer.hpp"
 #include "StationsDatabase.hpp"
-#include "observers/Subject.hpp"
+#include "Subject.hpp"
 #include "StatusBar.hpp"
 #include "TextLocalizer.hpp"
 #include "Config.hpp"

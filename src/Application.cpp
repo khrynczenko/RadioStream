@@ -12,14 +12,21 @@
 
 Application::Application()
     : config_(constants::CONFIG_FILE_PATH)
-    , window_(nana::API::make_center(config_["width"].get<unsigned short int>(), config_["height"].get<unsigned short int>()), nana::appear::decorate<nana::appear::minimize, nana::appear::sizable, nana::appear::maximize, nana::appear::taskbar>())
+    , window_(nana::API::make_center(config_.get_all_config_options().window_width,
+                                     config_.get_all_config_options().window_height),
+                                     nana::appear::decorate<nana::appear::minimize,
+                                                            nana::appear::sizable,
+                                                            nana::appear::maximize,
+                                                            nana::appear::taskbar>())
     , menubar_(window_)
     , stations_database_(constants::STATIONS_DATABASE_FILE)
     , status_(window_)
     , context_(window_, menubar_, station_player_, stations_database_, status_, localizer_, config_, requester_)
     , states_manager_(context_)
     , general_container_(window_)
-    , station_player_controller(std::make_shared<StationPlayerController>(states_manager_, context_, std::make_unique<PocoHTTPDownloader>()))
+    , station_player_controller(std::make_shared<StationPlayerController>(states_manager_,
+                                                                          context_,
+                                                                          std::make_unique<PocoHTTPDownloader>()))
     , stations_database_controller_(std::make_shared<StationsDatabaseController>(states_manager_, context_))
     , config_controller_(std::make_shared<ConfigController>(states_manager_, context_))
     , radio_browser_requester_controller_(std::make_shared<RadioBrowserRequesterController>(states_manager_, context_))

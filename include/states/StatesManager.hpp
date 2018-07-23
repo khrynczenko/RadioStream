@@ -13,7 +13,7 @@ class StatesManager
 {
     using Context = State::Context;
 public:
-	StatesManager(Context context);
+    explicit StatesManager(Context context);
 	StatesManager() = delete;
 	StatesManager(const StatesManager&) = delete;
 	StatesManager& operator=(const StatesManager&) = delete;
@@ -28,7 +28,7 @@ private:
 };
 
 /**
- * \brief Adds new State to the StatesManager map.
+ * \brief Adds new State to the StatesManager dictionary.
  * \tparam T Type of State (should be a class derived from a State).
  * \param id States::ID that should be associated with given State.
  */
