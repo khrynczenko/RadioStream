@@ -15,7 +15,6 @@ addons:
       - libx11-dev
       - libfreetype6
       - libfreetype6-dev
-      - libsqlite3-dev
 script:
   # Link gcc-7 and g++-7 to their standard commands
   - sudo ln -s /usr/bin/gcc-7 /usr/local/bin/gcc
@@ -24,19 +23,18 @@ script:
   - export CC=/usr/bin/gcc-7
   - export CXX=/usr/bin/g++-7
   # Get newest cmake
+  - sudo apt remove cmake
   - sudo apt-get purge cmake
   - mkdir temp
   - cd temp
-  - wget https://cmake.org/files/v3.9/cmake-3.9.1.tar.gz
-  - tar -xzf cmake-3.9.1.tar.gz
-  - cd cmake-3.9.1/
+  - wget https://cmake.org/files/v3.10/cmake-3.10.1.tar.gz
+  - tar -xzf cmake-3.10.1.tar.gz
+  - cd cmake-3.10.1/
   - ./bootstrap
-  - make -j4
+  - make
   - sudo make install
   - cd ..
   - cd ..
-  # Check versions of gcc, g++ and cmake
-  - gcc -v && g++ -v && cmake --version
   # Run your build commands next
   - mkdir libs
   - mkdir libs/nana
@@ -50,5 +48,6 @@ script:
   - sudo unzip bass24-linux.zip -d libs/bass
   - mkdir build
   - cd build
-  - cmake ..
+  - /usr/local/bin/cmake  ..
   - make
+  - /usr/local/bin/cpack -G DEB
