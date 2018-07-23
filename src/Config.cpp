@@ -25,7 +25,7 @@ void Config::change_stations_search_limit(unsigned int limit)
     config_["stations_search_limit"] = limit;
 }
 
-ConfigOptions Config::get_all_config_options() const noexcept
+ConfigOptions Config::get_all_config_options() const
 {
     ConfigOptions options;
     options.language = LanguageCode(config_["language"].get<std::string>());

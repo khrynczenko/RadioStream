@@ -6,7 +6,7 @@
 class StationPlayerControllerObserver : public Observer
 {
 public:
-    StationPlayerControllerObserver(StationPlayerController& controller) noexcept;
+    explicit StationPlayerControllerObserver(StationPlayerController& controller) noexcept;
     void on_notify(const std::any& data, radiostream::Event e) override;
 private:
     StationPlayerController& controller_;

@@ -2,8 +2,8 @@
 #define MAINSTATE_HPP
 
 #include "State.hpp"
-#include "../observers/Subject.hpp"
 #include "../Station.hpp"
+#include "../widgets/StationListbox.hpp"
 #include <nana/gui/place.hpp>
 #include <nana/gui/widgets/button.hpp>
 #include <nana/gui/widgets/listbox.hpp>
@@ -29,14 +29,12 @@ private:
      */
     void build_interface();
     void init_contextual_menus();
-    void init_listbox();
-    void populate_listbox();
+    void set_listbox_events();
     void search_stations();
     void pop_song_title_menu();
     void pop_stations_listbox_menu();
-    void set_new_station();
     void delete_station();
-    void sticky_select(const nana::arg_mouse& mouse);
+    void on_new_station_request();
     nana::place container_;
     nana::label current_song_label_;
     nana::label current_station_label_;
@@ -44,7 +42,7 @@ private:
     nana::button pause_button_;
     nana::button mute_button_;
     nana::textbox search_textbox_;
-    nana::listbox stations_listbox_;
+    StationListbox stations_listbox_;
     nana::slider volume_slider_;
     nana::menu song_label_menu_;
     nana::menu listbox_item_menu_;

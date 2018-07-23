@@ -77,6 +77,7 @@ src/states/SearchState.cpp
 src/states/State.cpp
 src/states/StatesManager.cpp
 src/states/ToolsState.cpp
+src/widgets/StationListbox.cpp
 )
 
 add_subdirectory(${CMAKE_SOURCE_DIR}/libs/nana EXCLUDE_FROM_ALL)

@@ -41,7 +41,7 @@ void StatesManager::register_state(States::ID id)
 template <typename T>
 T& StatesManager::get_state(States::ID id)
 {
-    return *(static_cast<T*>(states_.at(id).get()));
+    return *(dynamic_cast<T*>(states_.at(id).get()));
 }
 
 #endif
