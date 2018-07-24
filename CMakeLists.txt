@@ -137,6 +137,7 @@ endif()
 if(WIN32)
     install(TARGETS RadioStream
             RUNTIME
+	    PERMISSIONS OWNER_READ OWNER_EXECUTE
             DESTINATION "."
             )
     install(FILES
@@ -145,6 +146,10 @@ if(WIN32)
             "${CMAKE_BINARY_DIR}/bin/Release/PocoFoundation.${shared_lib}"
             "${CMAKE_BINARY_DIR}/bin/Release/PocoNet.${shared_lib}"
             "${BASS_INSTALL_LIB}"
+            DESTINATION ".")
+    install(FILES
+            "${CMAKE_SOURCE_DIR}/config.json"
+            "${CMAKE_SOURCE_DIR}/stations.db"
             DESTINATION ".")
     install(DIRECTORY "${CMAKE_SOURCE_DIR}/lang"
             DESTINATION "." )
@@ -162,7 +167,6 @@ elseif(UNIX)
             DESTINATION /usr/lib)
     install(DIRECTORY "${CMAKE_SOURCE_DIR}/lang"
             DESTINATION "${CMAKE_INSTALL_PREFIX}/bin/" )
-
 endif()
 
 #CPACK SCRIPT
@@ -179,6 +183,8 @@ SET(CPACK_PACKAGE_HOMEPAGE_URL "https://github.com/JenioPY/RadioStream")
 SET(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE")
 SET(CPACK_PACKAGE_INSTALL_DIRECTORY "RadioStream")
 SET(CPACK_PACKAGE_EXECUTABLES "RadioStream;RadioStream")
+SET(CPACK_NSIS_EXECUTABLES_DIRECTORY ".")
+SET(CPACK_NSIS_INSTALL_ROOT "C:")
 
 
 include(CPack)
