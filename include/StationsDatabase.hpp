@@ -2,7 +2,7 @@
 #define STATIONSDATABASE_HPP
 
 #include "Station.hpp"
-#include "observers/Subject.hpp"
+#include "Subject.hpp"
 #include <Poco/Data/Session.h>
 
 

@@ -8,7 +8,7 @@ class StationPlayerController : public Controller
 {
 public:
     StationPlayerController(StatesManager& manager, State::Context context, std::unique_ptr<HTTPMultimediaPlaylistsDownloader> downloader) noexcept;
-    void process_event_command(const radiostream::Event e, std::any data) override;
+    void on_notify(const radiostream::Event e, const std::any &data) override;
 private:
     std::unique_ptr<HTTPMultimediaPlaylistsDownloader> downloader_;
 };

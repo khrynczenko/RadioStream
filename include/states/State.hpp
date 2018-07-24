@@ -6,7 +6,7 @@
 #include "../StationsDatabase.hpp"
 #include "../StatusBar.hpp"
 #include "../TextLocalizer.hpp"
-#include "../observers/Subject.hpp"
+#include "../Subject.hpp"
 
 
 class StationPlayer;

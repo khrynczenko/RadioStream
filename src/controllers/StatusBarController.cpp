@@ -28,7 +28,7 @@ StatusBarController::StatusBarController(StatesManager& manager, State::Context 
 {
 }
 
-void StatusBarController::process_event_command(const radiostream::Event e, std::any data)
+void StatusBarController::on_notify(const radiostream::Event e, const std::any &data)
 {
     switch (e)
     {

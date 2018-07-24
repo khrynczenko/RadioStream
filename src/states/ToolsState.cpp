@@ -30,7 +30,7 @@ void ToolsState::build_interface()
     LanguageCode chosen_language(context_.config_["language"].get<std::string>());
     language_choices_.push_back(constants::LANGUAGES_CODES_AND_NATIVE_NAMES.at(chosen_language));
     language_choices_.option(0);
-    for (const auto[key, value] : constants::LANGUAGES_CODES_AND_NATIVE_NAMES)
+    for (const auto&[key, value] : constants::LANGUAGES_CODES_AND_NATIVE_NAMES)
     {
         if (key.as_string() != chosen_language.as_string()) language_choices_.push_back(value);
     }

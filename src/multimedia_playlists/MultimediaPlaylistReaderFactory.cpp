@@ -5,7 +5,7 @@
 
 std::unique_ptr<MultimediaPlaylistReader> MultimediaPlaylistReaderFactory::make_reader(Poco::URI uri)
 {
-    const std::string path = uri.getPath();
+    const std::string& path = uri.getPath();
     if (ends_with(path, ".pls"))
     {
         return std::make_unique<PLSReader>();

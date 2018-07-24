@@ -96,11 +96,6 @@ void MainState::change_visibility(bool visible)
     container_.collocate();
 }
 
-void MainState::set_station_name(const std::string& name)
-{
-    current_station_label_.caption(name);
-}
-
 void MainState::refresh_listbox()
 {
    const auto& stations = context_.stations_database_.get_stations();
@@ -199,6 +194,34 @@ void MainState::on_new_station_request()
     if(station.has_value())
     {
         notify(station.value(), radiostream::Event::NewStationRequested);
+    }
+}
+
+void MainState::on_notify(radiostream::Event e, const std::any &data)
+{
+    switch(e)
+    {
+        case radiostream::Event::NewStationSet:
+        {
+            const auto station = std::any_cast<Station>(data);
+            station_being_played_changed(station);
+        }
+        break;
+        case radiostream::Event::StationSongHasChanged:
+        {
+            song_has_changed(std::any_cast<std::string>(data));
+
+        }
+        case radiostream::Event::StationAddedToDatabase:
+        {
+            refresh_listbox();
+        }
+        break;
+        case radiostream::Event::StationDeletedFromDatabase:
+        {
+            refresh_listbox();
+        }
+        break;
     }
 }
 

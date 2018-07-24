@@ -12,7 +12,8 @@ elseif(UNIX)
 	set(PTHREAD_LIB "-lpthread")
 endif()
 
-set(MSVC_USE_STATIC_RUNTIME FALSE)
+set(MSVC_USE_STATIC_RUNTIME FALSE) #This is nana variable
+
 set(ENABLE_XML FALSE)
 set(ENABLE_JSTRUE TRUE)
 set(ENABLE_MONGODB FALSE)
@@ -35,55 +36,84 @@ set(ENABLE_POCODOC FALSE)
 set(ENABLE_PAGECOMPILER FALSE)
 set(ENABLE_PAGECOMPILER_FILE2PAGE FALSE)
 
-set(SOURCEFILES 
-src/Application.cpp
-src/Config.cpp
-src/Constants.cpp
-src/Language.cpp
-src/main.cpp
-src/RadioBrowserRequester.cpp
-src/Station.cpp
-src/StationPlayer.cpp
-src/StationsDatabase.cpp
-src/StatusBar.cpp
-src/StreamManager.cpp
-src/TextLocalizer.cpp
-src/Utilities.cpp
-src/controllers/ConfigController.cpp
-src/controllers/Controller.cpp
-src/controllers/RadioBrowserRequesterController.cpp
-src/controllers/StationPlayerController.cpp
-src/controllers/StationsDatabaseController.cpp
-src/controllers/StatusBarController.cpp
-src/exceptions/LanguageFileNotFound.cpp
-src/exceptions/NanaTextboxProcessingException.cpp
-src/exceptions/NotSupportedLanguageException.cpp
-src/exceptions/WrongLanguageCodeFormatException.cpp
-src/multimedia_playlists/M3UReader.cpp
-src/multimedia_playlists/MultimediaPlaylistReaderFactory.cpp
-src/multimedia_playlists/PLSReader.cpp
-src/multimedia_playlists/PocoHTTPDownloader.cpp
-src/observers/ConfigControllerObserver.cpp
-src/observers/MainStateObserver.cpp
-src/observers/Observer.cpp
-src/observers/RadioBrowserRequesterControllerObserver.cpp
-src/observers/SearchStateObserver.cpp
-src/observers/StationPlayerControllerObserver.cpp
-src/observers/StationsDatabaseControllerObserver.cpp
-src/observers/StatusBarControllerObserver.cpp
-src/observers/Subject.cpp
-src/states/MainState.cpp
-src/states/SearchState.cpp
-src/states/State.cpp
-src/states/StatesManager.cpp
-src/states/ToolsState.cpp
-src/widgets/StationListbox.cpp
-)
-
 add_subdirectory(${CMAKE_SOURCE_DIR}/libs/nana EXCLUDE_FROM_ALL)
 add_subdirectory(${CMAKE_SOURCE_DIR}/libs/poco EXCLUDE_FROM_ALL)
 
-add_executable(RadioStream ${SOURCEFILES})
+add_executable(RadioStream
+include/StatusBar.hpp
+include/Subject.hpp
+include/Station.hpp
+include/StationsDatabase.hpp
+include/Utilities.hpp
+include/RadioBrowserRequester.hpp
+include/StationPlayer.hpp
+include/Constants.hpp
+include/Application.hpp
+include/Events.hpp
+include/Config.hpp
+include/Observer.hpp
+include/Language.hpp
+include/StreamManager.hpp
+include/TextLocalizer.hpp
+include/multimedia_playlists/MultimediaPlaylistReader.hpp
+include/multimedia_playlists/HTTPMultimediaPlaylistsDownlader.hpp
+include/multimedia_playlists/M3UReader.hpp
+include/multimedia_playlists/MultimediaPlaylistReaderFactory.hpp
+include/multimedia_playlists/PocoHTTPDownloader.hpp
+include/multimedia_playlists/PLSReader.hpp
+include/widgets/StationListbox.hpp
+include/controllers/Controller.hpp
+include/controllers/ConfigController.hpp
+include/controllers/StationPlayerController.hpp
+include/controllers/StatusBarController.hpp
+include/controllers/RadioBrowserRequesterController.hpp
+include/controllers/StationsDatabaseController.hpp
+include/exceptions/NanaTextboxProcessingException.hpp
+include/exceptions/WrongLanguageCodeFormatException.hpp
+include/exceptions/NotSupportedLanguageException.hpp
+include/exceptions/LanguageFileNotFound.hpp
+include/states/State.hpp
+include/states/StatesManager.hpp
+include/states/MainState.hpp
+include/states/StateIdentifiers.hpp
+include/states/ToolsState.hpp
+include/states/SearchState.hpp
+src/Application.cpp
+src/StreamManager.cpp
+src/StationsDatabase.cpp
+src/TextLocalizer.cpp
+src/main.cpp
+src/Constants.cpp
+src/StationPlayer.cpp
+src/Utilities.cpp
+src/Observer.cpp
+src/Config.cpp
+src/Subject.cpp
+src/Language.cpp
+src/Station.cpp
+src/StatusBar.cpp
+src/RadioBrowserRequester.cpp
+src/multimedia_playlists/PocoHTTPDownloader.cpp
+src/multimedia_playlists/M3UReader.cpp
+src/multimedia_playlists/PLSReader.cpp
+src/multimedia_playlists/MultimediaPlaylistReaderFactory.cpp
+src/widgets/StationListbox.cpp
+src/controllers/StationPlayerController.cpp
+src/controllers/ConfigController.cpp
+src/controllers/Controller.cpp
+src/controllers/StationsDatabaseController.cpp
+src/controllers/StatusBarController.cpp
+src/controllers/RadioBrowserRequesterController.cpp
+src/exceptions/NanaTextboxProcessingException.cpp
+src/exceptions/NotSupportedLanguageException.cpp
+src/exceptions/WrongLanguageCodeFormatException.cpp
+src/exceptions/LanguageFileNotFound.cpp
+src/states/ToolsState.cpp
+src/states/State.cpp
+src/states/MainState.cpp
+src/states/SearchState.cpp
+src/states/StatesManager.cpp)
+
 target_compile_features(RadioStream PRIVATE cxx_std_17)
 
 target_include_directories(RadioStream PRIVATE

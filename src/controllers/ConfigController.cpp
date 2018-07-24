@@ -6,7 +6,7 @@ ConfigController::ConfigController(StatesManager& manager, State::Context contex
 {
 }
 
-void ConfigController::process_event_command(const radiostream::Event e, std::any data)
+void ConfigController::on_notify(const radiostream::Event e, const std::any &data)
 {
     switch(e)
     {

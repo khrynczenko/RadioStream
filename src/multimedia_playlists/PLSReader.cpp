@@ -6,7 +6,7 @@ std::string PLSReader::get_station_url(std::istream& input) const
     while (!input.eof())
     {
         std::getline(input, read_line);
-        if (const std::size_t pos = read_line.find("File1");  pos != read_line.npos)
+        if (const std::size_t pos = read_line.find("File1");  pos != std::string::npos)
         {
             return read_line.substr(pos + 6, read_line.size() - (pos + 6));
         }

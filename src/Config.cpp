@@ -3,7 +3,7 @@
 #include <fstream>
 #include <experimental/filesystem>
 
-const nlohmann::json DEFAULT_CONFIG_FILE = nlohmann::json::parse("{ \"language\" : \"en\", \"stations_search_limit\" : 50, \"width\" : 800, \"height\" : 600 }");
+const nlohmann::json DEFAULT_CONFIG_FILE = nlohmann::json::parse("{ \"language\" : \"en\", \"stations_search_limit\" : 50, \"width\" : 976, \"height\" : 600 }");
     
 Config::Config(std::string path)
 	: path_(std::move(path))

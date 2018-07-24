@@ -5,7 +5,7 @@ StationsDatabaseController::StationsDatabaseController(StatesManager& manager, S
 {
 }
 
-void StationsDatabaseController::process_event_command(const radiostream::Event e, std::any data)
+void StationsDatabaseController::on_notify(const radiostream::Event e, const std::any &data)
 {
     switch (e)
     {

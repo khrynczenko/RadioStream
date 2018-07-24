@@ -14,13 +14,6 @@ void StatesManager::switch_state(States::ID id)
     }
 	for (auto& state : states_)
 	{
-        if (state.first == id)
-        {
-			state.second->change_visibility(true);
-        }
-        else
-        {
-			state.second->change_visibility(false);
-        }
+        state.second->change_visibility(state.first == id);
 	}
 }
