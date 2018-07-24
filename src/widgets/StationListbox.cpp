@@ -24,17 +24,14 @@ StationListbox::StationListbox(nana::form& handle, State::Context context)
 
 void StationListbox::populate_listbox(const std::vector<Station>& stations)
 {
-    if(!stations.empty())
-    { 
-        this->auto_draw(false);
-        this->clear();
-        for (const auto& station : stations)
-        {
-            const auto category_index = Categories::NanaDefault;
-            this->at(category_index).append(station);
-        }
-        this->auto_draw(true);
+    this->auto_draw(false);
+    this->clear();
+    for (const auto& station : stations)
+    {
+        const auto category_index = Categories::NanaDefault;
+        this->at(category_index).append(station);
     }
+    this->auto_draw(true);
 }
 
 std::optional<Station> StationListbox::get_selected_station() const
