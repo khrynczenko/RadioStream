@@ -4,6 +4,7 @@
 
 StationsDatabase::StationsDatabase(std::string_view database_name)
     : database_("SQLite", static_cast<std::string>(database_name))
+    , cached_stations_({})
 {
     create_empty_table_if_does_not_exist();
     cache_stations_stored_in_database();
@@ -83,7 +84,10 @@ void StationsDatabase::cache_stations_stored_in_database()
     while(!select.done())
     {
         select.execute();
-        cached_stations_.push_back(station);
+        if(select.rowsExtracted() > 0)
+        {
+            cached_stations_.push_back(station);
+        }
     }
 }
 
