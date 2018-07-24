@@ -147,10 +147,6 @@ if(WIN32)
             "${CMAKE_BINARY_DIR}/bin/Release/PocoNet.${shared_lib}"
             "${BASS_INSTALL_LIB}"
             DESTINATION ".")
-    install(FILES
-            "${CMAKE_SOURCE_DIR}/config.json"
-            "${CMAKE_SOURCE_DIR}/stations.db"
-            DESTINATION ".")
     install(DIRECTORY "${CMAKE_SOURCE_DIR}/lang"
             DESTINATION "." )
 elseif(UNIX)
