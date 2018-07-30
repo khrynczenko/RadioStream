@@ -10,6 +10,7 @@
 class RadioBrowserRequester
 {
 public:
+    explicit RadioBrowserRequester(unsigned short int search_stations_limit);
     enum class OrderBy
     {
         ClickCount,

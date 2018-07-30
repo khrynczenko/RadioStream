@@ -8,7 +8,7 @@
 struct ConfigOptions
 {
     LanguageCode language = LanguageCode("en");
-    unsigned int stations_search_limit = 50u;
+    unsigned short int stations_search_limit = 50u;
     unsigned short int window_width = 800u;
     unsigned short int window_height = 600u;
 };
@@ -19,7 +19,7 @@ public:
 	explicit Config(std::string path);
     void change_language(LanguageCode code);
     void change_stations_search_limit(unsigned int limit);
-    ConfigOptions get_all_config_options() const;
+    ConfigOptions options() const;
 	~Config();
 	nlohmann::json& operator[](const std::string& key);
 private:

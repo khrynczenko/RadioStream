@@ -24,7 +24,7 @@ public:
     void switch_language(LanguageCode lang);
     template <typename ...Args>
     std::string get_localized_text(std::string text_id, Args ... args) const;
-    std::string get_localized_text(std::string text_id) const;
+    std::string get_localized_text(std::string_view text_id) const;
 private:
     nana::internationalization localizer_;
     LanguagesPathsContainer languages_;

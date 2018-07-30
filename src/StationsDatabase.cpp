@@ -3,7 +3,7 @@
 #include "../include/Utilities.hpp"
 
 StationsDatabase::StationsDatabase(std::string_view database_name)
-    : database_("SQLite", static_cast<std::string>(database_name))
+    : database_("SQLite", std::string(database_name))
     , cached_stations_({})
 {
     create_empty_table_if_does_not_exist();

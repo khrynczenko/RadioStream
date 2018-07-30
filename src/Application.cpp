@@ -12,8 +12,8 @@
 
 Application::Application()
     : config_(constants::CONFIG_FILE_PATH)
-    , window_(nana::API::make_center(config_.get_all_config_options().window_width,
-                                     config_.get_all_config_options().window_height),
+    , window_(nana::API::make_center(config_.options().window_width,
+                                     config_.options().window_height),
                                      nana::appear::decorate<nana::appear::minimize,
                                                             nana::appear::sizable,
                                                             nana::appear::maximize,
@@ -21,6 +21,7 @@ Application::Application()
     , menubar_(window_)
     , stations_database_(constants::STATIONS_DATABASE_FILE)
     , status_(window_)
+    , requester_(config_.options().stations_search_limit)
     , context_(window_, menubar_, station_player_, stations_database_, status_, localizer_, config_, requester_)
     , states_manager_(context_)
     , general_container_(window_)

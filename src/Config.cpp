@@ -3,8 +3,8 @@
 #include <fstream>
 #include <experimental/filesystem>
 
-const nlohmann::json DEFAULT_CONFIG_FILE = nlohmann::json::parse("{ \"language\" : \"en\", \"stations_search_limit\" : 50, \"width\" : 976, \"height\" : 600 }");
-    
+const nlohmann::json DEFAULT_CONFIG_FILE = nlohmann::json::parse(R"({"language" : "en", "stations_search_limit" : 50, "width" : 976, "height" : 600 })");
+
 Config::Config(std::string path)
 	: path_(std::move(path))
 {
@@ -25,11 +25,11 @@ void Config::change_stations_search_limit(unsigned int limit)
     config_["stations_search_limit"] = limit;
 }
 
-ConfigOptions Config::get_all_config_options() const
+ConfigOptions Config::options() const
 {
     ConfigOptions options;
     options.language = LanguageCode(config_["language"].get<std::string>());
-    options.stations_search_limit = config_["stations_search_limit"].get<unsigned int>();
+    options.stations_search_limit = config_["stations_search_limit"].get<unsigned short int>();
     options.window_height = config_["height"].get<unsigned short int>();
     options.window_width = config_["width"].get<unsigned short int>();
     return options;
