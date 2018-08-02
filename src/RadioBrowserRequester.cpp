@@ -72,6 +72,12 @@ nlohmann::json RadioBrowserRequester::send_arbitrary_request(Poco::URI request_u
 
 }
 
+RadioBrowserRequester::RadioBrowserRequester(unsigned short int search_stations_limit)
+    : limit_(search_stations_limit)
+{
+
+}
+
 std::vector<Station> parse_stations_jsons(const std::vector<nlohmann::json>& stations_jsons)
 {
     std::vector<Station> stations;

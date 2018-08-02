@@ -35,7 +35,8 @@ void ToolsState::build_interface()
         if (key.as_string() != chosen_language.as_string()) language_choices_.push_back(value);
     }
     found_stations_limit_.caption(context_.localizer_.get_localized_text("Search stations limit:"));
-    found_stations_limit_.tooltip(context_.localizer_.get_localized_text("When You search for stations its possible that there will bee so many matching values that it will take quite long to process them."
+    found_stations_limit_.tooltip(context_.localizer_.get_localized_text(
+        "When You search for stations its possible that there will bee so many matching values that it will take quite long to process them."
         "This option limits this and can improve performance of searching."));
     const auto limit = context_.config_["stations_search_limit"].get<unsigned int>();
     found_stations_values_.range(1, 1000, 10);
@@ -81,7 +82,7 @@ ConfigOptions ToolsState::gather_options() const
     ConfigOptions options;
     const auto language_native_name = language_choices_.text(language_choices_.option());
     options.language = string_to_language_code(language_native_name);
-    options.stations_search_limit = found_stations_values_.to_int();
+    options.stations_search_limit = static_cast<unsigned int>(found_stations_values_.to_int());
     return options;
 }
 
