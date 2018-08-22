@@ -20,6 +20,7 @@ StationListbox::StationListbox(nana::form& handle, State::Context context)
     this->column_at(Columns::Bitrate).width(100u);
     this->column_at(Columns::Tags).width(100u);
     this->enable_single(false, false);
+	this->set_sort_compare(Columns::Bitrate, this->bitrate_comparator);
 }
 
 void StationListbox::populate_listbox(const std::vector<Station>& stations)
@@ -55,8 +56,18 @@ std::optional<Station> StationListbox::get_selected_station() const
     
 }
 
-void StationListbox::select_from_position(const nana::arg_mouse& arg)
+bool StationListbox::bitrate_comparator(const std::string& lhs, nana::any* any_l, const std::string& rhs, nana::any* any_r, bool reverse)
 {
+	try
+	{
+		int lhs_bitrate = std::stoi(lhs);
+		int rhs_bitrate = std::stoi(rhs);
+		return reverse ? lhs_bitrate  > rhs_bitrate  : lhs_bitrate  < rhs_bitrate ;
+	}
+	catch (const std::invalid_argument&)
+	{
+		return true; // We don't want to terminate the program just because there is some non-convertible value
+	}
 }
 
 void StationListbox::sticky_select(const nana::arg_mouse& arg)
