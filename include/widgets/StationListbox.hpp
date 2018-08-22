@@ -30,6 +30,7 @@ public:
     std::optional<Station> get_selected_station() const;
     void select_from_position(const nana::arg_mouse& arg);
 private:
+	static bool bitrate_comparator(const std::string& lhs, nana::any* any_l, const std::string& rhs, nana::any* any_r, bool reverse);
     void sticky_select(const nana::arg_mouse& arg);
     State::Context context_;
 
