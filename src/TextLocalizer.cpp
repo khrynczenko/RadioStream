@@ -26,11 +26,11 @@ TextLocalizer::TextLocalizer() noexcept
 
 void TextLocalizer::switch_language(LanguageCode lang)
 {
-	const auto path = languages_.get_path(lang).string();
+	const auto path = languages_.get_path(std::move(lang)).string();
 	localizer_.load_utf8(path);
 }
 
 std::string TextLocalizer::get_localized_text(std::string text_id) const
 {
-	return localizer_.get(text_id);
+	return localizer_.get(std::move(text_id));
 }
