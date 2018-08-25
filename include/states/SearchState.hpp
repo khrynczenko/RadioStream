@@ -25,7 +25,7 @@ public:
     void build_interface();
     void insert_stations_to_listbox(const std::vector<Station>& stations);
     void insert_possible_languages(const std::vector<std::string>& languages);
-    void insert_possible_countires(const std::vector<std::string>& countries);
+    void insert_possible_countries(const std::vector<std::string> &countries);
 private:
     void search_for_stations();
     void set_new_station();
