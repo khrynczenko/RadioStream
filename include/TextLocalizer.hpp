@@ -14,7 +14,7 @@ public:
     std::experimental::filesystem::path get_path(LanguageCode lang);
 
 private:
-    std::map<const LanguageCode, const std::experimental::filesystem::path, LanguageCodeComparator> languages_filpaths_;
+    std::map<const LanguageCode, const std::experimental::filesystem::path, LanguageCodeComparator> languages_filepaths;
 };
 
 class TextLocalizer
