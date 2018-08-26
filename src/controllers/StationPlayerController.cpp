@@ -14,7 +14,7 @@ StationPlayerController::StationPlayerController(StatesManager& manager,
     State::Context context,
     std::unique_ptr<HTTPDownloader> downloader) noexcept
     : Controller(manager, context)
-    , downloader_(std::move(downloader))
+    , resolver_(std::move(downloader))
 {
 }
 
@@ -48,28 +48,11 @@ void StationPlayerController::on_notify(const radiostream::Event e, const std::a
     case radiostream::Event::NewStationRequested:
     {
         auto station = std::any_cast<Station>(data);
-        if (ends_with(station.url_, ".pls") || ends_with(station.url_, ".m3u"))
-        {
-            try
-            {
-                std::stringstream playlist_data{ downloader_->download(station.url_) };
-                station.url_ = MultimediaPlaylistReaderFactory::make_reader(Poco::URI(station.url_))->get_station_url(playlist_data);
-            }
-            catch(const Poco::UnknownURISchemeException& e)
-            {
-                auto link_error_message = context_.localizer_.get_localized_text("Link is not valid");
-                context_.status_.change_text(link_error_message);
-                context_.status_.change_color(StatusBar::Color::ERRORED);
-                break;
-            }
-            catch(ReaderCouldNotReadUrl& e)
-            {
-                auto link_error_message = context_.localizer_.get_localized_text("Link is not valid");
-                context_.status_.change_text(link_error_message);
-                context_.status_.change_color(StatusBar::Color::ERRORED);
-                break;
-            }
-        }
+        const auto resolved = resolver_.resolve_uri(Poco::URI(station.url_));
+        if(resolved.has_value())
+            station.url_ = resolved.value().toString();
+        else
+            station.url_ = "";
         std::thread thread = std::thread([this, station](){
             if(context_.station_player_.set_station(station))
                 context_.station_player_.play();
@@ -91,3 +74,4 @@ void StationPlayerController::on_notify(const radiostream::Event e, const std::a
     break;
     }
 }
+

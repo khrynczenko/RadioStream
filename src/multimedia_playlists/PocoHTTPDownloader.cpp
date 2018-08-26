@@ -8,12 +8,17 @@
 #include <memory>
 #include <sstream>
 
-std::string PocoHTTPDownloader::download(std::string_view url) const
+PocoHTTPDownloader::PocoHTTPDownloader()
 {
     Poco::Net::HTTPStreamFactory::registerFactory();
+}
+
+std::string PocoHTTPDownloader::download(std::string_view url) const
+{
     const Poco::URI uri(std::string{url});
     std::stringstream url_to_return;
     std::unique_ptr<std::istream> pStr(Poco::URIStreamOpener::defaultOpener().open(uri));
     Poco::StreamCopier::copyStream(*pStr, url_to_return);
     return url_to_return.str();
 }
+
