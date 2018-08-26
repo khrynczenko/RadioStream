@@ -84,13 +84,16 @@ std::vector<Station> parse_stations_jsons(const std::vector<nlohmann::json>& sta
     stations.reserve(stations_jsons.size());
     for(const auto& station_json : stations_jsons)
     {
-        stations.emplace_back(station_json["name"].get<std::string>(),
-            station_json["url"].get<std::string>(),
-            station_json["country"].get<std::string>(),
-            station_json["language"].get<std::string>(),
-            station_json["codec"].get<std::string>(),
-            station_json["bitrate"].get<std::string>() + std::string(" kbps"),
-            station_json["tags"].get<std::string>());
+        if(std::stoi(station_json["lastcheckok"].get<std::string>()) == 1)
+        {
+            stations.emplace_back(station_json["name"].get<std::string>(),
+                                  station_json["url"].get<std::string>(),
+                                  station_json["country"].get<std::string>(),
+                                  station_json["language"].get<std::string>(),
+                                  station_json["codec"].get<std::string>(),
+                                  station_json["bitrate"].get<std::string>() + std::string(" kbps"),
+                                  station_json["tags"].get<std::string>());
+        }
     }
     return stations;
 }
