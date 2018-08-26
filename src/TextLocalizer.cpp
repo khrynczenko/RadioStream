@@ -32,5 +32,5 @@ void TextLocalizer::switch_language(LanguageCode lang)
 
 std::string TextLocalizer::get_localized_text(std::string_view text_id) const
 {
-	return localizer_.get(std::move(text_id));
+	return localizer_.get(std::string(text_id));
 }
