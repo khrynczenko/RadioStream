@@ -2,15 +2,15 @@
 #include "../include/exceptions/LanguageFileNotFound.hpp"
 
 LanguagesPathsContainer::LanguagesPathsContainer() noexcept
-    : languages_filpaths_()
+    : languages_filepaths()
 {
-    languages_filpaths_.insert({ LanguageCode("en"), std::experimental::filesystem::path("lang/en.po") });
-    languages_filpaths_.insert({ LanguageCode("pl"), std::experimental::filesystem::path("lang/pl.po") });
+    languages_filepaths.insert({ LanguageCode("en"), std::experimental::filesystem::path("lang/en.po") });
+    languages_filepaths.insert({ LanguageCode("pl"), std::experimental::filesystem::path("lang/pl.po") });
 }
 
 std::experimental::filesystem::path LanguagesPathsContainer::get_path(LanguageCode lang)
 {
-    auto path = languages_filpaths_.at(lang);
+    auto path = languages_filepaths.at(lang);
 	if (!exists(path))
 	{
         throw LanguageFileNotFound(path);
@@ -32,5 +32,5 @@ void TextLocalizer::switch_language(LanguageCode lang)
 
 std::string TextLocalizer::get_localized_text(std::string_view text_id) const
 {
-	return localizer_.get(text_id.data());
+	return localizer_.get(std::move(text_id));
 }

@@ -3,10 +3,13 @@
 #include <fstream>
 #include <experimental/filesystem>
 
-const nlohmann::json DEFAULT_CONFIG_FILE = nlohmann::json::parse(R"({"language" : "en", "stations_search_limit" : 50, "width" : 976, "height" : 600 })");
-
 Config::Config(std::string path)
 	: path_(std::move(path))
+	, default_config_( {
+        {"language", "en"},
+        {"stations_search_limit", 50},
+        {"width", 976},
+        {"height", 600}})
 {
     if (!std::experimental::filesystem::exists(path_))
     {
@@ -43,7 +46,7 @@ Config::~Config()
 void Config::create_default_config_file() const
 {
     std::ofstream output(path_);
-    output << DEFAULT_CONFIG_FILE.dump(4);
+    output << default_config_.dump(4);
 }
 
 void Config::save_to_file() const

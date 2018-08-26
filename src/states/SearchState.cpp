@@ -123,7 +123,7 @@ void SearchState::insert_possible_languages(const std::vector<std::string>& lang
     }
 }
 
-void SearchState::insert_possible_countires(const std::vector<std::string>& countries)
+void SearchState::insert_possible_countries(const std::vector<std::string> &countries)
 {
     for (const auto& country : countries)
     {

@@ -28,6 +28,7 @@ private:
 	void read_from_file();
 	std::string path_;
 	nlohmann::json config_;
+	const nlohmann::json default_config_;
 
 };
 
