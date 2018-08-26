@@ -4,10 +4,10 @@
 #include <ostream>
 #include <string>
 
-class HTTPMultimediaPlaylistsDownloader
+class HTTPDownloader
 {
 public:
-    virtual ~HTTPMultimediaPlaylistsDownloader() = default;
+    virtual ~HTTPDownloader() = default;
     virtual std::string download(std::string_view url) const = 0;
 };
 

@@ -2,15 +2,17 @@
 #include "../../include/StationPlayer.hpp"
 #include "../../include/Constants.hpp"
 #include "../../include/Utilities.hpp"
-#include "../../include/multimedia_playlists/HTTPMultimediaPlaylistsDownlader.hpp"
+#include "../../include/multimedia_playlists/HTTPDownloader.hpp"
 #include "../../include/multimedia_playlists/PLSReader.hpp"
 #include "../../include/multimedia_playlists/MultimediaPlaylistReaderFactory.hpp"
+#include "../../include/exceptions/ReaderCouldNotReadUrl.hpp"
+#include <Poco/Net/NetException.h>
 #include <thread>
 
 
 StationPlayerController::StationPlayerController(StatesManager& manager,
     State::Context context,
-    std::unique_ptr<HTTPMultimediaPlaylistsDownloader> downloader) noexcept
+    std::unique_ptr<HTTPDownloader> downloader) noexcept
     : Controller(manager, context)
     , downloader_(std::move(downloader))
 {
@@ -48,8 +50,25 @@ void StationPlayerController::on_notify(const radiostream::Event e, const std::a
         auto station = std::any_cast<Station>(data);
         if (ends_with(station.url_, ".pls") || ends_with(station.url_, ".m3u"))
         {
-            std::stringstream playlist_data{ downloader_->download(station.url_) };
-            station.url_ = MultimediaPlaylistReaderFactory::make_reader(Poco::URI(station.url_))->get_station_url(playlist_data);
+            try
+            {
+                std::stringstream playlist_data{ downloader_->download(station.url_) };
+                station.url_ = MultimediaPlaylistReaderFactory::make_reader(Poco::URI(station.url_))->get_station_url(playlist_data);
+            }
+            catch(const Poco::UnknownURISchemeException& e)
+            {
+                auto link_error_message = context_.localizer_.get_localized_text("Link is not valid");
+                context_.status_.change_text(link_error_message);
+                context_.status_.change_color(StatusBar::Color::ERRORED);
+                break;
+            }
+            catch(ReaderCouldNotReadUrl& e)
+            {
+                auto link_error_message = context_.localizer_.get_localized_text("Link is not valid");
+                context_.status_.change_text(link_error_message);
+                context_.status_.change_color(StatusBar::Color::ERRORED);
+                break;
+            }
         }
         std::thread thread = std::thread([this, station](){
             if(context_.station_player_.set_station(station))

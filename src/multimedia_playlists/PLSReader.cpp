@@ -1,4 +1,5 @@
 #include "../../include/multimedia_playlists/PLSReader.hpp"
+#include "../../include/exceptions/ReaderCouldNotReadUrl.hpp"
 
 std::string PLSReader::get_station_url(std::istream& input) const
 {
@@ -11,5 +12,5 @@ std::string PLSReader::get_station_url(std::istream& input) const
             return read_line.substr(pos + 6, read_line.size() - (pos + 6));
         }
     }
-    throw;
+    throw ReaderCouldNotReadUrl();
 }

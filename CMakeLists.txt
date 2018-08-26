@@ -56,7 +56,7 @@ include/Language.hpp
 include/StreamManager.hpp
 include/TextLocalizer.hpp
 include/multimedia_playlists/MultimediaPlaylistReader.hpp
-include/multimedia_playlists/HTTPMultimediaPlaylistsDownlader.hpp
+        include/multimedia_playlists/HTTPDownloader.hpp
 include/multimedia_playlists/M3UReader.hpp
 include/multimedia_playlists/MultimediaPlaylistReaderFactory.hpp
 include/multimedia_playlists/PocoHTTPDownloader.hpp
@@ -112,7 +112,7 @@ src/states/ToolsState.cpp
 src/states/State.cpp
 src/states/MainState.cpp
 src/states/SearchState.cpp
-src/states/StatesManager.cpp)
+src/states/StatesManager.cpp include/exceptions/ReaderCouldNotReadUrl.hpp src/exceptions/ReaderCouldNotReadUrl.cpp src/exceptions/CouldNotMakeReader.cpp include/exceptions/CouldNotMakeReader.hpp)
 
 target_compile_features(RadioStream PRIVATE cxx_std_17)
 

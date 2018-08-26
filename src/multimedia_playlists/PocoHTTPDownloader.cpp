@@ -10,10 +10,10 @@
 
 std::string PocoHTTPDownloader::download(std::string_view url) const
 {
+    Poco::Net::HTTPStreamFactory::registerFactory();
     const Poco::URI uri(std::string{url});
     std::stringstream url_to_return;
-    Poco::Net::HTTPStreamFactory sfac{};
-    std::unique_ptr<std::istream> pStr(sfac.open(uri));
+    std::unique_ptr<std::istream> pStr(Poco::URIStreamOpener::defaultOpener().open(uri));
     Poco::StreamCopier::copyStream(*pStr, url_to_return);
     return url_to_return.str();
 }

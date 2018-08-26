@@ -2,9 +2,9 @@
 #define RADIOBROWSERREQUESTERCONTROLLER_HPP 
 
 #include "Controller.hpp"
-#include "../multimedia_playlists/HTTPMultimediaPlaylistsDownlader.hpp"
+#include "../multimedia_playlists/HTTPDownloader.hpp"
 
-class HTTPMultimediaPlaylistsDownloader;
+class HTTPDownloader;
 
 class RadioBrowserRequesterController : public Controller
 {
