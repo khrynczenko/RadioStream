@@ -9,6 +9,8 @@
 #include <Poco/Net/NetException.h>
 #include <thread>
 
+using namespace std::string_literals;
+
 
 StationPlayerController::StationPlayerController(StatesManager& manager,
     State::Context context,
@@ -49,10 +51,7 @@ void StationPlayerController::on_notify(const radiostream::Event e, const std::a
     {
         auto station = std::any_cast<Station>(data);
         const auto resolved = resolver_.resolve_uri(Poco::URI(station.url_));
-        if(resolved.has_value())
-            station.url_ = resolved.value().toString();
-        else
-            station.url_ = "";
+        station.url_ = resolved.value_or(Poco::URI(""s)).toString();
         std::thread thread = std::thread([this, station](){
             if(context_.station_player_.set_station(station))
                 context_.station_player_.play();
