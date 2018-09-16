@@ -1,14 +1,14 @@
 #include "../include/TextLocalizer.hpp"
 #include "../include/exceptions/LanguageFileNotFound.hpp"
 
-LanguagesPathsContainer::LanguagesPathsContainer() noexcept
+LanguagesPathsContainer::LanguagesPathsContainer(const std::filesystem::path& config_directory) noexcept
     : languages_filepaths()
 {
-    languages_filepaths.insert({ LanguageCode("en"), std::experimental::filesystem::path("lang/en.po") });
-    languages_filepaths.insert({ LanguageCode("pl"), std::experimental::filesystem::path("lang/pl.po") });
+    languages_filepaths.insert({ LanguageCode("en"), config_directory / "lang/en.po" });
+    languages_filepaths.insert({ LanguageCode("pl"), config_directory / "lang/pl.po" });
 }
 
-std::experimental::filesystem::path LanguagesPathsContainer::get_path(LanguageCode lang)
+std::filesystem::path LanguagesPathsContainer::get_path(LanguageCode lang)
 {
     auto path = languages_filepaths.at(lang);
 	if (!exists(path))
@@ -18,9 +18,9 @@ std::experimental::filesystem::path LanguagesPathsContainer::get_path(LanguageCo
 	return path;
 }
 
-TextLocalizer::TextLocalizer() noexcept
+TextLocalizer::TextLocalizer(const std::filesystem::path& config_directory) noexcept
 	: localizer_()
-	, languages_()
+	, languages_(config_directory)
 {
 }
 

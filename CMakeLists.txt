@@ -78,6 +78,9 @@ include/states/MainState.hpp
 include/states/StateIdentifiers.hpp
 include/states/ToolsState.hpp
 include/states/SearchState.hpp
+include/exceptions/ReaderCouldNotReadUrl.hpp
+include/exceptions/CouldNotMakeReader.hpp
+include/StreamURIResolver.hpp
 src/Application.cpp
 src/StreamManager.cpp
 src/StationsDatabase.cpp
@@ -112,7 +115,10 @@ src/states/ToolsState.cpp
 src/states/State.cpp
 src/states/MainState.cpp
 src/states/SearchState.cpp
-src/states/StatesManager.cpp include/exceptions/ReaderCouldNotReadUrl.hpp src/exceptions/ReaderCouldNotReadUrl.cpp src/exceptions/CouldNotMakeReader.cpp include/exceptions/CouldNotMakeReader.hpp include/StreamURIResolver.hpp src/StreamURIResolver.cpp)
+src/states/StatesManager.cpp
+src/exceptions/ReaderCouldNotReadUrl.cpp
+src/exceptions/CouldNotMakeReader.cpp
+src/StreamURIResolver.cpp)
 
 target_compile_features(RadioStream PRIVATE cxx_std_17)
 
@@ -161,8 +167,9 @@ elseif(UNIX)
             "${CMAKE_BINARY_DIR}/lib/libPocoNet.so.52"
             "${BASS_INSTALL_LIB}"
             DESTINATION /usr/lib)
+    install(DIRECTORY DESTINATION "$ENV{HOME}/.local/share/radiostream")
     install(DIRECTORY "${CMAKE_SOURCE_DIR}/lang"
-            DESTINATION "${CMAKE_INSTALL_PREFIX}/bin/" )
+            DESTINATION "$ENV{HOME}/.local/share/radiostream/")
 endif()
 
 #CPACK SCRIPT
