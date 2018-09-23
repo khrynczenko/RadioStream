@@ -118,7 +118,7 @@ src/states/SearchState.cpp
 src/states/StatesManager.cpp
 src/exceptions/ReaderCouldNotReadUrl.cpp
 src/exceptions/CouldNotMakeReader.cpp
-src/StreamURIResolver.cpp)
+src/StreamURIResolver.cpp include/ApplicationDirectories.hpp src/ApplicationDirectories.cpp)
 
 target_compile_features(RadioStream PRIVATE cxx_std_17)
 
