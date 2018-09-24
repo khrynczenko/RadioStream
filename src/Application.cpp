@@ -10,8 +10,9 @@
 #include "../include/multimedia_playlists/PocoHTTPDownloader.hpp"
 #include <nana/gui/msgbox.hpp>
 
-Application::Application()
-    : config_(constants::CONFIG_FILE_PATH)
+Application::Application(const std::filesystem::path& config_directory_path,
+                         const std::filesystem::path& data_directory_path)
+    : config_(config_directory_path / constants::CONFIG_FILE)
     , window_(nana::API::make_center(config_.options().window_width,
                                      config_.options().window_height),
                                      nana::appear::decorate<nana::appear::minimize,
@@ -19,8 +20,9 @@ Application::Application()
                                                             nana::appear::maximize,
                                                             nana::appear::taskbar>())
     , menubar_(window_)
-    , stations_database_(constants::STATIONS_DATABASE_FILE)
+    , stations_database_(data_directory_path / constants::STATIONS_DATABASE_FILE)
     , status_(window_)
+    , localizer_(data_directory_path)
     , requester_(config_.options().stations_search_limit)
     , context_(window_, menubar_, station_player_, stations_database_, status_, localizer_, config_, requester_)
     , states_manager_(context_)

@@ -1,17 +1,16 @@
 #include "../include/Config.hpp"
 #include "../include/Language.hpp"
 #include <fstream>
-#include <experimental/filesystem>
 
-Config::Config(std::string path)
-	: path_(std::move(path))
+Config::Config(const std::filesystem::path& path_to_config)
+	: path_to_config_(path_to_config)
 	, default_config_( {
         {"language", "en"},
         {"stations_search_limit", 50},
         {"width", 976},
         {"height", 600}})
 {
-    if (!std::experimental::filesystem::exists(path_))
+    if (!std::filesystem::exists(path_to_config_))
     {
         create_default_config_file();
     }
@@ -45,19 +44,19 @@ Config::~Config()
 
 void Config::create_default_config_file() const
 {
-    std::ofstream output(path_);
+    std::ofstream output(path_to_config_);
     output << default_config_.dump(4);
 }
 
 void Config::save_to_file() const
 {
-	std::ofstream output(path_);
+	std::ofstream output(path_to_config_);
 	output << config_.dump(4);
 }
 
 void Config::read_from_file()
 {
-	std::ifstream input(path_);
+	std::ifstream input(path_to_config_);
 	input >> config_;
 }
 

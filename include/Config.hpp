@@ -4,6 +4,7 @@
 #include "TextLocalizer.hpp"
 #include "Language.hpp"
 #include <nlohmann/json.hpp>
+#include <filesystem>
 
 struct ConfigOptions
 {
@@ -16,7 +17,7 @@ struct ConfigOptions
 class Config
 {
 public:
-	explicit Config(std::string path);
+	explicit Config(const std::filesystem::path& path_to_config);
     void change_language(LanguageCode code);
     void change_stations_search_limit(unsigned int limit);
     ConfigOptions options() const;
@@ -26,7 +27,7 @@ private:
     void create_default_config_file() const;
 	void save_to_file() const;
 	void read_from_file();
-	std::string path_;
+	std::filesystem::path path_to_config_;
 	nlohmann::json config_;
 	const nlohmann::json default_config_;
 

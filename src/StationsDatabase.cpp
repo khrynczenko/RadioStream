@@ -2,8 +2,8 @@
 #include "../include/Station.hpp"
 #include "../include/Utilities.hpp"
 
-StationsDatabase::StationsDatabase(std::string_view database_name)
-    : database_("SQLite", std::string(database_name))
+StationsDatabase::StationsDatabase(const std::filesystem::path& path_to_db_file)
+    : database_("SQLite", path_to_db_file.string())
     , cached_stations_({})
 {
     create_empty_table_if_does_not_exist();
