@@ -1,16 +1,6 @@
-cmake_minimum_required (VERSION 3.10)
+cmake_minimum_required (VERSION 3.11)
 project(RadioStream VERSION "0.1.0")
-
-if(WIN32)
-    set(BASS_LIB_DIR ${CMAKE_SOURCE_DIR}/libs/bass/c)
-    set(BASS_LIB_FILE ${CMAKE_SOURCE_DIR}/libs/bass/c/x64/bass.lib)
-    set(shared_lib "dll")
-elseif(UNIX)
-    set(BASS_LIB_DIR ${CMAKE_SOURCE_DIR}/libs/bass)
-    set(BASS_LIB_FILE ${CMAKE_SOURCE_DIR}/libs/bass/x64/libbass.so)
-	set(FONTCONFIG_LIB "-lfontconfig")
-	set(PTHREAD_LIB "-lpthread")
-endif()
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 
 set(MSVC_USE_STATIC_RUNTIME FALSE) #This is nana variable
 
@@ -36,8 +26,21 @@ set(ENABLE_POCODOC FALSE)
 set(ENABLE_PAGECOMPILER FALSE)
 set(ENABLE_PAGECOMPILER_FILE2PAGE FALSE)
 
-add_subdirectory(${CMAKE_SOURCE_DIR}/libs/nana EXCLUDE_FROM_ALL)
-add_subdirectory(${CMAKE_SOURCE_DIR}/libs/poco EXCLUDE_FROM_ALL)
+include(DownloadDependencies)
+
+add_subdirectory(${nana_SOURCE_DIR} EXCLUDE_FROM_ALL)
+add_subdirectory(${poco_SOURCE_DIR} EXCLUDE_FROM_ALL)
+
+if(WIN32)
+    set(BASS_LIB_DIR ${bass_SOURCE_DIR}/c)
+    set(BASS_LIB_FILE ${bass_SOURCE_DIR}/c/x64/bass.lib)
+    set(shared_lib "dll")
+elseif(UNIX)
+    set(BASS_LIB_DIR ${bass_SOURCE_DIR})
+    set(BASS_LIB_FILE ${bass_SOURCE_DIR}/x64/libbass.so)
+	set(FONTCONFIG_LIB "-lfontconfig")
+	set(PTHREAD_LIB "-lpthread")
+endif()
 
 add_executable(RadioStream
 include/StatusBar.hpp
@@ -56,7 +59,7 @@ include/Language.hpp
 include/StreamManager.hpp
 include/TextLocalizer.hpp
 include/multimedia_playlists/MultimediaPlaylistReader.hpp
-        include/multimedia_playlists/HTTPDownloader.hpp
+include/multimedia_playlists/HTTPDownloader.hpp
 include/multimedia_playlists/M3UReader.hpp
 include/multimedia_playlists/MultimediaPlaylistReaderFactory.hpp
 include/multimedia_playlists/PocoHTTPDownloader.hpp
@@ -123,12 +126,12 @@ src/StreamURIResolver.cpp include/ApplicationDirectories.hpp src/ApplicationDire
 target_compile_features(RadioStream PRIVATE cxx_std_17)
 
 target_include_directories(RadioStream PRIVATE
-    ${CMAKE_SOURCE_DIR}/libs/poco/Foundation/include
-    ${CMAKE_SOURCE_DIR}/libs/poco/Data/include
-    ${CMAKE_SOURCE_DIR}/libs/poco/Data/SQLite/include
-    ${CMAKE_SOURCE_DIR}/libs/poco/Net/include
-    ${CMAKE_SOURCE_DIR}/libs/nana/include
-    ${CMAKE_SOURCE_DIR}/libs/json/include
+    ${poco_SOURCE_DIR}/Foundation/include
+    ${poco_SOURCE_DIR}/Data/include
+    ${poco_SOURCE_DIR}/poco/Data/SQLite/include
+    ${poco_SOURCE_DIR}/poco/Net/include
+    ${nana_SOURCE_DIR}/include
+    ${json_SOURCE_DIR}/include
     ${BASS_LIB_DIR} )
 
 target_link_libraries(RadioStream PRIVATE nana Foundation Data DataSQLite Net ${BASS_LIB_FILE} ${FONTCONFIG_LIB} ${PTHREAD_LIB})
@@ -136,7 +139,7 @@ target_link_libraries(RadioStream PRIVATE nana Foundation Data DataSQLite Net ${
 if(UNIX)
         set(BASS_INSTALL_LIB "${BASS_LIB_FILE}")
 elseif(WIN32)
-        set(BASS_INSTALL_LIB "${CMAKE_SOURCE_DIR}/libs/bass/x64/bass.dll")
+        set(BASS_INSTALL_LIB "${bass_SOURCE_DIR}/x64/bass.dll")
 endif()
 
 #INSTALL SCRIPT

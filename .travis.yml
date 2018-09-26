@@ -27,25 +27,15 @@ script:
   - sudo apt-get purge cmake
   - mkdir temp
   - cd temp
-  - wget https://cmake.org/files/v3.10/cmake-3.10.1.tar.gz
-  - tar -xzf cmake-3.10.1.tar.gz
-  - cd cmake-3.10.1/
+  - wget https://cmake.org/files/v3.11/cmake-3.11.4.tar.gz
+  - tar -xzf cmake-3.11.4.tar.gz
+  - cd cmake-3.11.4/
   - ./bootstrap
   - make
   - sudo make install
   - cd ..
   - cd ..
   # Run your build commands next
-  - mkdir libs
-  - mkdir libs/nana
-  - mkdir libs/json
-  - mkdir libs/bass
-  - mkdir libs/poco
-  - git clone -b "v1.6.1" https://github.com/cnjinhao/nana.git libs/nana
-  - git clone -b "v3.1.2" https://github.com/nlohmann/json.git libs/json
-  - git clone -b "poco-1.8.2" https://github.com/pocoproject/poco.git libs/poco
-  - sudo wget http://us.un4seen.com/files/bass24-linux.zip
-  - sudo unzip bass24-linux.zip -d libs/bass
   - mkdir build
   - cd build
   - /usr/local/bin/cmake  ..
