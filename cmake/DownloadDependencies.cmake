@@ -1,5 +1,8 @@
 
 include(FetchContent)
+set(FETCHCONTENT_BASE_DIR ${CMAKE_SOURCE_DIR}/deps)
+set(FETCHCONTENT_QUIET FALSE)
+set(FETCHCONTENT_UPDATES_DISCONNECTED TRUE)
 FetchContent_Declare(
         nana
         GIT_REPOSITORY "https://github.com/cnjinhao/nana.git"
@@ -11,7 +14,6 @@ FetchContent_Declare(
         BUILD_COMMAND ""
         INSTALL_COMMAND ""
         TEST_COMMAND ""
-        LOG_DOWNLOAD TRUE
 )
 FetchContent_Declare(
         poco
@@ -24,7 +26,6 @@ FetchContent_Declare(
         BUILD_COMMAND ""
         INSTALL_COMMAND ""
         TEST_COMMAND ""
-        LOG_DOWNLOAD TRUE
 )
 FetchContent_Declare(
         json
@@ -37,7 +38,6 @@ FetchContent_Declare(
         BUILD_COMMAND ""
         INSTALL_COMMAND ""
         TEST_COMMAND ""
-        LOG_DOWNLOAD TRUE
 )
 
 if(WIN32)
@@ -53,7 +53,6 @@ FetchContent_Declare(
         BUILD_COMMAND ""
         INSTALL_COMMAND ""
         TEST_COMMAND ""
-        LOG_DOWNLOAD TRUE
 )
 FetchContent_Populate(nana)
 FetchContent_Populate(poco)
