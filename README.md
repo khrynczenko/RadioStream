@@ -33,7 +33,7 @@ running for the first time (about 5-20 minutes depending on connection).
 
 `cmake -G "Visual Studio 15 2017 Win64`
 
-If you have many problem You should post an issue.
+If you have any problems You should post an issue.
 
 ## Dependencies
 nana https://github.com/cnjinhao/nana  
