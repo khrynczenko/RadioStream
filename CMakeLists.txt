@@ -164,10 +164,10 @@ elseif(UNIX)
             DESTINATION "${CMAKE_INSTALL_PREFIX}/bin/"
             )
     install(FILES
-            "${CMAKE_BINARY_DIR}/lib/libPocoData.so.52"
-            "${CMAKE_BINARY_DIR}/lib/libPocoDataSQLite.so.52"
-            "${CMAKE_BINARY_DIR}/lib/libPocoFoundation.so.52"
-            "${CMAKE_BINARY_DIR}/lib/libPocoNet.so.52"
+            "${CMAKE_BINARY_DIR}/lib/libPocoData.so.60"
+            "${CMAKE_BINARY_DIR}/lib/libPocoDataSQLite.so.60"
+            "${CMAKE_BINARY_DIR}/lib/libPocoFoundation.so.60"
+            "${CMAKE_BINARY_DIR}/lib/libPocoNet.so.60"
             "${BASS_INSTALL_LIB}"
             DESTINATION /usr/lib)
     install(DIRECTORY DESTINATION "$ENV{HOME}/.local/share/radiostream")
