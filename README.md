@@ -31,7 +31,7 @@ running for the first time (about 5-20 minutes depending on connection).
 **Visual Studio**
 
 
-`cmake -G "Visual Studio 15 2017 Win64`
+`cmake -G "Visual Studio 15 2017 Win64"`
 
 If you have any problems You should post an issue.
 
