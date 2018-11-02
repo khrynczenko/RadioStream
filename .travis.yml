@@ -5,4 +5,4 @@ before_install:
   - docker pull jeniopy/radiostream
   - docker ps -a
 script:
-  - docker run jeniopy/radiostream /bin/sh -c "git clone https://github.com/JenioPY/RadioStream.git; cd RadioStream; cmake .; make -j; cpack -G DEB;" 
+  - docker run jeniopy/radiostream /bin/sh -c "git clone https://github.com/JenioPY/RadioStream.git; cd RadioStream; cmake .; make; cpack -G DEB;" 
