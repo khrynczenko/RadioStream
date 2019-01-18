@@ -29,7 +29,8 @@ class Application : public Subject
 {
 public:
 	Application(const std::filesystem::path& config_directory_path,
-			    const std::filesystem::path& data_directory_path);
+			    const std::filesystem::path& data_directory_path,
+			    const std::filesystem::path& lang_directory_path);
 private:
     enum
     {

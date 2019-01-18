@@ -43,3 +43,11 @@ std::filesystem::path get_data_directory_path()
 #endif
 }
 
+std::filesystem::path get_lang_directory_path() noexcept
+{
+#ifndef _WIN32
+    return "/usr/local/share/radiostream";
+#else
+    return std::filesystem::current_path();
+#endif
+}
