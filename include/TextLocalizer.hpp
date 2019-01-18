@@ -10,7 +10,7 @@
 class LanguagesPathsContainer
 {
 public:
-    explicit LanguagesPathsContainer(const std::filesystem::path& config_directory) noexcept;
+    explicit LanguagesPathsContainer(const std::filesystem::path& lang_root_directory) noexcept;
     std::filesystem::path get_path(LanguageCode lang);
 
 private:
@@ -20,7 +20,7 @@ private:
 class TextLocalizer
 {
 public:
-    explicit TextLocalizer(const std::filesystem::path& config_directory) noexcept;
+    explicit TextLocalizer(const std::filesystem::path& lang_root_directory) noexcept;
     void switch_language(LanguageCode lang);
     template <typename ...Args>
     std::string get_localized_text(std::string text_id, Args ... args) const;

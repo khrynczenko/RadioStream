@@ -11,7 +11,8 @@
 #include <nana/gui/msgbox.hpp>
 
 Application::Application(const std::filesystem::path& config_directory_path,
-                         const std::filesystem::path& data_directory_path)
+                         const std::filesystem::path& data_directory_path,
+                         const std::filesystem::path& lang_directory_path)
     : config_(config_directory_path / constants::CONFIG_FILE)
     , window_(nana::API::make_center(config_.options().window_width,
                                      config_.options().window_height),
@@ -22,7 +23,7 @@ Application::Application(const std::filesystem::path& config_directory_path,
     , menubar_(window_)
     , stations_database_(data_directory_path / constants::STATIONS_DATABASE_FILE)
     , status_(window_)
-    , localizer_(data_directory_path)
+    , localizer_(lang_directory_path)
     , requester_(config_.options().stations_search_limit)
     , context_(window_, menubar_, station_player_, stations_database_, status_, localizer_, config_, requester_)
     , states_manager_(context_)

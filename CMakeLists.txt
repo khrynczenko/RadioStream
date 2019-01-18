@@ -161,7 +161,7 @@ if(WIN32)
 elseif(UNIX)
     install(TARGETS RadioStream
             RUNTIME
-            DESTINATION "${CMAKE_INSTALL_PREFIX}/bin/"
+            DESTINATION "/usr/bin/"
             )
     install(FILES
             "${CMAKE_BINARY_DIR}/lib/libPocoData.so.60"
@@ -170,9 +170,9 @@ elseif(UNIX)
             "${CMAKE_BINARY_DIR}/lib/libPocoNet.so.60"
             "${BASS_INSTALL_LIB}"
             DESTINATION /usr/lib)
-    install(DIRECTORY DESTINATION "$ENV{HOME}/.local/share/radiostream")
+    install(DIRECTORY DESTINATION "/usr/local/share/radiostream")
     install(DIRECTORY "${CMAKE_SOURCE_DIR}/lang"
-            DESTINATION "$ENV{HOME}/.local/share/radiostream/")
+            DESTINATION "/usr/local/share/radiostream/")
 endif()
 
 #CPACK SCRIPT
