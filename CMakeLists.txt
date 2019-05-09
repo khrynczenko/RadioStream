@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 3.11)
+cmake_minimum_required (VERSION 3.12)
 project(RadioStream VERSION "0.1.0")
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 
@@ -131,7 +131,7 @@ target_include_directories(RadioStream PRIVATE
     ${poco_SOURCE_DIR}/poco/Data/SQLite/include
     ${poco_SOURCE_DIR}/poco/Net/include
     ${nana_SOURCE_DIR}/include
-    ${json_SOURCE_DIR}/include
+    ${json_SOURCE_DIR}
     ${BASS_LIB_DIR} )
 
 target_link_libraries(RadioStream PRIVATE nana Foundation Data DataSQLite Net ${BASS_LIB_FILE} ${FONTCONFIG_LIB} ${PTHREAD_LIB})

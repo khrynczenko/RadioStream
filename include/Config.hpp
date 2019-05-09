@@ -3,7 +3,7 @@
 
 #include "TextLocalizer.hpp"
 #include "Language.hpp"
-#include <nlohmann/json.hpp>
+#include <json.hpp>
 #include <filesystem>
 
 struct ConfigOptions

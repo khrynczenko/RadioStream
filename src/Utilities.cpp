@@ -1,5 +1,6 @@
 #include "../include/Utilities.hpp"
 #include <algorithm>
+#include <stdexcept>
 
 
 #ifdef _WIN32

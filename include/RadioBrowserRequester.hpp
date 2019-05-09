@@ -4,7 +4,7 @@
 #include "Station.hpp"
 #include <Poco/Net/HTTPClientSession.h>
 #include <Poco/URI.h>
-#include <nlohmann/json.hpp>
+#include <json.hpp>
 #include <vector>
 
 class RadioBrowserRequester
