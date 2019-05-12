@@ -44,5 +44,5 @@ JSON for Modern C++ https://nlohmann.github.io/json/
 POCO C++ Libraries https://pocoproject.org/index.html
 
 Screens:  
-![search-page](/static/search-page.png?raw=true)
-![play-page](/static/play-page.png?raw=true)
+![search_page](/static/search_page.png?raw=true)
+![play_page](/static/play_page.png?raw=true)
