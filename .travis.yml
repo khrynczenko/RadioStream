@@ -5,4 +5,4 @@ before_install:
   - docker pull jeniopy/radiostream
   - docker ps -a
 script:
-  - docker run -v ${TRAVIS_BUILD_DIR}:/RadioStream jeniopy/radiostream /bin/sh -c "cd RadioStream; cmake .; make; cpack -G DEB;" 
+  - docker run -v ${TRAVIS_BUILD_DIR}:/RadioStream jeniopy/radiostream /bin/sh -c "export CXX=\"/usr/bin/g++-8\" cd RadioStream; cmake .; make; cpack -G DEB;"
