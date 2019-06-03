@@ -38,6 +38,18 @@ FetchContent_Declare(
         TEST_COMMAND ""
 )
 
+FetchContent_Declare(
+        clip
+        GIT_REPOSITORY "https://github.com/dacap/clip.git"
+        GIT_TAG "v1.0"
+        GIT_SHALLOW TRUE
+        GIT_PROGRESS TRUE
+        UPDATE_COMMAND ""
+        UPDATE_DISCONNECTED TRUE
+        INSTALL_COMMAND ""
+        TEST_COMMAND ""
+)
+
 if(WIN32)
     set(BASS_URL "http://us.un4seen.com/files/bass24.zip")
 elseif(UNIX)
@@ -56,3 +68,4 @@ FetchContent_Populate(nana)
 FetchContent_Populate(poco)
 FetchContent_Populate(json)
 FetchContent_Populate(bass)
+FetchContent_Populate(clip)

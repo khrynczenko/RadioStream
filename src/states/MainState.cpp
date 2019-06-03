@@ -5,6 +5,7 @@
 #include "../../include/exceptions/NanaTextboxProcessingException.hpp"
 #include <nana/gui/widgets/menubar.hpp>
 #include <nana/gui/widgets/form.hpp>
+#include <clip.h>
 
 using namespace constants;
 
@@ -117,11 +118,19 @@ void MainState::init_contextual_menus()
     song_label_menu_.append(context_.localizer_.get_localized_text("Copy title to clipboard."), [this](auto&)
     {
         const auto title = current_song_label_.caption();
-        copy_to_clipboard(title);
+        clip::set_text(title);
     });
     listbox_item_menu_.append(context_.localizer_.get_localized_text("Play"), [this](auto&)
     {
         on_new_station_request();
+    });
+    listbox_item_menu_.append(context_.localizer_.get_localized_text("Copy name to clipboard"), [this](auto&)
+    {
+        copy_station_name_to_clipboard();
+    });
+    listbox_item_menu_.append(context_.localizer_.get_localized_text("Copy URL to clipboard"), [this](auto&)
+    {
+        copy_station_url_to_clipboard();
     });
     listbox_item_menu_.append(context_.localizer_.get_localized_text("Delete from list"), [this](auto&)
     {
@@ -179,6 +188,21 @@ void MainState::pop_stations_listbox_menu()
     listbox_item_menu_.popup(context_.window_, position.x, position.y);
 }
 
+void MainState::copy_station_name_to_clipboard()
+{
+    Station station{};
+    const auto index = stations_listbox_.selected().front();
+    stations_listbox_.at(index.cat).at(index.item).resolve_to(station);
+    clip::set_text(station.name_);
+}
+
+void MainState::copy_station_url_to_clipboard()
+{
+    Station station{};
+    const auto index = stations_listbox_.selected().front();
+    stations_listbox_.at(index.cat).at(index.item).resolve_to(station);
+    clip::set_text(station.url_);
+}
 
 void MainState::delete_station()
 {

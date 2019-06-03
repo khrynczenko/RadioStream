@@ -8,7 +8,7 @@
 class MultimediaPlaylistReaderFactory
 {
 public:
-    static std::unique_ptr<MultimediaPlaylistReader> make_reader(Poco::URI uri);
+    static std::unique_ptr<MultimediaPlaylistReader> make_reader(const Poco::URI& uri);
 };
 
 #endif

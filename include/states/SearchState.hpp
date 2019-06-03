@@ -31,6 +31,8 @@ private:
     void set_new_station();
     void pop_stations_listbox_menu();
     void add_selected_station_to_database();
+    void copy_selected_station_url_to_clipboard();
+    void copy_selected_station_name_to_clipboard();
     nana::place container_;
     nana::textbox search_textbox_;
     nana::label sort_by_label_;
