@@ -18,7 +18,7 @@ class Config
 {
 public:
 	explicit Config(const std::filesystem::path& path_to_config);
-    void change_language(LanguageCode code);
+    void change_language(const LanguageCode& code);
     void change_stations_search_limit(unsigned int limit);
     ConfigOptions options() const;
 	~Config();

@@ -34,6 +34,8 @@ private:
     void search_stations();
     void pop_song_title_menu();
     void pop_stations_listbox_menu();
+    void copy_station_name_to_clipboard();
+    void copy_station_url_to_clipboard();
     void delete_station();
     void on_new_station_request();
     nana::place container_;

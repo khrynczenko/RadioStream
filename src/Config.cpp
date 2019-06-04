@@ -17,7 +17,7 @@ Config::Config(const std::filesystem::path& path_to_config)
     read_from_file();
 }
 
-void Config::change_language(LanguageCode code)
+void Config::change_language(const LanguageCode& code)
 {
     config_["language"] = code.as_string();
 }

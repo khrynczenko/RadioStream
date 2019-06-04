@@ -49,12 +49,12 @@ std::string RadioBrowserRequester::correct_json_response(std::string response) c
     return "{ \"response\" : " + response;
 }
 
-nlohmann::json RadioBrowserRequester::send_arbitrary_request(Poco::URI request_uri,
-    std::vector<std::pair<std::string, std::string>> request_paramters)
+nlohmann::json RadioBrowserRequester::send_arbitrary_request(const Poco::URI &request_uri,
+                                                             Parameters request_parameters)
 {
     Poco::Net::HTTPRequest request("POST", request_uri.toString());
     std::string request_body;
-    for(const auto& [parameter_name, parameter_value] : request_paramters)
+    for(const auto& [parameter_name, parameter_value] : request_parameters)
     {
         request_body.append(parameter_name + '=' + parameter_value + '&');
     }
@@ -97,7 +97,7 @@ std::vector<Station> parse_stations_jsons(const std::vector<nlohmann::json>& sta
     return stations;
 }
 
-std::vector<std::string> parse_countries(const std::vector<nlohmann::json> countries_jsons)
+std::vector<std::string> parse_countries(const std::vector<nlohmann::json>& countries_jsons)
 {
     std::vector<std::string> countries_names;
     countries_names.reserve(countries_jsons.size());
@@ -108,7 +108,7 @@ std::vector<std::string> parse_countries(const std::vector<nlohmann::json> count
     return countries_names;
 }
 
-std::vector<std::string> parse_languages(const std::vector<nlohmann::json> languages_jsons)
+std::vector<std::string> parse_languages(const std::vector<nlohmann::json>& languages_jsons)
 {
     std::vector<std::string> languages_names;
     languages_names.reserve(languages_jsons.size());

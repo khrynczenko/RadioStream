@@ -30,6 +30,7 @@ include(DownloadDependencies)
 
 add_subdirectory(${nana_SOURCE_DIR} EXCLUDE_FROM_ALL)
 add_subdirectory(${poco_SOURCE_DIR} EXCLUDE_FROM_ALL)
+add_subdirectory(${clip_SOURCE_DIR} EXCLUDE_FROM_ALL)
 
 if(WIN32)
     set(BASS_LIB_DIR ${bass_SOURCE_DIR}/c)
@@ -43,47 +44,6 @@ elseif(UNIX)
 endif()
 
 add_executable(RadioStream
-include/StatusBar.hpp
-include/Subject.hpp
-include/Station.hpp
-include/StationsDatabase.hpp
-include/Utilities.hpp
-include/RadioBrowserRequester.hpp
-include/StationPlayer.hpp
-include/Constants.hpp
-include/Application.hpp
-include/Events.hpp
-include/Config.hpp
-include/Observer.hpp
-include/Language.hpp
-include/StreamManager.hpp
-include/TextLocalizer.hpp
-include/multimedia_playlists/MultimediaPlaylistReader.hpp
-include/multimedia_playlists/HTTPDownloader.hpp
-include/multimedia_playlists/M3UReader.hpp
-include/multimedia_playlists/MultimediaPlaylistReaderFactory.hpp
-include/multimedia_playlists/PocoHTTPDownloader.hpp
-include/multimedia_playlists/PLSReader.hpp
-include/widgets/StationListbox.hpp
-include/controllers/Controller.hpp
-include/controllers/ConfigController.hpp
-include/controllers/StationPlayerController.hpp
-include/controllers/StatusBarController.hpp
-include/controllers/RadioBrowserRequesterController.hpp
-include/controllers/StationsDatabaseController.hpp
-include/exceptions/NanaTextboxProcessingException.hpp
-include/exceptions/WrongLanguageCodeFormatException.hpp
-include/exceptions/NotSupportedLanguageException.hpp
-include/exceptions/LanguageFileNotFound.hpp
-include/states/State.hpp
-include/states/StatesManager.hpp
-include/states/MainState.hpp
-include/states/StateIdentifiers.hpp
-include/states/ToolsState.hpp
-include/states/SearchState.hpp
-include/exceptions/ReaderCouldNotReadUrl.hpp
-include/exceptions/CouldNotMakeReader.hpp
-include/StreamURIResolver.hpp
 src/Application.cpp
 src/StreamManager.cpp
 src/StationsDatabase.cpp
@@ -121,7 +81,8 @@ src/states/SearchState.cpp
 src/states/StatesManager.cpp
 src/exceptions/ReaderCouldNotReadUrl.cpp
 src/exceptions/CouldNotMakeReader.cpp
-src/StreamURIResolver.cpp include/ApplicationDirectories.hpp src/ApplicationDirectories.cpp)
+src/StreamURIResolver.cpp
+src/ApplicationDirectories.cpp)
 
 target_compile_features(RadioStream PRIVATE cxx_std_17)
 
@@ -132,9 +93,10 @@ target_include_directories(RadioStream PRIVATE
     ${poco_SOURCE_DIR}/poco/Net/include
     ${nana_SOURCE_DIR}/include
     ${json_SOURCE_DIR}
+    ${clip_SOURCE_DIR}
     ${BASS_LIB_DIR} )
 
-target_link_libraries(RadioStream PRIVATE nana Foundation Data DataSQLite Net ${BASS_LIB_FILE} ${FONTCONFIG_LIB} ${PTHREAD_LIB})
+target_link_libraries(RadioStream PRIVATE nana Foundation Data DataSQLite Net clip ${BASS_LIB_FILE} ${FONTCONFIG_LIB} ${PTHREAD_LIB})
 
 if(UNIX)
         set(BASS_INSTALL_LIB "${BASS_LIB_FILE}")
