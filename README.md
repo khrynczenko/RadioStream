@@ -55,6 +55,7 @@ nana https://github.com/cnjinhao/nana
 BASS https://www.un4seen.com/  
 JSON for Modern C++ https://nlohmann.github.io/json/  
 POCO C++ Libraries https://pocoproject.org/index.html
+clip https://github.com/dacap/clip
 
 Screens:  
 ![search_page](/static/search_page.png?raw=true)
