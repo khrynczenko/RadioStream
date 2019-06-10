@@ -46,14 +46,10 @@ std::vector<Station> StationsDatabase::get_stations_by_substring(const std::stri
 {
     std::vector<Station> matching_stations;
     const auto string_to_look_for = string_to_lower(substring);
-	for(const auto& station : cached_stations_)
-	{
-        std::string lower_cased_station_name = string_to_lower(station.name_);
-		if (lower_cased_station_name.find(string_to_look_for) != std::string::npos)
-		{
-            matching_stations.push_back(station);
-		}
-	}
+	std::copy_if(std::cbegin(cached_stations_), std::cend(cached_stations_), std::back_inserter(matching_stations), [&string_to_look_for](const auto& station) {
+		std::string lower_cased_station_name = string_to_lower(station.name_);
+		return lower_cased_station_name.find(string_to_look_for) != std::string::npos;
+	});
 	return matching_stations;
 }
 
