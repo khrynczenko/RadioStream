@@ -27,11 +27,10 @@ void StationListbox::populate_listbox(const std::vector<Station>& stations)
 {
     this->auto_draw(false);
     this->clear();
-    for (const auto& station : stations)
-    {
-        const auto category_index = Categories::NanaDefault;
-        this->at(category_index).append(station);
-    }
+	const auto category_index = Categories::NanaDefault;
+	std::for_each(stations.cbegin(), stations.cend(), [&stations](const auto& station) {
+		this->at(category_index).append(station);
+	});
     this->auto_draw(true);
 }
 
@@ -56,6 +55,9 @@ std::optional<Station> StationListbox::get_selected_station() const
     
 }
 
+/**
+* \brief custom nana comparator for storting station listbox by bitrate in correct manner
+*/
 bool StationListbox::bitrate_comparator(const std::string& lhs, nana::any* any_l, const std::string& rhs, nana::any* any_r, bool reverse)
 {
 	try
