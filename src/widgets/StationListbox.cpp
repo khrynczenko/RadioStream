@@ -28,7 +28,7 @@ void StationListbox::populate_listbox(const std::vector<Station>& stations)
     this->auto_draw(false);
     this->clear();
 	const auto category_index = Categories::NanaDefault;
-	std::for_each(stations.cbegin(), stations.cend(), [&stations](const auto& station) {
+	std::for_each(stations.cbegin(), stations.cend(), [this, &category_index](const auto& station) {
 		this->at(category_index).append(station);
 	});
     this->auto_draw(true);
