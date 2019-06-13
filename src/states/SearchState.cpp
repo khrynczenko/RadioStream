@@ -59,7 +59,7 @@ void SearchState::set_listbox_events()
 
 void SearchState::build_interface()
 {
-    search_textbox_.multi_lines(false).line_wrapped(false).tip_string("Search phrase");
+    search_textbox_.multi_lines(false).line_wrapped(false).tip_string(context_.localizer_.get_localized_text("Search phrase"));
     search_textbox_.events().key_press([this](const nana::arg_keyboard& key)
     {
         if (key.key == nana::keyboard::enter)

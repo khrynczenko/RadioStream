@@ -75,8 +75,8 @@ void StatusBarController::on_notify(const radiostream::Event e, const std::any &
                 return std::string("Unknown message");
             }
         }();
-        context_.status_.change_text(context_.localizer_.get_localized_text("Could not load station: " +
-            context_.localizer_.get_localized_text(error_message)));
+        context_.status_.change_text(context_.localizer_.get_localized_text("Could not load station:") +
+            context_.localizer_.get_localized_text(error_message));
         context_.status_.change_color(StatusBar::Color::FINISHED);
     }
     break;
@@ -90,7 +90,7 @@ void StatusBarController::on_notify(const radiostream::Event e, const std::any &
 
     case radiostream::Event::StationUnmuted:
     {
-        context_.status_.change_text(context_.localizer_.get_localized_text("Station unmuted"));
+        context_.status_.change_text(context_.localizer_.get_localized_text("Stream unmuted"));
         context_.status_.change_color(StatusBar::Color::FINISHED);
     }
     break;

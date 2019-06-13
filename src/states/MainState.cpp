@@ -70,7 +70,7 @@ void MainState::build_interface()
     {
         notify(std::make_any<unsigned int>(volume_slider_.value()), radiostream::Event::VolumeChanged);
     });
-    search_textbox_.line_wrapped(true).multi_lines(false).tip_string("Search...");
+    search_textbox_.line_wrapped(true).multi_lines(false).tip_string(context_.localizer_.get_localized_text("Search..."));
     search_textbox_.events().text_changed([this]()
     {
         search_stations();
@@ -115,7 +115,7 @@ void MainState::song_has_changed(std::string_view song_title)
 
 void MainState::init_contextual_menus()
 {
-    song_label_menu_.append(context_.localizer_.get_localized_text("Copy title to clipboard."), [this](auto&)
+    song_label_menu_.append(context_.localizer_.get_localized_text("Copy title to clipboard"), [this](auto&)
     {
         const auto title = current_song_label_.caption();
         clip::set_text(title);
