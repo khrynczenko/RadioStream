@@ -1,5 +1,5 @@
 cmake_minimum_required (VERSION 3.12)
-project(RadioStream VERSION "0.1.0")
+project(RadioStream VERSION "0.1.1")
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 
 set(MSVC_USE_STATIC_RUNTIME OFF CACHE BOOL "Nana runtime type") #This is nana variable
