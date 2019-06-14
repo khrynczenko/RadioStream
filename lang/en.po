@@ -160,7 +160,7 @@ msgstr "Find"
 msgid "Copy URL to clipboard"
 msgstr "Copy URL to clipboard"
 
-msgid "Copy URL to clipboard"
+msgid "Copy name to clipboard"
 msgstr "Copy name to clipboard"
 
 msgid "Add to list"
