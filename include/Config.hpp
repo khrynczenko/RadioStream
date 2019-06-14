@@ -3,12 +3,13 @@
 
 #include "TextLocalizer.hpp"
 #include "Language.hpp"
-#include <nlohmann/json.hpp>
+#include <json.hpp>
+#include <filesystem>
 
 struct ConfigOptions
 {
     LanguageCode language = LanguageCode("en");
-    unsigned int stations_search_limit = 50u;
+    unsigned short int stations_search_limit = 50u;
     unsigned short int window_width = 800u;
     unsigned short int window_height = 600u;
 };
@@ -16,18 +17,19 @@ struct ConfigOptions
 class Config
 {
 public:
-	explicit Config(std::string path);
-    void change_language(LanguageCode code);
+	explicit Config(const std::filesystem::path& path_to_config);
+    void change_language(const LanguageCode& code);
     void change_stations_search_limit(unsigned int limit);
-    ConfigOptions get_all_config_options() const;
+    ConfigOptions options() const;
 	~Config();
 	nlohmann::json& operator[](const std::string& key);
 private:
     void create_default_config_file() const;
 	void save_to_file() const;
 	void read_from_file();
-	std::string path_;
+	std::filesystem::path path_to_config_;
 	nlohmann::json config_;
+	const nlohmann::json default_config_;
 
 };
 

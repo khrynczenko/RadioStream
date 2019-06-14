@@ -4,27 +4,27 @@
 #include "Language.hpp"
 #include <nana/internationalization.hpp>
 #include <array>
-#include <experimental/filesystem>
+#include <filesystem>
 #include <map>
 
 class LanguagesPathsContainer
 {
 public:
-    LanguagesPathsContainer() noexcept;
-    std::experimental::filesystem::path get_path(LanguageCode lang);
+    explicit LanguagesPathsContainer(const std::filesystem::path& lang_root_directory) noexcept;
+    std::filesystem::path get_path(LanguageCode lang);
 
 private:
-    std::map<const LanguageCode, const std::experimental::filesystem::path, LanguageCodeComparator> languages_filpaths_;
+    std::map<const LanguageCode, const std::filesystem::path, LanguageCodeComparator> languages_filepaths;
 };
 
 class TextLocalizer
 {
 public:
-    TextLocalizer() noexcept;
+    explicit TextLocalizer(const std::filesystem::path& lang_root_directory) noexcept;
     void switch_language(LanguageCode lang);
     template <typename ...Args>
     std::string get_localized_text(std::string text_id, Args ... args) const;
-    std::string get_localized_text(std::string text_id) const;
+    std::string get_localized_text(std::string_view text_id) const;
 private:
     nana::internationalization localizer_;
     LanguagesPathsContainer languages_;

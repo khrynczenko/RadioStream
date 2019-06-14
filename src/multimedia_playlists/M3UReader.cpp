@@ -1,4 +1,5 @@
 #include "../../include/multimedia_playlists/M3UReader.hpp"
+#include "../../include/exceptions/ReaderCouldNotReadUrl.hpp"
 #include <Poco/URI.h>
 #include <Poco/Exception.h>
 
@@ -21,5 +22,5 @@ std::string M3UReader::get_station_url(std::istream & input) const
         {
         }
     }
-    throw;
+    throw ReaderCouldNotReadUrl();
 }

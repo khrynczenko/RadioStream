@@ -25,9 +25,6 @@ msgstr "Nazwa stacji:"
 msgid "URL"
 msgstr "URL"
 
-msgid "Please write correct URL."
-msgstr "Please write correct URL."
-
 msgid "Settings"
 msgstr "Ustawienia"
 
@@ -55,8 +52,8 @@ msgstr "Wycisz"
 msgid "Search..."
 msgstr "Szukaj..."
 
-msgid "Copy title to clipboard."
-msgstr "Skopiuj do schowka."
+msgid "Copy title to clipboard"
+msgstr "Skopiuj do schowka"
 
 msgid "Subscribe"
 msgstr "Dodaj do ulubionych"
@@ -100,5 +97,87 @@ msgstr "Odtwarzanie wstrzymane"
 msgid "Stations:"
 msgstr "Stacje:"
 
-msgid "Find	stations"
+msgid "Search..."
+msgstr "Szukaj..."
+
+msgid "Stations:"
+msgstr "Stacje:"
+
+msgid "Find stations"
 msgstr "Szukaj stacji"
+
+msgid "Country"
+msgstr "Kraj"
+
+msgid "Language"
+msgstr "Język"
+
+msgid "Codec"
+msgstr "Typ"
+
+msgid "Bitrate"
+msgstr "Bitrate"
+
+msgid "Tags"
+msgstr "Tagi"
+
+msgid "Country:"
+msgstr "Kraj:"
+
+msgid "Language:"
+msgstr "Język:"
+
+msgid "Codec:"
+msgstr "Typ:"
+
+msgid "Bitrate:"
+msgstr "Bitrate:"
+
+msgid "Tags:"
+msgstr "Tagi:"
+
+
+msgid "Search stations limit:"
+msgstr "Ilośc wyszukiwanych stacji:"
+
+msgid "Stream muted"
+msgstr "Wyciszony"
+
+msgid "Stream unmuted"
+msgstr "Głośność przywrócona"
+
+msgid "Stream paused"
+msgstr "Zatrzymany"
+
+msgid "Station playing"
+msgstr "Odtwarzany"
+
+msgid "Could not load station:"
+msgstr "Could not load station:"
+
+msgid "Sort by:"
+msgstr "Sortuj po:"
+
+msgid "Popularity"
+msgstr "Popularność"
+
+msgid "Trending"
+msgstr "Trend"
+
+msgid "Score"
+msgstr "Ocena"
+
+msgid "Search phrase"
+msgstr "Wyszukiwana fraza"
+
+msgid "Find"
+msgstr "Szukaj"
+
+msgid "Copy URL to clipboard"
+msgstr "Skopiuj URL do schowka"
+
+msgid "Copy name to clipboard"
+msgstr "Skopiuj nazwę do schowka"
+
+msgid "Add to list"
+msgstr "Dodaj do listy"

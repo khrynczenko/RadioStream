@@ -17,6 +17,7 @@
 #include <nana/gui/widgets/form.hpp>
 #include <nana/gui/widgets/menubar.hpp>
 #include <mutex>
+#include <filesystem>
 
 class LanguageCode;
 
@@ -27,7 +28,9 @@ class LanguageCode;
 class Application : public Subject
 {
 public:
-	Application();
+	Application(const std::filesystem::path& config_directory_path,
+			    const std::filesystem::path& data_directory_path,
+			    const std::filesystem::path& lang_directory_path);
 private:
     enum
     {

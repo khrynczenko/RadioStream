@@ -25,9 +25,6 @@ msgstr "Station name:"
 msgid "URL"
 msgstr "URL"
 
-msgid "Please write correct URL."
-msgstr "Please write correct URL."
-
 msgid "Settings"
 msgstr "Settings"
 
@@ -55,8 +52,8 @@ msgstr "Mute"
 msgid "Search..."
 msgstr "Search..."
 
-msgid "Copy title to clipboard."
-msgstr "Copy title to clipboard."
+msgid "Copy title to clipboard"
+msgstr "Copy title to clipboard"
 
 msgid "Subscribe"
 msgstr "Subscribe"
@@ -97,8 +94,74 @@ msgstr "Radio playing"
 msgid "Radio paused"
 msgstr "Radio paused"
 
+msgid "Find stations"
+msgstr "Find stations"
+
+msgid "Search..."
+msgstr "Search..."
+
 msgid "Stations:"
 msgstr "Stations"
 
-msgid "Find	stations"
-msgstr "Find stations"
+msgid "Country"
+msgstr "Country"
+
+msgid "Language"
+msgstr "Language"
+
+msgid "Codec"
+msgstr "Codec"
+
+msgid "Bitrate"
+msgstr "Bitrate"
+
+msgid "Tags"
+msgstr "Tags"
+
+msgid "Language:"
+msgstr "Language:"
+
+msgid "Search stations limit:"
+msgstr "Search stations limit:"
+
+msgid "Stream muted"
+msgstr "Stream muted"
+
+msgid "Stream unmuted"
+msgstr "Stream unmuted"
+
+msgid "Stream paused"
+msgstr "Stream paused"
+
+msgid "Station playing"
+msgstr "Station playing"
+
+msgid "Could not load station:"
+msgstr "Could not load station:"
+
+msgid "Sort by:"
+msgstr "Sort by:"
+
+msgid "Popularity"
+msgstr "Popularity"
+
+msgid "Trending"
+msgstr "Trending"
+
+msgid "Score"
+msgstr "Score"
+
+msgid "Search phrase"
+msgstr "Search phrase"
+
+msgid "Find"
+msgstr "Find"
+
+msgid "Copy URL to clipboard"
+msgstr "Copy name to clipboard"
+
+msgid "Copy URL to clipboard"
+msgstr "Copy name to clipboard"
+
+msgid "Add to list"
+msgstr "Add to list"

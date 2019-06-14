@@ -1,6 +1,7 @@
 #include "../include/StreamManager.hpp"
 #include <stdexcept>
 #include <iostream>
+#include <algorithm>
 
 void StreamManager::mute()
 {
@@ -71,11 +72,10 @@ std::string StreamManager::get_song_title() const
 	if (tags != nullptr)
 	{
 		//string in tags looks something like "StreamTitle='title',url='url'"
-		std::string str = tags;
-		auto first = str.find('\'');
-		first++;
-	    const auto last = str.substr(first).find('\'');
-		return str.substr(first, last);
+		const std::string str = tags;
+		const auto first = std::find(str.cbegin(), str.cend(), '\'') + 1;
+        const auto last = std::find(first, str.cend(), '\'');
+		return std::string(first, last);
 	}
 	return "";
 }

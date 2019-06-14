@@ -4,12 +4,13 @@
 #include "Station.hpp"
 #include "Subject.hpp"
 #include <Poco/Data/Session.h>
+#include <filesystem>
 
 
 class StationsDatabase : public Subject
 {
 public:
-    explicit StationsDatabase(std::string_view database_name);
+    explicit StationsDatabase(const std::filesystem::path& path_to_db_file);
     const std::vector<Station>& get_stations() const noexcept;
     void add_station(const Station& station);
     void remove_station(const Station& station);

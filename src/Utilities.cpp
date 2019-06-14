@@ -1,12 +1,7 @@
 #include "../include/Utilities.hpp"
 #include <algorithm>
+#include <stdexcept>
 
-
-#ifdef _WIN32
-#include <Windows.h>
-#elif defined __linux__
-
-#endif
 
 bool ends_with(std::string_view text, std::string_view ending)
 {
@@ -21,16 +16,6 @@ float volume_int_to_float(int vol) noexcept
 unsigned int volume_float_to_int(float vol) noexcept
 {
 	return static_cast<unsigned int>(vol*100.f);
-}
-
-bool str_to_bool(const std::string& str) noexcept
-{
-	return str == "true";
-}
-
-std::string bool_to_str(bool b) noexcept
-{
-	return b ? "true" : "false";
 }
 
 char easytolower(char in) noexcept {
@@ -48,35 +33,4 @@ std::string string_to_lower(const std::string& str)
     std::transform(str.begin(), str.end(), lowered.begin(), easytolower);
     return lowered;
 }
-
-
-void copy_to_clipboard(const std::string& message)
-{
-#ifdef _WIN32
-    if (OpenClipboard(nullptr))
-    {
-        EmptyClipboard();
-        const HGLOBAL hg = GlobalAlloc(GHND, message.size() + 1);
-        
-        memcpy(GlobalLock(hg), message.c_str(), message.size() + 1);
-        GlobalUnlock(hg);
-        if (!SetClipboardData(CF_TEXT, hg))
-        {
-            throw std::runtime_error("Could not set new data to clipboard.");
-        }
-        CloseClipboard();
-        GlobalFree(hg);
-    }
-    else
-    {
-        throw std::runtime_error("Could not open clipboard.");
-    }
-#elif defined __linux__
-
-
-#endif
-}
-
-
-
 

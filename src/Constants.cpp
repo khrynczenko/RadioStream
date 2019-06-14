@@ -9,5 +9,5 @@ namespace constants
         std::make_pair(LanguageCode("en"s), "English"s),
         std::make_pair(LanguageCode("pl"s), "Polski"s)
     };
-};
+}
 

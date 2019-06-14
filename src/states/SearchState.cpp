@@ -5,6 +5,7 @@
 #include "../../include/Utilities.hpp"
 #include <nana/gui/widgets/form.hpp>
 #include <nana/gui/widgets/menubar.hpp>
+#include <clip.h>
 
 using namespace constants;
 
@@ -58,7 +59,7 @@ void SearchState::set_listbox_events()
 
 void SearchState::build_interface()
 {
-    search_textbox_.multi_lines(false).line_wrapped(false).tip_string("Search phrase");
+    search_textbox_.multi_lines(false).line_wrapped(false).tip_string(context_.localizer_.get_localized_text("Search phrase"));
     search_textbox_.events().key_press([this](const nana::arg_keyboard& key)
     {
         if (key.key == nana::keyboard::enter)
@@ -108,6 +109,16 @@ void SearchState::build_interface()
     {
         add_selected_station_to_database();
     });
+
+    listbox_right_click_menu_.append(context_.localizer_.get_localized_text("Copy URL to clipboard"), [this]([[maybe_unused]] auto& ev)
+    {
+        copy_selected_station_url_to_clipboard();
+    });
+
+    listbox_right_click_menu_.append(context_.localizer_.get_localized_text("Copy name to clipboard"), [this]([[maybe_unused]] auto& ev)
+    {
+        copy_selected_station_name_to_clipboard();
+    });
 }
 
 void SearchState::insert_stations_to_listbox(const std::vector<Station>& stations)
@@ -123,7 +134,7 @@ void SearchState::insert_possible_languages(const std::vector<std::string>& lang
     }
 }
 
-void SearchState::insert_possible_countires(const std::vector<std::string>& countries)
+void SearchState::insert_possible_countries(const std::vector<std::string> &countries)
 {
     for (const auto& country : countries)
     {
@@ -168,5 +179,23 @@ void SearchState::set_new_station()
     if(station.has_value())
     {
         notify(station.value(), radiostream::Event::NewStationRequested);
+    }
+}
+
+void SearchState::copy_selected_station_url_to_clipboard()
+{
+    auto station = found_stations_listbox_.get_selected_station();
+    if(station.has_value())
+    {
+        clip::set_text(station.value().url_);
+    }
+}
+
+void SearchState::copy_selected_station_name_to_clipboard()
+{
+    auto station = found_stations_listbox_.get_selected_station();
+    if(station.has_value())
+    {
+        clip::set_text(station.value().name_);
     }
 }

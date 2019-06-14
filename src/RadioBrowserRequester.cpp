@@ -2,7 +2,6 @@
 #include <Poco/Net/HTTPRequest.h>
 #include <Poco/Net/HTTPResponse.h>
 #include <Poco/StreamCopier.h>
-#include <nlohmann/detail/conversions/from_json.hpp>
 
 std::vector<nlohmann::json> RadioBrowserRequester::request_stations(std::string_view search_phrase, std::string_view country, std::string_view language, OrderBy order)
 {
@@ -50,12 +49,12 @@ std::string RadioBrowserRequester::correct_json_response(std::string response) c
     return "{ \"response\" : " + response;
 }
 
-nlohmann::json RadioBrowserRequester::send_arbitrary_request(Poco::URI request_uri,
-    std::vector<std::pair<std::string, std::string>> request_paramters)
+nlohmann::json RadioBrowserRequester::send_arbitrary_request(const Poco::URI &request_uri,
+                                                             Parameters request_parameters)
 {
     Poco::Net::HTTPRequest request("POST", request_uri.toString());
     std::string request_body;
-    for(const auto& [parameter_name, parameter_value] : request_paramters)
+    for(const auto& [parameter_name, parameter_value] : request_parameters)
     {
         request_body.append(parameter_name + '=' + parameter_value + '&');
     }
@@ -72,24 +71,33 @@ nlohmann::json RadioBrowserRequester::send_arbitrary_request(Poco::URI request_u
 
 }
 
+RadioBrowserRequester::RadioBrowserRequester(unsigned short int search_stations_limit)
+    : limit_(search_stations_limit)
+{
+
+}
+
 std::vector<Station> parse_stations_jsons(const std::vector<nlohmann::json>& stations_jsons)
 {
     std::vector<Station> stations;
     stations.reserve(stations_jsons.size());
     for(const auto& station_json : stations_jsons)
     {
-        stations.emplace_back(station_json["name"].get<std::string>(),
-            station_json["url"].get<std::string>(),
-            station_json["country"].get<std::string>(),
-            station_json["language"].get<std::string>(),
-            station_json["codec"].get<std::string>(),
-            station_json["bitrate"].get<std::string>() + std::string(" kbps"),
-            station_json["tags"].get<std::string>());
+        if(std::stoi(station_json["lastcheckok"].get<std::string>()) == 1)
+        {
+            stations.emplace_back(station_json["name"].get<std::string>(),
+                                  station_json["url"].get<std::string>(),
+                                  station_json["country"].get<std::string>(),
+                                  station_json["language"].get<std::string>(),
+                                  station_json["codec"].get<std::string>(),
+                                  station_json["bitrate"].get<std::string>() + std::string(" kbps"),
+                                  station_json["tags"].get<std::string>());
+        }
     }
     return stations;
 }
 
-std::vector<std::string> parse_countries(const std::vector<nlohmann::json> countries_jsons)
+std::vector<std::string> parse_countries(const std::vector<nlohmann::json>& countries_jsons)
 {
     std::vector<std::string> countries_names;
     countries_names.reserve(countries_jsons.size());
@@ -100,7 +108,7 @@ std::vector<std::string> parse_countries(const std::vector<nlohmann::json> count
     return countries_names;
 }
 
-std::vector<std::string> parse_languages(const std::vector<nlohmann::json> languages_jsons)
+std::vector<std::string> parse_languages(const std::vector<nlohmann::json>& languages_jsons)
 {
     std::vector<std::string> languages_names;
     languages_names.reserve(languages_jsons.size());
