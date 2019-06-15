@@ -72,7 +72,7 @@ std::string StreamManager::get_song_title() const
 	if (tags != nullptr)
 	{
 		//string in tags looks something like "StreamTitle='title',url='url'"
-		const std::string str = tags;
+		const std::string_view str = tags;
 		const auto first = std::find(str.cbegin(), str.cend(), '\'') + 1;
         const auto last = std::find(first, str.cend(), '\'');
 		return std::string(first, last);

@@ -151,7 +151,7 @@ void SearchState::pop_stations_listbox_menu()
 
 void SearchState::add_selected_station_to_database()
 {
-    if (auto station = found_stations_listbox_.get_selected_station(); station.has_value())
+    if (const auto station = found_stations_listbox_.get_selected_station(); station.has_value())
     {
         notify(station.value(), radiostream::Event::AddStationToDatabase);
     }
@@ -184,8 +184,7 @@ void SearchState::set_new_station()
 
 void SearchState::copy_selected_station_url_to_clipboard()
 {
-    auto station = found_stations_listbox_.get_selected_station();
-    if(station.has_value())
+    if (const auto station = found_stations_listbox_.get_selected_station(); station.has_value())
     {
         clip::set_text(station.value().url_);
     }
@@ -193,8 +192,7 @@ void SearchState::copy_selected_station_url_to_clipboard()
 
 void SearchState::copy_selected_station_name_to_clipboard()
 {
-    auto station = found_stations_listbox_.get_selected_station();
-    if(station.has_value())
+    if (const auto station = found_stations_listbox_.get_selected_station(); station.has_value())
     {
         clip::set_text(station.value().name_);
     }
