@@ -14,6 +14,8 @@ Latest tested release goes on the master branch, while develop branch
 is used for creating new content before releasing.
 You should branch from develop if You want to make changes.
 
+**You can download pre-built binaries [here](https://github.com/khrynczenko/RadioStream/releases).**
+
 ## How to build
 ### Requirements
 - CMake 3.12
