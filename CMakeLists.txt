@@ -35,7 +35,6 @@ add_subdirectory(${clip_SOURCE_DIR} EXCLUDE_FROM_ALL)
 if(WIN32)
     set(BASS_LIB_DIR ${bass_SOURCE_DIR}/c)
     set(BASS_LIB_FILE ${bass_SOURCE_DIR}/c/x64/bass.lib)
-    set(shared_lib "dll")
 elseif(UNIX)
     set(BASS_LIB_DIR ${bass_SOURCE_DIR})
     set(BASS_LIB_FILE ${bass_SOURCE_DIR}/x64/libbass.so)
@@ -112,10 +111,10 @@ if(WIN32)
             DESTINATION "."
             )
     install(FILES
-            "${CMAKE_BINARY_DIR}/bin/Release/PocoData.${shared_lib}"
-            "${CMAKE_BINARY_DIR}/bin/Release/PocoDataSQLite.${shared_lib}"
-            "${CMAKE_BINARY_DIR}/bin/Release/PocoFoundation.${shared_lib}"
-            "${CMAKE_BINARY_DIR}/bin/Release/PocoNet.${shared_lib}"
+            "${CMAKE_BINARY_DIR}/bin/Release/PocoData.dll"
+            "${CMAKE_BINARY_DIR}/bin/Release/PocoDataSQLite.dll"
+            "${CMAKE_BINARY_DIR}/bin/Release/PocoFoundation.dll"
+            "${CMAKE_BINARY_DIR}/bin/Release/PocoNet.dll"
             "${BASS_INSTALL_LIB}"
             DESTINATION ".")
     install(DIRECTORY "${CMAKE_SOURCE_DIR}/lang"
