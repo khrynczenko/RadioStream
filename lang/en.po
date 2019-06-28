@@ -165,3 +165,6 @@ msgstr "Copy name to clipboard"
 
 msgid "Add to list"
 msgstr "Add to list"
+
+msgid "Help:"
+msgstr "Help:"

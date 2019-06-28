@@ -2,6 +2,7 @@
 #include "../include/states/MainState.hpp"
 #include "../include/states/SearchState.hpp"
 #include "../include/states/ToolsState.hpp"
+#include "../include/states/AboutState.hpp"
 #include "../include/StatusBar.hpp"
 #include "../include/Config.hpp"
 #include "../include/Language.hpp"
@@ -54,6 +55,7 @@ void Application::register_states()
 	states_manager_.register_state<MainState>(States::ID::Main);
 	states_manager_.register_state<SearchState>(States::ID::Search);
 	states_manager_.register_state<ToolsState>(States::ID::Tools);
+	states_manager_.register_state<AboutState>(States::ID::About);
 }
 
 void Application::init_menubar()
@@ -61,6 +63,7 @@ void Application::init_menubar()
 	menubar_.push_back(localizer_.get_localized_text("File:"));
     menubar_.push_back(localizer_.get_localized_text("Stations:"));
 	menubar_.push_back(localizer_.get_localized_text("Tools:"));
+	menubar_.push_back(localizer_.get_localized_text("Help:"));
 
 	menubar_.at(FILE).append(localizer_.get_localized_text("Open URL"), [this](nana::menu::item_proxy&)
 	{
@@ -103,6 +106,12 @@ void Application::init_menubar()
 	{
 		states_manager_.switch_state(States::ID::Tools);
 	});
+
+	menubar_.at(HELP).append(localizer_.get_localized_text("About"), [this](nana::menu::item_proxy&)
+	{
+		states_manager_.switch_state(States::ID::About);
+	});
+
 }
 
 void Application::set_language()

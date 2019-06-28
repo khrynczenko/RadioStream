@@ -7,6 +7,7 @@ namespace States {
 		Main,
         Search,
 		Tools,
+		About,
 		StatesCount
 	};
 }

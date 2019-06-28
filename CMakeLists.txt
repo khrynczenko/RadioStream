@@ -78,6 +78,7 @@ src/states/State.cpp
 src/states/MainState.cpp
 src/states/SearchState.cpp
 src/states/StatesManager.cpp
+src/states/AboutState.cpp
 src/exceptions/ReaderCouldNotReadUrl.cpp
 src/exceptions/CouldNotMakeReader.cpp
 src/StreamURIResolver.cpp

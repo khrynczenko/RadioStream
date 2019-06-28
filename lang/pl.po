@@ -181,3 +181,6 @@ msgstr "Skopiuj nazwę do schowka"
 
 msgid "Add to list"
 msgstr "Dodaj do listy"
+
+msgid "Help:"
+msgstr "Pomoc:"
