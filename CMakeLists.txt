@@ -4,6 +4,7 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 
 set(MSVC_USE_STATIC_RUNTIME OFF CACHE BOOL "Nana runtime type") #This is nana variable
 
+# POCO variables
 set(ENABLE_XML FALSE)
 set(ENABLE_JSTRUE TRUE)
 set(ENABLE_MONGODB FALSE)
@@ -93,7 +94,9 @@ target_include_directories(RadioStream PRIVATE
     ${nana_SOURCE_DIR}/include
     ${json_SOURCE_DIR}
     ${clip_SOURCE_DIR}
-    ${BASS_LIB_DIR} )
+    ${BASS_LIB_DIR}
+    ${PROJECT_BINARY_DIR}/radio-stream-version
+)
 
 target_link_libraries(RadioStream PRIVATE nana Foundation Data DataSQLite Net clip ${BASS_LIB_FILE} ${FONTCONFIG_LIB} ${PTHREAD_LIB})
 
@@ -102,6 +105,11 @@ if(UNIX)
 elseif(WIN32)
         set(BASS_INSTALL_LIB "${bass_SOURCE_DIR}/x64/bass.dll")
 endif()
+
+configure_file (
+  "${PROJECT_SOURCE_DIR}/cmake/RadioStreamVersion.hpp.in"
+  "${PROJECT_BINARY_DIR}/radio-stream-version/RadioStreamVersion.hpp"
+)
 
 #INSTALL SCRIPT
 if(WIN32)

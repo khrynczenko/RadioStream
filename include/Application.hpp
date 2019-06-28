@@ -36,7 +36,8 @@ private:
     {
         FILE,
         RADIOBROWSER,
-        TOOLS
+        TOOLS,
+        HELP
     };
     /**
 	 * \brief Gets called in constructor, registers states that are gonna be used throughout the application.

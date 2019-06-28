@@ -1,8 +1,8 @@
-msgid "File:"
-msgstr "File:"
+msgid "File"
+msgstr "File"
 
-msgid "Tools:"
-msgstr "Tools:"
+msgid "Tools"
+msgstr "Tools"
 
 msgid "URL"
 msgstr "URL"
@@ -21,9 +21,6 @@ msgstr "Add station"
 
 msgid "Station name:"
 msgstr "Station name:"
-
-msgid "URL"
-msgstr "URL"
 
 msgid "Settings"
 msgstr "Settings"
@@ -97,11 +94,11 @@ msgstr "Radio paused"
 msgid "Find stations"
 msgstr "Find stations"
 
+msgid "Stations"
+msgstr "Stations"
+
 msgid "Search..."
 msgstr "Search..."
-
-msgid "Stations:"
-msgstr "Stations"
 
 msgid "Country"
 msgstr "Country"
@@ -165,3 +162,14 @@ msgstr "Copy name to clipboard"
 
 msgid "Add to list"
 msgstr "Add to list"
+
+msgid "Help"
+msgstr "Help"
+
+msgid "About"
+msgstr "About"
+
+msgid "RADIO_ABOUT"
+msgstr ""
+"RadioStream version $ by Krzysztof Hrynczenko.\n"
+"For more information visit https://github.com/khrynczenko/RadioStream"
