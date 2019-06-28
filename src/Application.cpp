@@ -2,13 +2,13 @@
 #include "../include/states/MainState.hpp"
 #include "../include/states/SearchState.hpp"
 #include "../include/states/ToolsState.hpp"
-#include "../include/states/AboutState.hpp"
 #include "../include/StatusBar.hpp"
 #include "../include/Config.hpp"
 #include "../include/Language.hpp"
 #include "../include/exceptions/NotSupportedLanguageException.hpp"
 #include "../include/Constants.hpp"
 #include "../include/multimedia_playlists/PocoHTTPDownloader.hpp"
+#include "../include/Utilities.hpp"
 #include <nana/gui/msgbox.hpp>
 
 Application::Application(const std::filesystem::path& config_directory_path,
@@ -55,15 +55,14 @@ void Application::register_states()
 	states_manager_.register_state<MainState>(States::ID::Main);
 	states_manager_.register_state<SearchState>(States::ID::Search);
 	states_manager_.register_state<ToolsState>(States::ID::Tools);
-	states_manager_.register_state<AboutState>(States::ID::About);
 }
 
 void Application::init_menubar()
 {
-	menubar_.push_back(localizer_.get_localized_text("File:"));
-    menubar_.push_back(localizer_.get_localized_text("Stations:"));
-	menubar_.push_back(localizer_.get_localized_text("Tools:"));
-	menubar_.push_back(localizer_.get_localized_text("Help:"));
+	menubar_.push_back(localizer_.get_localized_text("File"));
+    menubar_.push_back(localizer_.get_localized_text("Stations"));
+	menubar_.push_back(localizer_.get_localized_text("Tools"));
+	menubar_.push_back(localizer_.get_localized_text("Help"));
 
 	menubar_.at(FILE).append(localizer_.get_localized_text("Open URL"), [this](nana::menu::item_proxy&)
 	{
@@ -82,13 +81,13 @@ void Application::init_menubar()
 
     menubar_.at(FILE).append(localizer_.get_localized_text("Add station"), [this](nana::menu::item_proxy&)
     {   
-        nana::inputbox::text station_name(localizer_.get_localized_text("Station name:"));
-        nana::inputbox::text url(localizer_.get_localized_text("URL:"));
-        nana::inputbox::text country(localizer_.get_localized_text("Country:"));
-        nana::inputbox::text language(localizer_.get_localized_text("Language:"));
-        nana::inputbox::text codec(localizer_.get_localized_text("Codec:"));
-        nana::inputbox::text bitrate(localizer_.get_localized_text("Bitrate:"));
-        nana::inputbox::text tags(localizer_.get_localized_text("Tags:"));
+        nana::inputbox::text station_name(localizer_.get_localized_text("Station's name"));
+        nana::inputbox::text url(localizer_.get_localized_text("URL"));
+        nana::inputbox::text country(localizer_.get_localized_text("Country"));
+        nana::inputbox::text language(localizer_.get_localized_text("Language"));
+        nana::inputbox::text codec(localizer_.get_localized_text("Codec"));
+        nana::inputbox::text bitrate(localizer_.get_localized_text("Bitrate"));
+        nana::inputbox::text tags(localizer_.get_localized_text("Tags"));
         nana::inputbox inbox(window_, localizer_.get_localized_text("Please write correct URL."), localizer_.get_localized_text("Add station"));
         if (inbox.show(station_name, url, country, language, codec, bitrate, tags))
         {
@@ -109,7 +108,15 @@ void Application::init_menubar()
 
 	menubar_.at(HELP).append(localizer_.get_localized_text("About"), [this](nana::menu::item_proxy&)
 	{
-		states_manager_.switch_state(States::ID::About);
+		// states_manager_.switch_state(States::ID::About);
+        std::string message = context_.localizer_.get_localized_text(
+            "RADIO_ABOUT"
+        );
+        auto message_with_version = replace_dollar_with_version_number(message);
+        const std::string about = context_.localizer_.get_localized_text("About");
+        nana::msgbox box{context_.window_, about};
+        box << message_with_version;
+        box.show();
 	});
 
 }

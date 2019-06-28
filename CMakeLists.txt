@@ -78,7 +78,6 @@ src/states/State.cpp
 src/states/MainState.cpp
 src/states/SearchState.cpp
 src/states/StatesManager.cpp
-src/states/AboutState.cpp
 src/exceptions/ReaderCouldNotReadUrl.cpp
 src/exceptions/CouldNotMakeReader.cpp
 src/StreamURIResolver.cpp
@@ -94,7 +93,8 @@ target_include_directories(RadioStream PRIVATE
     ${nana_SOURCE_DIR}/include
     ${json_SOURCE_DIR}
     ${clip_SOURCE_DIR}
-    ${BASS_LIB_DIR} )
+    ${BASS_LIB_DIR}
+    ${PROJECT_BINARY_DIR} )
 
 target_link_libraries(RadioStream PRIVATE nana Foundation Data DataSQLite Net clip ${BASS_LIB_FILE} ${FONTCONFIG_LIB} ${PTHREAD_LIB})
 
@@ -103,6 +103,11 @@ if(UNIX)
 elseif(WIN32)
         set(BASS_INSTALL_LIB "${bass_SOURCE_DIR}/x64/bass.dll")
 endif()
+
+configure_file (
+  "${PROJECT_SOURCE_DIR}/cmake/RadioStreamVersion.hpp.in"
+  "${PROJECT_BINARY_DIR}/RadioStreamVersion.hpp"
+)
 
 #INSTALL SCRIPT
 if(WIN32)
