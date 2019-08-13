@@ -5,8 +5,8 @@ set(FETCHCONTENT_QUIET FALSE)
 set(FETCHCONTENT_UPDATES_DISCONNECTED TRUE)
 FetchContent_Declare(
         nana
-        GIT_REPOSITORY "https://github.com/cnjinhao/nana.git"
-        GIT_TAG "v1.7.1"
+        GIT_REPOSITORY "https://github.com/khrynczenko/nana.git"
+        GIT_TAG "master"
         GIT_SHALLOW TRUE
         GIT_PROGRESS TRUE
         UPDATE_COMMAND ""
