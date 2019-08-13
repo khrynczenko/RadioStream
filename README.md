@@ -53,7 +53,7 @@ a while to finish. Consecutive builds should be much quicker.
 If you have any problems you should post an issue.
 
 ## Dependencies
-nana https://github.com/cnjinhao/nana  
+nana https://github.com/cnjinhao/nana (fork)  
 BASS https://www.un4seen.com/  
 JSON for Modern C++ https://nlohmann.github.io/json/  
 POCO C++ Libraries https://pocoproject.org/index.html  
