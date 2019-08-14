@@ -98,7 +98,20 @@ target_include_directories(RadioStream PRIVATE
     ${PROJECT_BINARY_DIR}/radio-stream-version
 )
 
-target_link_libraries(RadioStream PRIVATE nana Foundation Data DataSQLite Net clip ${BASS_LIB_FILE} ${FONTCONFIG_LIB} ${PTHREAD_LIB})
+target_link_libraries(RadioStream PRIVATE
+                      nana
+                      Foundation
+                      Data
+                      DataSQLite
+                      Net
+                      clip
+                      ${BASS_LIB_FILE} 
+                      ${FONTCONFIG_LIB} 
+                      ${PTHREAD_LIB})
+
+if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC" AND CMAKE_BUILD_TYPE STREQUAL "Release")
+    target_link_options(RadioStream BEFORE PRIVATE "/SUBSYSTEM:WINDOWS")
+endif()
 
 if(UNIX)
         set(BASS_INSTALL_LIB "${BASS_LIB_FILE}")
@@ -111,6 +124,7 @@ configure_file (
   "${PROJECT_BINARY_DIR}/radio-stream-version/RadioStreamVersion.hpp"
 )
 
+get_target_property(POCO_OUT_PATH PocoFoundation RUNTIME_OUTPUT_DIRECTORY)
 #INSTALL SCRIPT
 if(WIN32)
     install(TARGETS RadioStream
@@ -119,10 +133,10 @@ if(WIN32)
             DESTINATION "."
             )
     install(FILES
-            "${CMAKE_BINARY_DIR}/bin/Release/PocoData.dll"
-            "${CMAKE_BINARY_DIR}/bin/Release/PocoDataSQLite.dll"
-            "${CMAKE_BINARY_DIR}/bin/Release/PocoFoundation.dll"
-            "${CMAKE_BINARY_DIR}/bin/Release/PocoNet.dll"
+            "${POCO_OUT_PATH}/PocoData.dll"
+            "${POCO_OUT_PATH}/PocoDataSQLite.dll"
+            "${POCO_OUT_PATH}/PocoFoundation.dll"
+            "${POCO_OUT_PATH}/PocoNet.dll"
             "${BASS_INSTALL_LIB}"
             DESTINATION ".")
     install(DIRECTORY "${CMAKE_SOURCE_DIR}/lang"
@@ -133,10 +147,10 @@ elseif(UNIX)
             DESTINATION "/usr/bin/"
             )
     install(FILES
-            "${CMAKE_BINARY_DIR}/lib/libPocoData.so.60"
-            "${CMAKE_BINARY_DIR}/lib/libPocoDataSQLite.so.60"
-            "${CMAKE_BINARY_DIR}/lib/libPocoFoundation.so.60"
-            "${CMAKE_BINARY_DIR}/lib/libPocoNet.so.60"
+            "${POCO_OUT_PATH}/libPocoData.so.60"
+            "${POCO_OUT_PATH}/libPocoDataSQLite.so.60"
+            "${POCO_OUT_PATH}/libPocoFoundation.so.60"
+            "${POCO_OUT_PATH}/libPocoNet.so.60"
             "${BASS_INSTALL_LIB}"
             DESTINATION /usr/lib)
     install(DIRECTORY DESTINATION "/usr/local/share/radiostream")
