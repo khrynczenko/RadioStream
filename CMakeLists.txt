@@ -155,7 +155,7 @@ elseif(UNIX)
             RUNTIME
             DESTINATION "/usr/bin/"
             )
-    install(TARGETS Foundation Data DataSQLite Net LIBRARY
+    install(TARGETS PocoFoundation PocoData PocoDataSQLite PocoNet LIBRARY
             DESTINATION /usr/lib)
     install(DIRECTORY DESTINATION "/usr/local/share/radiostream")
     install(DIRECTORY "${CMAKE_SOURCE_DIR}/lang"
