@@ -123,8 +123,13 @@ configure_file (
   "${PROJECT_SOURCE_DIR}/cmake/RadioStreamVersion.hpp.in"
   "${PROJECT_BINARY_DIR}/radio-stream-version/RadioStreamVersion.hpp"
 )
+set_target_properties(RadioStream PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
+get_target_property(OUT_DIR RadioStream RUNTIME_OUTPUT_DIRECTORY)
+set_target_properties(Foundation PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${OUT_DIR}")
+set_target_properties(Data PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${OUT_DIR}")
+set_target_properties(DataSQLite PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${OUT_DIR}")
+set_target_properties(Net PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${OUT_DIR}")
 
-get_target_property(POCO_OUT_PATH PocoFoundation RUNTIME_OUTPUT_DIRECTORY)
 #INSTALL SCRIPT
 if(WIN32)
     install(TARGETS RadioStream
@@ -132,11 +137,9 @@ if(WIN32)
 	    PERMISSIONS OWNER_READ OWNER_EXECUTE
             DESTINATION "."
             )
+    install(TARGETS Foundation Data DataSQLite Net RUNTIME
+            DESTINATION ".")
     install(FILES
-            "${POCO_OUT_PATH}/PocoData.dll"
-            "${POCO_OUT_PATH}/PocoDataSQLite.dll"
-            "${POCO_OUT_PATH}/PocoFoundation.dll"
-            "${POCO_OUT_PATH}/PocoNet.dll"
             "${BASS_INSTALL_LIB}"
             DESTINATION ".")
     install(DIRECTORY "${CMAKE_SOURCE_DIR}/lang"
@@ -146,12 +149,7 @@ elseif(UNIX)
             RUNTIME
             DESTINATION "/usr/bin/"
             )
-    install(FILES
-            "${POCO_OUT_PATH}/libPocoData.so.60"
-            "${POCO_OUT_PATH}/libPocoDataSQLite.so.60"
-            "${POCO_OUT_PATH}/libPocoFoundation.so.60"
-            "${POCO_OUT_PATH}/libPocoNet.so.60"
-            "${BASS_INSTALL_LIB}"
+    install(TARGETS  Foundation Net Data DataSQLite LIBRARY
             DESTINATION /usr/lib)
     install(DIRECTORY DESTINATION "/usr/local/share/radiostream")
     install(DIRECTORY "${CMAKE_SOURCE_DIR}/lang"
