@@ -123,15 +123,15 @@ configure_file (
   "${PROJECT_SOURCE_DIR}/cmake/RadioStreamVersion.hpp.in"
   "${PROJECT_BINARY_DIR}/radio-stream-version/RadioStreamVersion.hpp"
 )
-set_target_properties(RadioStream PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
-get_target_property(OUT_DIR RadioStream RUNTIME_OUTPUT_DIRECTORY)
-set_target_properties(Foundation PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${OUT_DIR}")
-set_target_properties(Data PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${OUT_DIR}")
-set_target_properties(DataSQLite PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${OUT_DIR}")
-set_target_properties(Net PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${OUT_DIR}")
 
 #INSTALL SCRIPT
 if(WIN32)
+    set_target_properties(RadioStream PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
+    get_target_property(OUT_DIR RadioStream RUNTIME_OUTPUT_DIRECTORY)
+    set_target_properties(Foundation PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${OUT_DIR}")
+    set_target_properties(Data PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${OUT_DIR}")
+    set_target_properties(DataSQLite PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${OUT_DIR}")
+    set_target_properties(Net PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${OUT_DIR}")
     install(TARGETS RadioStream
             RUNTIME
 	    PERMISSIONS OWNER_READ OWNER_EXECUTE
@@ -145,6 +145,12 @@ if(WIN32)
     install(DIRECTORY "${CMAKE_SOURCE_DIR}/lang"
             DESTINATION "." )
 elseif(UNIX)
+    set_target_properties(RadioStream PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
+    get_target_property(OUT_DIR RadioStream RUNTIME_OUTPUT_DIRECTORY)
+    set_target_properties(Foundation PROPERTIES LIBRARY_OUTPUT_DIRECTORY "${OUT_DIR}")
+    set_target_properties(Data PROPERTIES LIBRARY_OUTPUT_DIRECTORY "${OUT_DIR}")
+    set_target_properties(DataSQLite PROPERTIES LIBRARY_OUTPUT_DIRECTORY "${OUT_DIR}")
+    set_target_properties(Net PROPERTIES LIBRARY_OUTPUT_DIRECTORY "${OUT_DIR}")
     install(TARGETS RadioStream
             RUNTIME
             DESTINATION "/usr/bin/"
