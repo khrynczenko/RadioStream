@@ -125,9 +125,9 @@ configure_file (
 )
 
 #INSTALL SCRIPT
+set_target_properties(RadioStream PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
+get_target_property(OUT_DIR RadioStream RUNTIME_OUTPUT_DIRECTORY)
 if(WIN32)
-    set_target_properties(RadioStream PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
-    get_target_property(OUT_DIR RadioStream RUNTIME_OUTPUT_DIRECTORY)
     set_target_properties(Foundation PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${OUT_DIR}")
     set_target_properties(Data PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${OUT_DIR}")
     set_target_properties(DataSQLite PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${OUT_DIR}")
@@ -145,8 +145,6 @@ if(WIN32)
     install(DIRECTORY "${CMAKE_SOURCE_DIR}/lang"
             DESTINATION "." )
 elseif(UNIX)
-    set_target_properties(RadioStream PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
-    get_target_property(OUT_DIR RadioStream RUNTIME_OUTPUT_DIRECTORY)
     set_target_properties(Foundation PROPERTIES LIBRARY_OUTPUT_DIRECTORY "${OUT_DIR}")
     set_target_properties(Data PROPERTIES LIBRARY_OUTPUT_DIRECTORY "${OUT_DIR}")
     set_target_properties(DataSQLite PROPERTIES LIBRARY_OUTPUT_DIRECTORY "${OUT_DIR}")
@@ -155,7 +153,7 @@ elseif(UNIX)
             RUNTIME
             DESTINATION "/usr/bin/"
             )
-    install(TARGETS PocoFoundation PocoData PocoDataSQLite PocoNet LIBRARY
+    install(TARGETS Foundation Data DataSQLite Net LIBRARY
             DESTINATION /usr/lib)
     install(DIRECTORY DESTINATION "/usr/local/share/radiostream")
     install(DIRECTORY "${CMAKE_SOURCE_DIR}/lang"
