@@ -127,6 +127,10 @@ configure_file (
 #INSTALL SCRIPT
 set_target_properties(RadioStream PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 get_target_property(OUT_DIR RadioStream RUNTIME_OUTPUT_DIRECTORY)
+add_custom_command(TARGET RadioStream POST_BUILD COMMAND ${CMAKE_COMMAND} -E
+    copy "${BASS_INSTALL_LIB}" "${OUT_DIR}")
+add_custom_command(TARGET RadioStream POST_BUILD COMMAND ${CMAKE_COMMAND} -E
+    copy_directory "${CMAKE_SOURCE_DIR}/lang" "${OUT_DIR}/lang")
 if(WIN32)
     set_target_properties(Foundation PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${OUT_DIR}")
     set_target_properties(Data PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${OUT_DIR}")
