@@ -18,7 +18,7 @@ You should branch from develop if You want to make changes.
 
 ## How to build
 ### Requirements
-- CMake 3.12
+- CMake 3.13+
 - Compiler with C++17 support ( tested with gcc-8 / Visual Studio 15 2017)
 
 ### Linux (Ubuntu)
