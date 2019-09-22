@@ -38,7 +38,7 @@ root project directory in file `Dockerfile`. Roughly you need to have installed 
 `apt-get install -y libx11-dev libfreetype6 libfreetype6-dev libxft-dev libxcursor-dev`
 
 ### Windows
-Again the easiest way is to use *CMake*. Following command is for *Visual Studio 15 2017* but you can use any version that supports *C++17*.
+Again the easiest way is to use *CMake*. Command below is for *Visual Studio 15 2017* but you can use any version that supports *C++17*.
 
 `cmake -G "Visual Studio 15 2017 Win64"`
 
