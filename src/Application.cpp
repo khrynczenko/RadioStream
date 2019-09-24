@@ -157,6 +157,7 @@ void Application::set_window_events()
 void Application::set_window()
 {
 	window_.caption("RadioStream");
+    window_.icon(nana::paint::image(&constants::ICON_PATH[0]));
     window_.show();
     set_window_events();
 }

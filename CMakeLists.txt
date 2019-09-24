@@ -44,6 +44,7 @@ elseif(UNIX)
 endif()
 
 add_executable(RadioStream
+CMakeSetup.rc
 src/Application.cpp
 src/StreamManager.cpp
 src/StationsDatabase.cpp
@@ -148,6 +149,9 @@ if(WIN32)
             DESTINATION ".")
     install(DIRECTORY "${CMAKE_SOURCE_DIR}/lang"
             DESTINATION "." )
+    install(FILES
+            "${CMAKE_SOURCE_DIR}/icon.ico"
+            DESTINATION ".")
 elseif(UNIX)
     set_target_properties(Foundation PROPERTIES LIBRARY_OUTPUT_DIRECTORY "${OUT_DIR}")
     set_target_properties(Data PROPERTIES LIBRARY_OUTPUT_DIRECTORY "${OUT_DIR}")
@@ -186,6 +190,7 @@ SET(CPACK_PACKAGE_EXECUTABLES "RadioStream;RadioStream")
 SET(CPACK_NSIS_EXECUTABLES_DIRECTORY ".")
 SET(CPACK_NSIS_INSTALL_ROOT "C:")
 SET(CPACK_NSIS_ENABLE_UNINSTALL_BEFORE_INSTALL TRUE)
+SET(CPACK_NSIS_EXECUTABLES_DIRECTORY ".")
 
 
 include(CPack)
