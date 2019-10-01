@@ -3,7 +3,9 @@ project(RadioStream VERSION "0.1.1")
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 
 set(MSVC_USE_STATIC_RUNTIME OFF CACHE BOOL "Nana runtime type") #This is nana variable
-# set(NANA_CMAKE_ENABLE_PNG ON CACHE BOOL "Nana PNG support")
+if(UNIX)
+    set(NANA_CMAKE_ENABLE_PNG ON CACHE BOOL "Nana PNG support")
+endif()
 # POCO variables
 set(ENABLE_XML FALSE)
 set(ENABLE_JSTRUE TRUE)
@@ -165,9 +167,17 @@ elseif(UNIX)
             )
     install(TARGETS Foundation Data DataSQLite Net LIBRARY
             DESTINATION /usr/lib)
-    install(DIRECTORY DESTINATION "/usr/local/share/radiostream")
+    install(FILES
+            "${BASS_INSTALL_LIB}"
+            DESTINATION "/usr/lib")
     install(DIRECTORY "${CMAKE_SOURCE_DIR}/lang"
             DESTINATION "/usr/local/share/radiostream/")
+    install(FILES "${CMAKE_SOURCE_DIR}/resources/icon.svg"
+            DESTINATION "/usr/local/radiostream/")
+    install(FILES "${CMAKE_SOURCE_DIR}/resources/icon.png"
+            DESTINATION "/usr/local/radiostream/")
+    install(FILES "${CMAKE_SOURCE_DIR}/RadioStream.desktop"
+            DESTINATION "/usr/share/applications/")
 endif()
 
 # CPACK SCRIPT
