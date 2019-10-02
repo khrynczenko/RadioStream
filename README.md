@@ -1,4 +1,4 @@
-
+![logo](/resources/icon.png?raw=true)
 # RadioStream  
 Branches:  
 **master** [![Build Status](https://travis-ci.org/khrynczenko/RadioStream.svg?branch=master)](https://travis-ci.org/khrynczenko/RadioStream)  
