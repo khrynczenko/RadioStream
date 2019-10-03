@@ -16,6 +16,13 @@ namespace constants {
     inline const nana::color VERNIER_COLOR{50, 50, 50, 0.5};
     inline constexpr std::string_view STATIONS_DATABASE_FILE = "stations.db";
     inline constexpr std::string_view CONFIG_FILE = "config.json";
+    #ifdef _WIN32
+    inline constexpr std::string_view ICON_PATH = "icon.ico";
+    #endif
+    #ifdef unix
+    inline constexpr std::string_view ICON_PATH = "/usr/local/radiostream/icon.png";
+    #endif
+
 }
 
 #endif

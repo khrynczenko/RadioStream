@@ -3,7 +3,9 @@ project(RadioStream VERSION "0.1.1")
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 
 set(MSVC_USE_STATIC_RUNTIME OFF CACHE BOOL "Nana runtime type") #This is nana variable
-set(NANA_CMAKE_ENABLE_PNG ON CACHE BOOL "Nana PNG support")
+if(UNIX)
+    set(NANA_CMAKE_ENABLE_PNG ON CACHE BOOL "Nana PNG support")
+endif()
 # POCO variables
 set(ENABLE_XML FALSE)
 set(ENABLE_JSTRUE TRUE)
@@ -44,6 +46,7 @@ elseif(UNIX)
 endif()
 
 add_executable(RadioStream
+CMakeSetup.rc
 src/Application.cpp
 src/StreamManager.cpp
 src/StationsDatabase.cpp
@@ -132,6 +135,8 @@ add_custom_command(TARGET RadioStream POST_BUILD COMMAND ${CMAKE_COMMAND} -E
 add_custom_command(TARGET RadioStream POST_BUILD COMMAND ${CMAKE_COMMAND} -E
     copy_directory "${CMAKE_SOURCE_DIR}/lang" "${OUT_DIR}/lang")
 if(WIN32)
+    add_custom_command(TARGET RadioStream POST_BUILD COMMAND ${CMAKE_COMMAND} -E
+        copy "${CMAKE_SOURCE_DIR}/resources/icon.ico" "${CMAKE_BINARY_DIR}/bin")
     set_target_properties(Foundation PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${OUT_DIR}")
     set_target_properties(Data PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${OUT_DIR}")
     set_target_properties(DataSQLite PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${OUT_DIR}")
@@ -148,6 +153,9 @@ if(WIN32)
             DESTINATION ".")
     install(DIRECTORY "${CMAKE_SOURCE_DIR}/lang"
             DESTINATION "." )
+    install(FILES
+            "${CMAKE_SOURCE_DIR}/resources/icon.ico"
+            DESTINATION ".")
 elseif(UNIX)
     set_target_properties(Foundation PROPERTIES LIBRARY_OUTPUT_DIRECTORY "${OUT_DIR}")
     set_target_properties(Data PROPERTIES LIBRARY_OUTPUT_DIRECTORY "${OUT_DIR}")
@@ -159,9 +167,17 @@ elseif(UNIX)
             )
     install(TARGETS Foundation Data DataSQLite Net LIBRARY
             DESTINATION /usr/lib)
-    install(DIRECTORY DESTINATION "/usr/local/share/radiostream")
+    install(FILES
+            "${BASS_INSTALL_LIB}"
+            DESTINATION "/usr/lib")
     install(DIRECTORY "${CMAKE_SOURCE_DIR}/lang"
             DESTINATION "/usr/local/share/radiostream/")
+    install(FILES "${CMAKE_SOURCE_DIR}/resources/icon.svg"
+            DESTINATION "/usr/local/radiostream/")
+    install(FILES "${CMAKE_SOURCE_DIR}/resources/icon.png"
+            DESTINATION "/usr/local/radiostream/")
+    install(FILES "${CMAKE_SOURCE_DIR}/RadioStream.desktop"
+            DESTINATION "/usr/share/applications/")
 endif()
 
 # CPACK SCRIPT
@@ -180,12 +196,13 @@ SET(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE")
 SET(CPACK_RESOURCE_FILE_README "${CMAKE_CURRENT_SOURCE_DIR}/README.md")
 SET(CPACK_PACKAGE_INSTALL_DIRECTORY "RadioStream")
 SET(CPACK_PACKAGE_EXECUTABLES "RadioStream;RadioStream")
-# DEBIAN PACKATE VARIABLES
+# DEBIAN PACKAGE VARIABLES
 
 # NSIS INSTALLER VARIABLES
 SET(CPACK_NSIS_EXECUTABLES_DIRECTORY ".")
 SET(CPACK_NSIS_INSTALL_ROOT "C:")
 SET(CPACK_NSIS_ENABLE_UNINSTALL_BEFORE_INSTALL TRUE)
+SET(CPACK_NSIS_EXECUTABLES_DIRECTORY ".")
 
 
 include(CPack)
