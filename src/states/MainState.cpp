@@ -190,32 +190,31 @@ void MainState::pop_stations_listbox_menu()
 
 void MainState::copy_station_name_to_clipboard()
 {
-    Station station{};
-    const auto index = stations_listbox_.selected().front();
-    stations_listbox_.at(index.cat).at(index.item).resolve_to(station);
-    clip::set_text(station.name_);
+    if (const auto station = stations_listbox_.get_selected_station(); station.has_value())
+    {
+        clip::set_text(station.value().name_);
+    }
 }
 
 void MainState::copy_station_url_to_clipboard()
 {
-    Station station{};
-    const auto index = stations_listbox_.selected().front();
-    stations_listbox_.at(index.cat).at(index.item).resolve_to(station);
-    clip::set_text(station.url_);
+    if (const auto station = stations_listbox_.get_selected_station(); station.has_value())
+    {
+        clip::set_text(station.value().url_);
+    }
 }
 
 void MainState::delete_station()
 {
-    Station station{};
-    const auto index = stations_listbox_.selected().front();
-    stations_listbox_.at(index.cat).at(index.item).resolve_to(station);
-    notify(std::make_any<Station>(station), radiostream::Event::DeleteStationFromDatabase);
+    if (const auto station = stations_listbox_.get_selected_station(); station.has_value())
+    {
+        notify(std::make_any<Station>(station.value()), radiostream::Event::DeleteStationFromDatabase);
+    }
 }
 
 void MainState::on_new_station_request()
 {
-    auto station = stations_listbox_.get_selected_station();
-    if(station.has_value())
+    if (const auto station = stations_listbox_.get_selected_station(); station.has_value())
     {
         notify(station.value(), radiostream::Event::NewStationRequested);
     }
