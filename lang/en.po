@@ -173,3 +173,9 @@ msgid "RADIO_ABOUT"
 msgstr ""
 "RadioStream version $ by Krzysztof Hrynczenko.\n"
 "For more information visit https://github.com/khrynczenko/RadioStream"
+
+msgid "URL field must not be empty"
+msgstr "URL field must not be empty"
+
+msgid "Missing URL"
+msgstr "Missing URL"

@@ -91,8 +91,16 @@ void Application::init_menubar()
         nana::inputbox inbox(window_, localizer_.get_localized_text("Please write correct URL."), localizer_.get_localized_text("Add station"));
         if (inbox.show(station_name, url, country, language, codec, bitrate, tags))
         {
-            notify(std::make_any<Station>(station_name.value(), url.value(), country.value(), language.value(),
-                codec.value(), bitrate.value(), tags.value()), radiostream::Event::AddStationToDatabase);
+            if(url.value().empty()) {
+                std::string message = context_.localizer_.get_localized_text("URL field must not be empty");
+                const std::string missing_url = context_.localizer_.get_localized_text("Missing URL");
+                nana::msgbox box{context_.window_, missing_url};
+                box << message;
+                box.show();
+            } else {
+                notify(std::make_any<Station>(station_name.value(), url.value(), country.value(), language.value(),
+                    codec.value(), bitrate.value(), tags.value()), radiostream::Event::AddStationToDatabase);
+            }
         }
     });
 

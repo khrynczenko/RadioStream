@@ -6,6 +6,7 @@
 
 bool ends_with(std::string_view text, std::string_view ending)
 {
+    if(ending.size() > text.size()) return false;
     if(text.empty()) return false;
     if(ending.empty()) return true;
     return text.substr(text.size() - ending.size(), ending.size()) == ending;
