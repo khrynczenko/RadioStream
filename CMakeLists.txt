@@ -38,11 +38,15 @@ add_subdirectory(${clip_SOURCE_DIR} EXCLUDE_FROM_ALL)
 if(WIN32)
     set(BASS_LIB_DIR ${bass_SOURCE_DIR}/c)
     set(BASS_LIB_FILE ${bass_SOURCE_DIR}/c/x64/bass.lib)
+    set(BASS_AAC_LIB_DIR "")
+    set(BASS_AAC_LIB_FILE "")
 elseif(UNIX)
     set(BASS_LIB_DIR ${bass_SOURCE_DIR})
     set(BASS_LIB_FILE ${bass_SOURCE_DIR}/x64/libbass.so)
-	set(FONTCONFIG_LIB "-lfontconfig")
-	set(PTHREAD_LIB "-lpthread")
+    set(BASS_AAC_LIB_DIR ${bass_aac_SOURCE_DIR}/c)
+    set(BASS_AAC_LIB_FILE ${bass_aac_SOURCE_DIR}/x64/libbass_aac.so)
+    set(FONTCONFIG_LIB "-lfontconfig")
+    set(PTHREAD_LIB "-lpthread")
 endif()
 
 add_executable(RadioStream
@@ -98,6 +102,7 @@ target_include_directories(RadioStream PRIVATE
     ${json_SOURCE_DIR}
     ${clip_SOURCE_DIR}
     ${BASS_LIB_DIR}
+    ${BASS_AAC_LIB_DIR}
     ${PROJECT_BINARY_DIR}/radio-stream-version
 )
 
@@ -109,6 +114,7 @@ target_link_libraries(RadioStream PRIVATE
                       Net
                       clip
                       ${BASS_LIB_FILE} 
+                      ${BASS_AAC_LIB_FILE}
                       ${FONTCONFIG_LIB} 
                       ${PTHREAD_LIB})
 
@@ -118,8 +124,9 @@ endif()
 
 if(UNIX)
         set(BASS_INSTALL_LIB "${BASS_LIB_FILE}")
+        set(BASS_AAC_INSTALL_LIB "${BASS_AAC_LIB_FILE}")
 elseif(WIN32)
-        set(BASS_INSTALL_LIB "${bass_SOURCE_DIR}/x64/bass.dll")
+        set(BASS_INSTALL_LIB "${BASS_LIB_FILE}")
 endif()
 
 configure_file (
@@ -157,6 +164,8 @@ if(WIN32)
             "${CMAKE_SOURCE_DIR}/resources/icon.ico"
             DESTINATION ".")
 elseif(UNIX)
+    add_custom_command(TARGET RadioStream POST_BUILD COMMAND ${CMAKE_COMMAND} -E
+                       copy "${BASS_AAC_INSTALL_LIB}" "${OUT_DIR}")
     set_target_properties(Foundation PROPERTIES LIBRARY_OUTPUT_DIRECTORY "${OUT_DIR}")
     set_target_properties(Data PROPERTIES LIBRARY_OUTPUT_DIRECTORY "${OUT_DIR}")
     set_target_properties(DataSQLite PROPERTIES LIBRARY_OUTPUT_DIRECTORY "${OUT_DIR}")
@@ -169,6 +178,7 @@ elseif(UNIX)
             DESTINATION /usr/lib)
     install(FILES
             "${BASS_INSTALL_LIB}"
+            "${BASS_AAC_INSTALL_LIB}"
             DESTINATION "/usr/lib")
     install(DIRECTORY "${CMAKE_SOURCE_DIR}/lang"
             DESTINATION "/usr/local/share/radiostream/")
