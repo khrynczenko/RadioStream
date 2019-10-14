@@ -53,6 +53,7 @@ std::optional<BassErrorCode> StreamManager::set_stream(const std::string& url)
     #endif
     if (main_stream_ == 0)
         return std::make_optional<BassErrorCode>(possible_error);
+    set_current_volume(this->current_volume_);
     return std::nullopt;
 }
 
