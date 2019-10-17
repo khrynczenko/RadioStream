@@ -3,6 +3,10 @@
 #include <iostream>
 #include <algorithm>
 
+#ifdef unix
+    #include <bass_aac.h>
+#endif
+
 void StreamManager::mute()
 {
 	BASS_ChannelSetAttribute(main_stream_, BASS_ATTRIB_VOL, 0.f);
@@ -40,10 +44,16 @@ std::optional<BassErrorCode> StreamManager::set_stream(const std::string& url)
     }
 	main_stream_ = BASS_StreamCreateURL(url.c_str(), 0, 0, nullptr, nullptr);
     BassErrorCode possible_error = BASS_ErrorGetCode();
-	BASS_ChannelSetAttribute(main_stream_, BASS_ATTRIB_VOL, current_volume_);
-    
+    #ifdef unix
+        if (possible_error == BASS_ERROR_FILEFORM) {
+            // if stream create failed because format is not supported try AAC
+            // AAC work on WINDOWS by default
+            main_stream_ = BASS_AAC_StreamCreateURL(url.c_str(), 0, 0, nullptr, nullptr);
+        }
+    #endif
     if (main_stream_ == 0)
         return std::make_optional<BassErrorCode>(possible_error);
+    set_current_volume(this->current_volume_);
     return std::nullopt;
 }
 
@@ -72,7 +82,7 @@ std::string StreamManager::get_song_title() const
 	if (tags != nullptr)
 	{
 		//string in tags looks something like "StreamTitle='title',url='url'"
-		const std::string str = tags;
+		const std::string_view str = tags;
 		const auto first = std::find(str.cbegin(), str.cend(), '\'') + 1;
         const auto last = std::find(first, str.cend(), '\'');
 		return std::string(first, last);

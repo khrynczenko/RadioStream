@@ -8,6 +8,7 @@
 #include "../include/exceptions/NotSupportedLanguageException.hpp"
 #include "../include/Constants.hpp"
 #include "../include/multimedia_playlists/PocoHTTPDownloader.hpp"
+#include "../include/Utilities.hpp"
 #include <nana/gui/msgbox.hpp>
 
 Application::Application(const std::filesystem::path& config_directory_path,
@@ -58,9 +59,10 @@ void Application::register_states()
 
 void Application::init_menubar()
 {
-	menubar_.push_back(localizer_.get_localized_text("File:"));
-    menubar_.push_back(localizer_.get_localized_text("Stations:"));
-	menubar_.push_back(localizer_.get_localized_text("Tools:"));
+	menubar_.push_back(localizer_.get_localized_text("File"));
+    menubar_.push_back(localizer_.get_localized_text("Stations"));
+	menubar_.push_back(localizer_.get_localized_text("Tools"));
+	menubar_.push_back(localizer_.get_localized_text("Help"));
 
 	menubar_.at(FILE).append(localizer_.get_localized_text("Open URL"), [this](nana::menu::item_proxy&)
 	{
@@ -79,18 +81,26 @@ void Application::init_menubar()
 
     menubar_.at(FILE).append(localizer_.get_localized_text("Add station"), [this](nana::menu::item_proxy&)
     {   
-        nana::inputbox::text station_name(localizer_.get_localized_text("Station name:"));
-        nana::inputbox::text url(localizer_.get_localized_text("URL:"));
-        nana::inputbox::text country(localizer_.get_localized_text("Country:"));
-        nana::inputbox::text language(localizer_.get_localized_text("Language:"));
-        nana::inputbox::text codec(localizer_.get_localized_text("Codec:"));
-        nana::inputbox::text bitrate(localizer_.get_localized_text("Bitrate:"));
-        nana::inputbox::text tags(localizer_.get_localized_text("Tags:"));
+        nana::inputbox::text station_name(localizer_.get_localized_text("Station's name"));
+        nana::inputbox::text url(localizer_.get_localized_text("URL"));
+        nana::inputbox::text country(localizer_.get_localized_text("Country"));
+        nana::inputbox::text language(localizer_.get_localized_text("Language"));
+        nana::inputbox::text codec(localizer_.get_localized_text("Codec"));
+        nana::inputbox::text bitrate(localizer_.get_localized_text("Bitrate"));
+        nana::inputbox::text tags(localizer_.get_localized_text("Tags"));
         nana::inputbox inbox(window_, localizer_.get_localized_text("Please write correct URL."), localizer_.get_localized_text("Add station"));
         if (inbox.show(station_name, url, country, language, codec, bitrate, tags))
         {
-            notify(std::make_any<Station>(station_name.value(), url.value(), country.value(), language.value(),
-                codec.value(), bitrate.value(), tags.value()), radiostream::Event::AddStationToDatabase);
+            if(url.value().empty()) {
+                std::string message = context_.localizer_.get_localized_text("URL field must not be empty");
+                const std::string missing_url = context_.localizer_.get_localized_text("Missing URL");
+                nana::msgbox box{context_.window_, missing_url};
+                box << message;
+                box.show();
+            } else {
+                notify(std::make_any<Station>(station_name.value(), url.value(), country.value(), language.value(),
+                    codec.value(), bitrate.value(), tags.value()), radiostream::Event::AddStationToDatabase);
+            }
         }
     });
 
@@ -103,6 +113,20 @@ void Application::init_menubar()
 	{
 		states_manager_.switch_state(States::ID::Tools);
 	});
+
+	menubar_.at(HELP).append(localizer_.get_localized_text("About"), [this](nana::menu::item_proxy&)
+	{
+		// states_manager_.switch_state(States::ID::About);
+        std::string message = context_.localizer_.get_localized_text(
+            "RADIO_ABOUT"
+        );
+        auto message_with_version = replace_dollar_with_version_number(message);
+        const std::string about = context_.localizer_.get_localized_text("About");
+        nana::msgbox box{context_.window_, about};
+        box << message_with_version;
+        box.show();
+	});
+
 }
 
 void Application::set_language()
@@ -141,6 +165,7 @@ void Application::set_window_events()
 void Application::set_window()
 {
 	window_.caption("RadioStream");
+    window_.icon(nana::paint::image(&constants::ICON_PATH[0]));
     window_.show();
     set_window_events();
 }

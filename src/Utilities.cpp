@@ -1,10 +1,14 @@
 #include "../include/Utilities.hpp"
+#include <RadioStreamVersion.hpp>
 #include <algorithm>
 #include <stdexcept>
 
 
 bool ends_with(std::string_view text, std::string_view ending)
 {
+    if(ending.size() > text.size()) return false;
+    if(text.empty()) return false;
+    if(ending.empty()) return true;
     return text.substr(text.size() - ending.size(), ending.size()) == ending;
 }
 
@@ -34,3 +38,18 @@ std::string string_to_lower(const std::string& str)
     return lowered;
 }
 
+std::string replace_dollar_with_version_number(std::string_view text)
+{
+        std::string version
+            = std::to_string(RADIOSTREAM_VERSION_MAJOR)
+            + '.'
+            + std::to_string(RADIOSTREAM_VERSION_MINOR)
+            + '.'
+            + std::to_string(RADIOSTREAM_VERSION_PATCH);
+        std::replace(version.begin(), version.end(),'\0', '0');
+        std::string replaced_text = std::string(text);
+        auto pos = replaced_text.find_first_of('$');
+        replaced_text.erase(pos, 1);
+        replaced_text.insert(pos, version);
+        return replaced_text;
+}

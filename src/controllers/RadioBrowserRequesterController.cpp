@@ -15,7 +15,7 @@ void RadioBrowserRequesterController::on_notify(const radiostream::Event e, cons
     {
     case radiostream::Event::SearchStationsRequested:
     {
-        auto[search_phrase, country, language, order] = std::any_cast<std::tuple<std::string, std::string, std::string, RadioBrowserRequester::OrderBy>>(data);
+        const auto [search_phrase, country, language, order] = std::any_cast<std::tuple<std::string, std::string, std::string, RadioBrowserRequester::OrderBy>>(data);
         const auto requested_stations = context_.requester_.request_stations(search_phrase, country, language, order);
         const auto parsed_stations = parse_stations_jsons(requested_stations);
         manager_.get_state<SearchState>(States::ID::Search)->insert_stations_to_listbox(parsed_stations);

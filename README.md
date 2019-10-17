@@ -1,4 +1,4 @@
-
+![logo](/resources/icon.png?raw=true)
 # RadioStream  
 Branches:  
 **master** [![Build Status](https://travis-ci.org/khrynczenko/RadioStream.svg?branch=master)](https://travis-ci.org/khrynczenko/RadioStream)  
@@ -14,9 +14,11 @@ Latest tested release goes on the master branch, while develop branch
 is used for creating new content before releasing.
 You should branch from develop if You want to make changes.
 
+**You can download pre-built binaries [here](https://github.com/khrynczenko/RadioStream/releases).**
+
 ## How to build
 ### Requirements
-- CMake 3.12
+- CMake 3.13+
 - Compiler with C++17 support ( tested with gcc-8 / Visual Studio 15 2017)
 
 ### Linux (Ubuntu)
@@ -36,7 +38,7 @@ root project directory in file `Dockerfile`. Roughly you need to have installed 
 `apt-get install -y libx11-dev libfreetype6 libfreetype6-dev libxft-dev libxcursor-dev`
 
 ### Windows
-Again the easiest way is to use *CMake*. Following command is for *Visual Studio 15 2017* but you can use any version that supports *C++17*.
+Again the easiest way is to use *CMake*. Command below is for *Visual Studio 15 2017* but you can use any version that supports *C++17*.
 
 `cmake -G "Visual Studio 15 2017 Win64"`
 
@@ -51,7 +53,7 @@ a while to finish. Consecutive builds should be much quicker.
 If you have any problems you should post an issue.
 
 ## Dependencies
-nana https://github.com/cnjinhao/nana  
+nana https://github.com/cnjinhao/nana (fork)  
 BASS https://www.un4seen.com/  
 JSON for Modern C++ https://nlohmann.github.io/json/  
 POCO C++ Libraries https://pocoproject.org/index.html  

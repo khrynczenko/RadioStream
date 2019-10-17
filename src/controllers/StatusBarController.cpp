@@ -66,18 +66,11 @@ void StatusBarController::on_notify(const radiostream::Event e, const std::any &
 
         const auto error_message = [error_code]()
         {
-            try
-            {
                 return ERROR_CODES_AND_MESSAGES.at(error_code);
-            }
-            catch (const std::out_of_range& e)
-            {
-                return std::string("Unknown message");
-            }
         }();
         context_.status_.change_text(context_.localizer_.get_localized_text("Could not load station:") +
             context_.localizer_.get_localized_text(error_message));
-        context_.status_.change_color(StatusBar::Color::FINISHED);
+        context_.status_.change_color(StatusBar::Color::ERRORED);
     }
     break;
 

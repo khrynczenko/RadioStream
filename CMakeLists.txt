@@ -1,9 +1,12 @@
-cmake_minimum_required (VERSION 3.12)
-project(RadioStream VERSION "0.1.1")
+cmake_minimum_required (VERSION 3.13)
+project(RadioStream VERSION "0.2.0")
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 
 set(MSVC_USE_STATIC_RUNTIME OFF CACHE BOOL "Nana runtime type") #This is nana variable
-
+if(UNIX)
+    set(NANA_CMAKE_ENABLE_PNG ON CACHE BOOL "Nana PNG support")
+endif()
+# POCO variables
 set(ENABLE_XML FALSE)
 set(ENABLE_JSTRUE TRUE)
 set(ENABLE_MONGODB FALSE)
@@ -35,15 +38,19 @@ add_subdirectory(${clip_SOURCE_DIR} EXCLUDE_FROM_ALL)
 if(WIN32)
     set(BASS_LIB_DIR ${bass_SOURCE_DIR}/c)
     set(BASS_LIB_FILE ${bass_SOURCE_DIR}/c/x64/bass.lib)
-    set(shared_lib "dll")
+    set(BASS_AAC_LIB_DIR "")
+    set(BASS_AAC_LIB_FILE "")
 elseif(UNIX)
     set(BASS_LIB_DIR ${bass_SOURCE_DIR})
     set(BASS_LIB_FILE ${bass_SOURCE_DIR}/x64/libbass.so)
-	set(FONTCONFIG_LIB "-lfontconfig")
-	set(PTHREAD_LIB "-lpthread")
+    set(BASS_AAC_LIB_DIR ${bass_aac_SOURCE_DIR}/c)
+    set(BASS_AAC_LIB_FILE ${bass_aac_SOURCE_DIR}/x64/libbass_aac.so)
+    set(FONTCONFIG_LIB "-lfontconfig")
+    set(PTHREAD_LIB "-lpthread")
 endif()
 
 add_executable(RadioStream
+CMakeSetup.rc
 src/Application.cpp
 src/StreamManager.cpp
 src/StationsDatabase.cpp
@@ -94,65 +101,118 @@ target_include_directories(RadioStream PRIVATE
     ${nana_SOURCE_DIR}/include
     ${json_SOURCE_DIR}
     ${clip_SOURCE_DIR}
-    ${BASS_LIB_DIR} )
+    ${BASS_LIB_DIR}
+    ${BASS_AAC_LIB_DIR}
+    ${PROJECT_BINARY_DIR}/radio-stream-version
+)
 
-target_link_libraries(RadioStream PRIVATE nana Foundation Data DataSQLite Net clip ${BASS_LIB_FILE} ${FONTCONFIG_LIB} ${PTHREAD_LIB})
+target_link_libraries(RadioStream PRIVATE
+                      nana
+                      Foundation
+                      Data
+                      DataSQLite
+                      Net
+                      clip
+                      ${BASS_LIB_FILE} 
+                      ${BASS_AAC_LIB_FILE}
+                      ${FONTCONFIG_LIB} 
+                      ${PTHREAD_LIB})
+
+if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC" AND CMAKE_BUILD_TYPE STREQUAL "Release")
+    target_link_options(RadioStream BEFORE PRIVATE "/SUBSYSTEM:WINDOWS")
+endif()
 
 if(UNIX)
         set(BASS_INSTALL_LIB "${BASS_LIB_FILE}")
+        set(BASS_AAC_INSTALL_LIB "${BASS_AAC_LIB_FILE}")
 elseif(WIN32)
         set(BASS_INSTALL_LIB "${bass_SOURCE_DIR}/x64/bass.dll")
 endif()
 
+configure_file (
+  "${PROJECT_SOURCE_DIR}/cmake/RadioStreamVersion.hpp.in"
+  "${PROJECT_BINARY_DIR}/radio-stream-version/RadioStreamVersion.hpp"
+)
+
 #INSTALL SCRIPT
+set_target_properties(RadioStream PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
+get_target_property(OUT_DIR RadioStream RUNTIME_OUTPUT_DIRECTORY)
+add_custom_command(TARGET RadioStream POST_BUILD COMMAND ${CMAKE_COMMAND} -E
+    copy "${BASS_INSTALL_LIB}" "${OUT_DIR}")
+add_custom_command(TARGET RadioStream POST_BUILD COMMAND ${CMAKE_COMMAND} -E
+    copy_directory "${CMAKE_SOURCE_DIR}/lang" "${OUT_DIR}/lang")
 if(WIN32)
+    add_custom_command(TARGET RadioStream POST_BUILD COMMAND ${CMAKE_COMMAND} -E
+        copy "${CMAKE_SOURCE_DIR}/resources/icon.ico" "${CMAKE_BINARY_DIR}/bin")
+    set_target_properties(Foundation PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${OUT_DIR}")
+    set_target_properties(Data PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${OUT_DIR}")
+    set_target_properties(DataSQLite PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${OUT_DIR}")
+    set_target_properties(Net PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${OUT_DIR}")
     install(TARGETS RadioStream
             RUNTIME
 	    PERMISSIONS OWNER_READ OWNER_EXECUTE
             DESTINATION "."
             )
+    install(TARGETS Foundation Data DataSQLite Net RUNTIME
+            DESTINATION ".")
     install(FILES
-            "${CMAKE_BINARY_DIR}/bin/Release/PocoData.${shared_lib}"
-            "${CMAKE_BINARY_DIR}/bin/Release/PocoDataSQLite.${shared_lib}"
-            "${CMAKE_BINARY_DIR}/bin/Release/PocoFoundation.${shared_lib}"
-            "${CMAKE_BINARY_DIR}/bin/Release/PocoNet.${shared_lib}"
             "${BASS_INSTALL_LIB}"
             DESTINATION ".")
     install(DIRECTORY "${CMAKE_SOURCE_DIR}/lang"
             DESTINATION "." )
+    install(FILES
+            "${CMAKE_SOURCE_DIR}/resources/icon.ico"
+            DESTINATION ".")
 elseif(UNIX)
+    add_custom_command(TARGET RadioStream POST_BUILD COMMAND ${CMAKE_COMMAND} -E
+                       copy "${BASS_AAC_INSTALL_LIB}" "${OUT_DIR}")
+    set_target_properties(Foundation PROPERTIES LIBRARY_OUTPUT_DIRECTORY "${OUT_DIR}")
+    set_target_properties(Data PROPERTIES LIBRARY_OUTPUT_DIRECTORY "${OUT_DIR}")
+    set_target_properties(DataSQLite PROPERTIES LIBRARY_OUTPUT_DIRECTORY "${OUT_DIR}")
+    set_target_properties(Net PROPERTIES LIBRARY_OUTPUT_DIRECTORY "${OUT_DIR}")
     install(TARGETS RadioStream
             RUNTIME
             DESTINATION "/usr/bin/"
             )
-    install(FILES
-            "${CMAKE_BINARY_DIR}/lib/libPocoData.so.60"
-            "${CMAKE_BINARY_DIR}/lib/libPocoDataSQLite.so.60"
-            "${CMAKE_BINARY_DIR}/lib/libPocoFoundation.so.60"
-            "${CMAKE_BINARY_DIR}/lib/libPocoNet.so.60"
-            "${BASS_INSTALL_LIB}"
+    install(TARGETS Foundation Data DataSQLite Net LIBRARY
             DESTINATION /usr/lib)
-    install(DIRECTORY DESTINATION "/usr/local/share/radiostream")
+    install(FILES
+            "${BASS_INSTALL_LIB}"
+            "${BASS_AAC_INSTALL_LIB}"
+            DESTINATION "/usr/lib")
     install(DIRECTORY "${CMAKE_SOURCE_DIR}/lang"
             DESTINATION "/usr/local/share/radiostream/")
+    install(FILES "${CMAKE_SOURCE_DIR}/resources/icon.svg"
+            DESTINATION "/usr/local/radiostream/")
+    install(FILES "${CMAKE_SOURCE_DIR}/resources/icon.png"
+            DESTINATION "/usr/local/radiostream/")
+    install(FILES "${CMAKE_SOURCE_DIR}/RadioStream.desktop"
+            DESTINATION "/usr/share/applications/")
 endif()
 
-#CPACK SCRIPT
+# CPACK SCRIPT
 SET(CPACK_PACKAGE_NAME "RadioStream")
 SET(CPACK_PACKAGE_VERSION "${PROJECT_VERSION}")
-SET(CPACK_PACKAGE_VENDOR "https://github.com/JenioPY")
-SET(CPACK_PACKAGE_CONTACT "https://github.com/JenioPY")
+SET(CPACK_PACKAGE_VENDOR "https://github.com/khrynczenko")
+SET(CPACK_PACKAGE_CONTACT "https://github.com/khrynczenko")
 SET(CPACK_PACKAGE_VERSION_MAJOR ${PROJECT_VERSION_MAJOR})
 SET(CPACK_PACKAGE_VERSION_MINOR ${PROJECT_VERSION_MINOR})
 SET(CPACK_PACKAGE_VERSION_PATCH ${PROJECT_VERSION_PATCH})
 SET(CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_CURRENT_SOURCE_DIR}/README.md")
-SET(CPACK_PACKAGE_DESCRIPTION_SUMMARY "RadioStream")
-SET(CPACK_PACKAGE_HOMEPAGE_URL "https://github.com/JenioPY/RadioStream")
+SET(CPACK_PACKAGE_DESCRIPTION_SUMMARY 
+    "RadioStream - Simple, fast and light-weight internet radio player for Windows and Linux ")
+SET(CPACK_PACKAGE_HOMEPAGE_URL "https://github.com/khrynczenko/RadioStream")
 SET(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE")
+SET(CPACK_RESOURCE_FILE_README "${CMAKE_CURRENT_SOURCE_DIR}/README.md")
 SET(CPACK_PACKAGE_INSTALL_DIRECTORY "RadioStream")
 SET(CPACK_PACKAGE_EXECUTABLES "RadioStream;RadioStream")
+# DEBIAN PACKAGE VARIABLES
+
+# NSIS INSTALLER VARIABLES
 SET(CPACK_NSIS_EXECUTABLES_DIRECTORY ".")
 SET(CPACK_NSIS_INSTALL_ROOT "C:")
+SET(CPACK_NSIS_ENABLE_UNINSTALL_BEFORE_INSTALL TRUE)
+SET(CPACK_NSIS_EXECUTABLES_DIRECTORY ".")
 
 
 include(CPack)

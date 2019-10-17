@@ -62,7 +62,7 @@ void ToolsState::build_interface()
                     "<found_limit_pair arrange=[20%,20%] margin=1%>"
                 ">"
 			">"
-			"<buttons_section weight=10% gap=80% margin=[80%,1%,10%,1%]>"
+			"<buttons_section weight=10% gap=80% margin=[84%,1%,6%,1%]>"
 		">");
 	container_.field("language_pair") << language_label_ << language_choices_;
     container_.field("found_limit_pair") << found_stations_limit_ << found_stations_values_;

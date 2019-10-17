@@ -5,8 +5,8 @@ set(FETCHCONTENT_QUIET FALSE)
 set(FETCHCONTENT_UPDATES_DISCONNECTED TRUE)
 FetchContent_Declare(
         nana
-        GIT_REPOSITORY "https://github.com/cnjinhao/nana.git"
-        GIT_TAG "v1.7.1"
+        GIT_REPOSITORY "https://github.com/khrynczenko/nana.git"
+        GIT_TAG "master"
         GIT_SHALLOW TRUE
         GIT_PROGRESS TRUE
         UPDATE_COMMAND ""
@@ -54,6 +54,7 @@ if(WIN32)
     set(BASS_URL "http://us.un4seen.com/files/bass24.zip")
 elseif(UNIX)
     set(BASS_URL "http://us.un4seen.com/files/bass24-linux.zip")
+    set(BASS_AAC_URL "http://us.un4seen.com/files/z/2/bass_aac24-linux.zip")
 endif()
 
 FetchContent_Declare(
@@ -64,8 +65,23 @@ FetchContent_Declare(
         INSTALL_COMMAND ""
         TEST_COMMAND ""
 )
+
+if(UNIX)
+FetchContent_Declare(
+        bass_aac
+        URL ${BASS_AAC_URL}
+        UPDATE_COMMAND ""
+        BUILD_COMMAND ""
+        INSTALL_COMMAND ""
+        TEST_COMMAND ""
+)
+endif()
+
 FetchContent_Populate(nana)
 FetchContent_Populate(poco)
 FetchContent_Populate(json)
 FetchContent_Populate(bass)
 FetchContent_Populate(clip)
+if(UNIX)
+    FetchContent_Populate(bass_aac)
+endif()

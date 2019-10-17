@@ -1,8 +1,8 @@
-msgid "File:"
-msgstr "Plik:"
+msgid "File"
+msgstr "Plik"
 
-msgid "Tools:"
-msgstr "Narzędzia:"
+msgid "Tools"
+msgstr "Narzędzia"
 
 msgid "URL"
 msgstr "URL"
@@ -21,9 +21,6 @@ msgstr "Dodaj stację"
 
 msgid "Station name:"
 msgstr "Nazwa stacji:"
-
-msgid "URL"
-msgstr "URL"
 
 msgid "Settings"
 msgstr "Ustawienia"
@@ -94,17 +91,14 @@ msgstr "Odtwarzanie trwa"
 msgid "Radio paused"
 msgstr "Odtwarzanie wstrzymane"
 
-msgid "Stations:"
-msgstr "Stacje:"
+msgid "Find stations"
+msgstr "Szukaj stacji"
+
+msgid "Stations"
+msgstr "Stacje"
 
 msgid "Search..."
 msgstr "Szukaj..."
-
-msgid "Stations:"
-msgstr "Stacje:"
-
-msgid "Find stations"
-msgstr "Szukaj stacji"
 
 msgid "Country"
 msgstr "Kraj"
@@ -121,21 +115,8 @@ msgstr "Bitrate"
 msgid "Tags"
 msgstr "Tagi"
 
-msgid "Country:"
-msgstr "Kraj:"
-
 msgid "Language:"
 msgstr "Język:"
-
-msgid "Codec:"
-msgstr "Typ:"
-
-msgid "Bitrate:"
-msgstr "Bitrate:"
-
-msgid "Tags:"
-msgstr "Tagi:"
-
 
 msgid "Search stations limit:"
 msgstr "Ilośc wyszukiwanych stacji:"
@@ -153,7 +134,7 @@ msgid "Station playing"
 msgstr "Odtwarzany"
 
 msgid "Could not load station:"
-msgstr "Could not load station:"
+msgstr "Nie można załadować stacji:"
 
 msgid "Sort by:"
 msgstr "Sortuj po:"
@@ -181,3 +162,20 @@ msgstr "Skopiuj nazwę do schowka"
 
 msgid "Add to list"
 msgstr "Dodaj do listy"
+
+msgid "Help"
+msgstr "Pomoc"
+
+msgid "About"
+msgstr "O programie"
+
+msgid "RADIO_ABOUT"
+msgstr ""
+"RadioStream wersja $, Krzysztof Hrynczenko.\n"
+"Po więcej informacji odwiedź https://github.com/khrynczenko/RadioStream"
+
+msgid "URL field must not be empty"
+msgstr "Pole URL nie może być puste"
+
+msgid "Missing URL"
+msgstr "Pusty URL"
