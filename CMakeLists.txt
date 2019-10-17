@@ -126,7 +126,7 @@ if(UNIX)
         set(BASS_INSTALL_LIB "${BASS_LIB_FILE}")
         set(BASS_AAC_INSTALL_LIB "${BASS_AAC_LIB_FILE}")
 elseif(WIN32)
-        set(BASS_INSTALL_LIB "${BASS_LIB_FILE}")
+        set(BASS_INSTALL_LIB "${bass_SOURCE_DIR}/x64/bass.dll")
 endif()
 
 configure_file (
