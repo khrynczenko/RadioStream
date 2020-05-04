@@ -6,7 +6,9 @@
 #include "../../include/multimedia_playlists/PLSReader.hpp"
 #include "../../include/multimedia_playlists/MultimediaPlaylistReaderFactory.hpp"
 #include "../../include/exceptions/ReaderCouldNotReadUrl.hpp"
+#pragma warning (push, 0)
 #include <Poco/Net/NetException.h>
+#pragma warning (pop)
 #include <thread>
 
 using namespace std::string_literals;
@@ -71,6 +73,9 @@ void StationPlayerController::on_notify(const radiostream::Event e, const std::a
         context_.station_player_.unmute();
     }
     break;
+
+    default:
+        return;
     }
 }
 

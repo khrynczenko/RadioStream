@@ -1,7 +1,9 @@
 #include "../include/RadioBrowserRequester.hpp"
+#pragma warning (push, 0)
 #include <Poco/Net/HTTPRequest.h>
 #include <Poco/Net/HTTPResponse.h>
 #include <Poco/StreamCopier.h>
+#pragma warning (pop)
 
 std::vector<nlohmann::json> RadioBrowserRequester::request_stations(std::string_view search_phrase, std::string_view country, std::string_view language, OrderBy order)
 {
@@ -14,6 +16,7 @@ std::vector<nlohmann::json> RadioBrowserRequester::request_stations(std::string_
         case OrderBy::ClickCount: return "clickcount";
         case OrderBy::ClickTrend: return "clicktrend";
         case OrderBy::Votes:      return "votes";
+        default: return "clickcount";
         }
     }();
     if (country != "Any") request_parameters.emplace_back("country", country);

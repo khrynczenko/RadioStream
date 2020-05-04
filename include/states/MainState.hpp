@@ -4,6 +4,7 @@
 #include "State.hpp"
 #include "../Station.hpp"
 #include "../widgets/StationListbox.hpp"
+#pragma warning (push, 0)
 #include <nana/gui/place.hpp>
 #include <nana/gui/widgets/button.hpp>
 #include <nana/gui/widgets/listbox.hpp>
@@ -11,6 +12,7 @@
 #include <nana/gui/widgets/slider.hpp>
 #include <nana/gui/widgets/label.hpp>
 #include <nana/gui/widgets/menu.hpp>
+#pragma warning (pop)
 #include <thread>
 
 class MainState :

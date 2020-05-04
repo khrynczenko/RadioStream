@@ -1,7 +1,9 @@
 #include "../../include/multimedia_playlists/M3UReader.hpp"
 #include "../../include/exceptions/ReaderCouldNotReadUrl.hpp"
+#pragma warning (push, 0)
 #include <Poco/URI.h>
 #include <Poco/Exception.h>
+#pragma warning (pop)
 
 std::string M3UReader::get_station_url(std::istream & input) const
 {
@@ -18,7 +20,7 @@ std::string M3UReader::get_station_url(std::istream & input) const
             }
             throw(Poco::SyntaxException("Wrong m3u url."));
         }
-        catch (const Poco::SyntaxException& e)
+        catch ([[maybe_unused]] const Poco::SyntaxException& e)
         {
         }
     }

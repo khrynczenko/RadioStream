@@ -1,7 +1,9 @@
 #ifndef STATUSBAR_HPP
 #define STATUSBAR_HPP
 
+#pragma warning (push, 0)
 #include <nana/gui/widgets/label.hpp>
+#pragma warning (pop)
 
 class StatusBar : public nana::label
 {

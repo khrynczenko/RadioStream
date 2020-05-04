@@ -1,5 +1,7 @@
 #include "../../include/widgets/StationListbox.hpp"
+#pragma warning (push, 0)
 #include <nana/gui/widgets/form.hpp>
+#pragma warning (pop)
 
 StationListbox::StationListbox(nana::form& handle, State::Context context)
     : nana::listbox(handle)
@@ -58,7 +60,7 @@ std::optional<Station> StationListbox::get_selected_station() const
 /**
 * \brief custom nana comparator for storting station listbox by bitrate in correct manner
 */
-bool StationListbox::bitrate_comparator(const std::string& lhs, nana::any* any_l, const std::string& rhs, nana::any* any_r, bool reverse)
+bool StationListbox::bitrate_comparator(const std::string& lhs, [[maybe_unused]] nana::any* any_l, const std::string& rhs, [[maybe_unused]] nana::any* any_r, bool reverse)
 {
 	try
 	{
@@ -72,7 +74,7 @@ bool StationListbox::bitrate_comparator(const std::string& lhs, nana::any* any_l
 	}
 }
 
-void StationListbox::sticky_select(const nana::arg_mouse& arg)
+void StationListbox::sticky_select([[maybe_unused]] const nana::arg_mouse& arg)
 {
     if (!this->selected().empty())
     {

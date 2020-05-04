@@ -2,7 +2,9 @@
 #define MULTIMEDIAPLAYLISTREADERFACTORY_HPP
 
 #include "MultimediaPlaylistReader.hpp"
+#pragma warning (push, 0)
 #include <Poco/URI.h>
+#pragma warning (pop)
 #include <memory>
 
 class MultimediaPlaylistReaderFactory

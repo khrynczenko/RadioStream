@@ -3,7 +3,9 @@
 
 #include "Language.hpp"
 #include "TextLocalizer.hpp"
+#pragma warning (push, 0)
 #include <nana/gui/detail/color_schemes.hpp>
+#pragma warning (pop)
 #include <chrono>
 #include <map>
 

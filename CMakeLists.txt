@@ -86,7 +86,7 @@ if (${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
     target_compile_options(RadioStream PRIVATE /W4 /WX /sdl)
 elseif(${CMAKE_CXX_COMPILER_ID} STREQUAL GNU)
     # lots of warnings and all warnings as errors
-    target_compile_options(RadioStream PRIVATE -Wall -Wextra -pedantic -Werror)
+    target_compile_options(RadioStream PRIVATE -Wall -Wextra -pedantic -Werror -Wno-unknown-pragmas)
 endif()
 
 if(UNIX)

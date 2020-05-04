@@ -1,9 +1,11 @@
 #include "../../include/states/ToolsState.hpp"
 #include "../../include/Config.hpp"
 #include "../../include/Constants.hpp"
+#pragma warning (push, 0)
 #include <nana/gui/widgets/menubar.hpp>
 #include <nana/gui/widgets/form.hpp>
 #include <nana/gui/msgbox.hpp>
+#pragma warning (pop)
 
 ToolsState::ToolsState(StatesManager& state_manager, Context& context)
     : State(state_manager, context)
@@ -82,7 +84,7 @@ ConfigOptions ToolsState::gather_options() const
     ConfigOptions options;
     const auto language_native_name = language_choices_.text(language_choices_.option());
     options.language = string_to_language_code(language_native_name);
-    options.stations_search_limit = static_cast<unsigned int>(found_stations_values_.to_int());
+    options.stations_search_limit = static_cast<unsigned short>(found_stations_values_.to_int());
     return options;
 }
 

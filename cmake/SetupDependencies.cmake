@@ -33,6 +33,7 @@ CPMAddPackage(
     GIT_TAG "poco-1.9.0-release"
     OPTIONS
         "ENABLE_XML FALSE"
+        "ENABLE_ENCODINGS FALSE"
         "ENABLE_MONGODB FALSE"
         "ENABLE_REDIS FALSE"
         "ENABLE_PDF FALSE"

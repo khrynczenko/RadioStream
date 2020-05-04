@@ -1,12 +1,14 @@
 #include "../include/Application.hpp"
 #include "../include/ApplicationDirectories.hpp"
+#pragma warning (push, 0)
 #include <Poco/Data/SQLite/Connector.h>
 #include <nana/gui.hpp>
+#pragma warning (pop)
 #include <iostream>
 
 #ifdef _WIN32
     #ifndef _DEBUG
-        int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, char*, int nShowCmd)
+        int WinMain([[maybe_unused]] HINSTANCE hInstance, [[maybe_unused]] HINSTANCE hPrevInstance, char*, [[maybe_unused]] int nShowCmd)
     #else
         int main()
     #endif

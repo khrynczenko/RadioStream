@@ -2,7 +2,9 @@
 #define TEXTLOCALIZER_HPP
 
 #include "Language.hpp"
+#pragma warning (push, 0)
 #include <nana/internationalization.hpp>
+#pragma warning (pop)
 #include <array>
 #include <filesystem>
 #include <map>

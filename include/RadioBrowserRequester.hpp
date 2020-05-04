@@ -2,9 +2,11 @@
 #define RADIOBROWSEREQUESTER_HPP
 
 #include "Station.hpp"
+#pragma warning (push, 0)
 #include <Poco/Net/HTTPClientSession.h>
 #include <Poco/URI.h>
-#include <json.hpp>
+#include <nlohmann/json.hpp>
+#pragma warning (pop)
 #include <vector>
 
 class RadioBrowserRequester

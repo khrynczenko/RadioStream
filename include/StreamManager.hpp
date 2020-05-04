@@ -5,7 +5,9 @@
 #define WIN32_LEAN_AND_MEAN
 #define _WINSOCKAPI_
 
+#pragma warning (push, 0)
 #include <bass.h>
+#pragma warning (pop)
 #include <string>
 #include <mutex>
 #include <optional>

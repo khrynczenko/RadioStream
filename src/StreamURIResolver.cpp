@@ -2,7 +2,9 @@
 #include "../include/Utilities.hpp"
 #include "../include/multimedia_playlists/MultimediaPlaylistReaderFactory.hpp"
 #include "../include/exceptions/ReaderCouldNotReadUrl.hpp"
+#pragma warning (push, 0)
 #include <Poco/Exception.h>
+#pragma warning (pop)
 #include <sstream>
 
 StreamURIResolver::StreamURIResolver(std::unique_ptr<HTTPDownloader> downloader) noexcept
@@ -25,10 +27,10 @@ std::optional<Poco::URI> StreamURIResolver::resolve_uri(const Poco::URI &uri) co
             const auto direct_uri = reader->get_station_url(playlist_data);
             return Poco::URI(direct_uri);
         }
-        catch (const Poco::UnknownURISchemeException &e) {
+        catch ([[maybe_unused]] const Poco::UnknownURISchemeException &e) {
             return std::nullopt;
         }
-        catch (ReaderCouldNotReadUrl &e) {
+        catch ([[maybe_unused]] ReaderCouldNotReadUrl &e) {
             return std::nullopt;
         }
     }
