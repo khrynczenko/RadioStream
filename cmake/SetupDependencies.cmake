@@ -16,6 +16,10 @@ CPMAddPackage(
     NAME clip
     GIT_TAG "v1.2"
     GITHUB_REPOSITORY dacap/clip
+    OPTIONS
+        "CLIP_EXAMPLES FALSE"
+        "CLIP_TESTS FALSE"
+        "CLIP_X11_WITH_PNG FALSE"
 )
 
 CPMAddPackage(
