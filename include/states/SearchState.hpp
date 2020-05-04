@@ -4,11 +4,13 @@
 #include "State.hpp"
 #include "../RadioBrowserRequester.hpp"
 #include "../widgets/StationListbox.hpp"
+#pragma warning (push, 0)
 #include <nana/gui/place.hpp>
 #include <nana/gui/widgets/button.hpp>
 #include <nana/gui/widgets/textbox.hpp>
 #include <nana/gui/widgets/menu.hpp>
 #include <nana/gui/widgets/combox.hpp>
+#pragma warning (pop)
 
 namespace nana {
     class menu;

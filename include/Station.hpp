@@ -1,7 +1,9 @@
 #ifndef STATION_HPP
 #define STATION_HPP
 
+#pragma warning (push, 0)
 #include <nana/gui/widgets/listbox.hpp>
+#pragma warning (pop)
 
 struct Station
 {

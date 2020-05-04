@@ -3,9 +3,11 @@
 #include "../../include/Utilities.hpp"
 #include "../../include/StationPlayer.hpp"
 #include "../../include/exceptions/NanaTextboxProcessingException.hpp"
+#pragma warning (push, 0)
 #include <nana/gui/widgets/menubar.hpp>
 #include <nana/gui/widgets/form.hpp>
 #include <clip.h>
+#pragma warning (pop)
 
 using namespace constants;
 
@@ -147,7 +149,7 @@ void MainState::set_listbox_events()
             pop_stations_listbox_menu();
         }
     });
-    stations_listbox_.events().dbl_click([this](const nana::arg_mouse& arg)
+    stations_listbox_.events().dbl_click([this]([[maybe_unused]] const nana::arg_mouse& arg)
     {
         on_new_station_request();
     });
@@ -233,8 +235,8 @@ void MainState::on_notify(radiostream::Event e, const std::any &data)
         case radiostream::Event::StationSongHasChanged:
         {
             song_has_changed(std::any_cast<std::string>(data));
-
         }
+        break;
         case radiostream::Event::StationAddedToDatabase:
         {
             refresh_listbox();
@@ -245,6 +247,9 @@ void MainState::on_notify(radiostream::Event e, const std::any &data)
             refresh_listbox();
         }
         break;
+
+        default:
+            return;
     }
 }
 

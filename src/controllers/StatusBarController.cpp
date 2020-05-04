@@ -87,5 +87,8 @@ void StatusBarController::on_notify(const radiostream::Event e, const std::any &
         context_.status_.change_color(StatusBar::Color::FINISHED);
     }
     break;
+
+    default:
+        return;
     }
 }

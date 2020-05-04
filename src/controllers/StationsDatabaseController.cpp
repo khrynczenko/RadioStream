@@ -23,5 +23,7 @@ void StationsDatabaseController::on_notify(const radiostream::Event e, const std
     }
     break;
 
+    default:
+        return;
     }
 }

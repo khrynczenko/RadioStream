@@ -2,7 +2,9 @@
 #define RADIOSTREAM_URIRESOLVER_HPP
 
 #include "../include/multimedia_playlists/HTTPDownloader.hpp"
+#pragma warning (push, 0)
 #include <Poco/URI.h>
+#pragma warning (pop)
 #include <memory>
 #include <optional>
 

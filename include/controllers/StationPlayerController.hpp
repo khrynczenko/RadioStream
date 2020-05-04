@@ -2,7 +2,9 @@
 #define STATIONPLAYERCONTROLLER_HPP
 #include "Controller.hpp"
 #include "../StreamURIResolver.hpp"
+#pragma warning (push, 0)
 #include <Poco/URI.h>
+#pragma warning (pop)
 
 class HTTPDownloader;
 

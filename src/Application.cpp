@@ -9,7 +9,9 @@
 #include "../include/Constants.hpp"
 #include "../include/multimedia_playlists/PocoHTTPDownloader.hpp"
 #include "../include/Utilities.hpp"
+#pragma warning (push, 0)
 #include <nana/gui/msgbox.hpp>
+#pragma warning (pop)
 
 Application::Application(const std::filesystem::path& config_directory_path,
                          const std::filesystem::path& data_directory_path,

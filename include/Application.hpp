@@ -14,8 +14,10 @@
 #include "controllers/ConfigController.hpp"
 #include "controllers/RadioBrowserRequesterController.hpp"
 #include "controllers/StatusBarController.hpp"
+#pragma warning (push, 0)
 #include <nana/gui/widgets/form.hpp>
 #include <nana/gui/widgets/menubar.hpp>
+#pragma warning (pop)
 #include <mutex>
 #include <filesystem>
 

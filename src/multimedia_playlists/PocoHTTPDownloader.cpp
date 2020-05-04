@@ -1,10 +1,12 @@
 #include "../../include/multimedia_playlists/PocoHTTPDownloader.hpp"
+#pragma warning (push, 0)
 #include <Poco/Net/FTPClientSession.h>
 #include <Poco/Net/HTTPClientSession.h>
 #include <Poco/URIStreamOpener.h>
 #include <Poco/StreamCopier.h>
 #include <Poco/URI.h>
 #include <Poco/Net/HTTPStreamFactory.h>
+#pragma warning (pop)
 #include <memory>
 #include <sstream>
 

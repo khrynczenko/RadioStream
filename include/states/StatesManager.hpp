@@ -2,7 +2,9 @@
 #define STATESMANAGER_HPP
 
 #include "State.hpp"
+#pragma warning (push, 0)
 #include <nana/gui/widgets/form.hpp>
+#pragma warning (pop)
 #include <map>
 
 /**

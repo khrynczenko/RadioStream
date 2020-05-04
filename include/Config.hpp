@@ -3,7 +3,9 @@
 
 #include "TextLocalizer.hpp"
 #include "Language.hpp"
-#include <json.hpp>
+#pragma warning (push, 0)
+#include <nlohmann/json.hpp>
+#pragma warning (pop, 0)
 #include <filesystem>
 
 struct ConfigOptions

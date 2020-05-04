@@ -3,10 +3,12 @@
 
 #include "State.hpp"
 #include "../Config.hpp"
+#pragma warning (push, 0)
 #include <nana/gui/widgets/button.hpp>
 #include <nana/gui/widgets/combox.hpp>
 #include <nana/gui/place.hpp>
 #include <nana/gui/widgets/spinbox.hpp>
+#pragma warning (pop)
 
 class ToolsState : public State
 {

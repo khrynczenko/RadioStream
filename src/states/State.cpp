@@ -4,8 +4,10 @@
 #include "../../include/StationsDatabase.hpp"
 #include "../../include/Config.hpp"
 #include "../../include/RadioBrowserRequester.hpp"
+#pragma warning (push, 0)
 #include <nana/gui/widgets/form.hpp>
 #include <nana/gui/widgets/menubar.hpp>
+#pragma warning (pop)
 
 State::Context::Context(nana::form& window,
 		nana::menubar& menubar,

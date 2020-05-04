@@ -3,7 +3,9 @@
 
 #include "Station.hpp"
 #include "Subject.hpp"
+#pragma warning (push, 0)
 #include <Poco/Data/Session.h>
+#pragma warning (pop)
 #include <filesystem>
 
 

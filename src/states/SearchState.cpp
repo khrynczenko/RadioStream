@@ -3,9 +3,11 @@
 #include "../../include/RadioBrowserRequester.hpp"
 #include "../../include/exceptions/NanaTextboxProcessingException.hpp"
 #include "../../include/Utilities.hpp"
+#pragma warning (push, 0)
 #include <nana/gui/widgets/form.hpp>
 #include <nana/gui/widgets/menubar.hpp>
 #include <clip.h>
+#pragma warning (pop)
 
 using namespace constants;
 
@@ -51,7 +53,7 @@ void SearchState::set_listbox_events()
             pop_stations_listbox_menu();
         }
     });
-	found_stations_listbox_.events().dbl_click([this](const nana::arg_mouse& arg)
+	found_stations_listbox_.events().dbl_click([this]([[maybe_unused]] const nana::arg_mouse& arg)
 	{
             set_new_station();
 	});
