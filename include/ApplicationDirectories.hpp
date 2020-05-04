@@ -11,5 +11,4 @@ std::filesystem::path get_data_directory_path();
 
 std::filesystem::path get_lang_directory_path() noexcept;
 
-
-#endif //RADIOSTREAM_APPLICATIONDIRECTORIES_HPP
+#endif  // RADIOSTREAM_APPLICATIONDIRECTORIES_HPP

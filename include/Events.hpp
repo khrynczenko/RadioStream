@@ -1,37 +1,35 @@
 #ifndef EVENTS_HPP
 #define EVENTS_HPP
 
-namespace radiostream
-{
-    enum class Event
-    {
-        PauseClicked,
-        PlayClicked,
-        NewStationRequested,
-        StationStartedPlaying,
-        NewStationLoading,
-        StationMuted,
-        StationUnmuted,
-		MuteClicked,
-        MuteUnclicked,
-		VolumeChanged,
-        StationPaused,
+namespace radiostream {
+enum class Event {
+    PauseClicked,
+    PlayClicked,
+    NewStationRequested,
+    StationStartedPlaying,
+    NewStationLoading,
+    StationMuted,
+    StationUnmuted,
+    MuteClicked,
+    MuteUnclicked,
+    VolumeChanged,
+    StationPaused,
 
-        AddStationToDatabase,
-        DeleteStationFromDatabase,
-        StationAddedToDatabase,
-        StationDeletedFromDatabase,
+    AddStationToDatabase,
+    DeleteStationFromDatabase,
+    StationAddedToDatabase,
+    StationDeletedFromDatabase,
 
-        SearchStationsRequested,
-        SearchLanguagesRequested,
-        SearchCountriesRequested,
+    SearchStationsRequested,
+    SearchLanguagesRequested,
+    SearchCountriesRequested,
 
-        ConfigApplyNewChanges,
-        
-        NewStationSet,
-        StationSongHasChanged,
-        StreamLoadingError
-	};
+    ConfigApplyNewChanges,
+
+    NewStationSet,
+    StationSongHasChanged,
+    StreamLoadingError
+};
 }
 
 #endif

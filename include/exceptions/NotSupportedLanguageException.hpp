@@ -5,12 +5,12 @@
 #include <string>
 #include "../Language.hpp"
 
-class NotSupportedLanguageException : public std::exception
-{
-public:
+class NotSupportedLanguageException : public std::exception {
+   public:
     NotSupportedLanguageException(const LanguageCode& language);
     char const* what() const noexcept override;
-private:
+
+   private:
     std::string message_;
 };
 

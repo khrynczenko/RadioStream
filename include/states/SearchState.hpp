@@ -4,21 +4,20 @@
 #include "State.hpp"
 #include "../RadioBrowserRequester.hpp"
 #include "../widgets/StationListbox.hpp"
-#pragma warning (push, 0)
+#pragma warning(push, 0)
 #include <nana/gui/place.hpp>
 #include <nana/gui/widgets/button.hpp>
 #include <nana/gui/widgets/textbox.hpp>
 #include <nana/gui/widgets/menu.hpp>
 #include <nana/gui/widgets/combox.hpp>
-#pragma warning (pop)
+#pragma warning(pop)
 
 namespace nana {
-    class menu;
+class menu;
 }
 
-class SearchState : public State
-{
-public:
+class SearchState : public State {
+   public:
     SearchState(StatesManager& state_manager, Context& context);
     void initialize_language_combox();
     void initialize_countries_combox();
@@ -27,8 +26,9 @@ public:
     void build_interface();
     void insert_stations_to_listbox(const std::vector<Station>& stations);
     void insert_possible_languages(const std::vector<std::string>& languages);
-    void insert_possible_countries(const std::vector<std::string> &countries);
-private:
+    void insert_possible_countries(const std::vector<std::string>& countries);
+
+   private:
     void search_for_stations();
     void set_new_station();
     void pop_stations_listbox_menu();
