@@ -82,6 +82,8 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC" AND CMAKE_BUILD_TYPE STREQUAL "Release
 endif()
 
 if (${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
+    # remove "overriding /W3 with /W4" compiler warning
+    string(REGEX REPLACE "/W3" "" CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS})
     # warning level 4 and all warnings as errors
     target_compile_options(RadioStream PRIVATE /W4 /WX /sdl)
 elseif(${CMAKE_CXX_COMPILER_ID} STREQUAL GNU)
