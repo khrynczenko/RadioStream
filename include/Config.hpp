@@ -20,9 +20,9 @@ class Config {
     explicit Config(const std::filesystem::path& path_to_config);
     void change_language(const LanguageCode& code);
     void change_stations_search_limit(unsigned int limit);
-    ConfigOptions options() const;
+    [[nodiscard]] ConfigOptions options() const;
     ~Config();
-    nlohmann::json& operator[](const std::string& key);
+    [[nodiscard]] nlohmann::json& operator[](const std::string& key);
 
    private:
     void create_default_config_file() const;

@@ -29,11 +29,12 @@ class StreamManager {
     void mute();
     void unmute();
     void set_current_volume(float);
-    float get_current_volume() const noexcept;
-    std::optional<BassErrorCode> set_stream(const std::string& url);
+    [[nodiscard]] float get_current_volume() const noexcept;
+    [[nodiscard]] std::optional<BassErrorCode> set_stream(
+        const std::string& url);
     void pause();
     void play();
-    std::string get_song_title() const;
+    [[nodiscard]] std::string get_song_title() const;
     StreamManager();
 
    private:

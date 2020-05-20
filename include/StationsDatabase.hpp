@@ -11,7 +11,7 @@
 class StationsDatabase : public Subject {
    public:
     explicit StationsDatabase(const std::filesystem::path& path_to_db_file);
-    const std::vector<Station>& get_stations() const noexcept;
+    [[nodiscard]] const std::vector<Station>& get_stations() const noexcept;
     void add_station(const Station& station);
     void remove_station(const Station& station);
     std::vector<Station> get_stations_by_substring(

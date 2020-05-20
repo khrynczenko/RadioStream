@@ -7,7 +7,7 @@
 class HTTPDownloader {
    public:
     virtual ~HTTPDownloader() = default;
-    virtual std::string download(std::string_view url) const = 0;
+    [[nodiscard]] virtual std::string download(std::string_view url) const = 0;
 };
 
 #endif

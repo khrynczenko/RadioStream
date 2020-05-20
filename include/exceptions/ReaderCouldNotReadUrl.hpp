@@ -6,7 +6,7 @@
 
 class ReaderCouldNotReadUrl : public std::exception {
    public:
-    const char* what() const noexcept override;
+    [[nodiscard]] const char* what() const noexcept override;
 };
 
 #endif  // RADIOSTREAM_READERCOULDNOTREADURL_HPP

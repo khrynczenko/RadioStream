@@ -5,7 +5,7 @@
 #include <string>
 class NanaTextboxProcessingException : public std::exception {
    public:
-    char const* what() const noexcept override;
+    [[nodiscard]] char const* what() const noexcept override;
 };
 
 #endif

@@ -23,8 +23,9 @@ class StreamURIResolver {
      * @param uri Some URI.
      * @return If possible URI that points directly to the stream.
      */
-    std::optional<Poco::URI> resolve_uri(const Poco::URI& uri) const;
-    bool is_direct_uri(const Poco::URI& uri) const;
+    [[nodiscard]] std::optional<Poco::URI> resolve_uri(
+        const Poco::URI& uri) const;
+    [[nodiscard]] bool is_direct_uri(const Poco::URI& uri) const;
 
    private:
     std::unique_ptr<HTTPDownloader> downloader_;

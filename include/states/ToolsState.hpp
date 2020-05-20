@@ -20,8 +20,8 @@ class ToolsState : public State {
     void pop_restart_program_message_box() const;
 
    private:
-    ConfigOptions gather_options() const;
-    LanguageCode string_to_language_code(
+    [[nodiscard]] ConfigOptions gather_options() const;
+    [[nodiscard]] LanguageCode string_to_language_code(
         std::string_view language_native_name) const;
     nana::place container_;
     nana::label language_label_;

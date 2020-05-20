@@ -8,7 +8,7 @@
 class NotSupportedLanguageException : public std::exception {
    public:
     NotSupportedLanguageException(const LanguageCode& language);
-    char const* what() const noexcept override;
+    [[nodiscard]] char const* what() const noexcept override;
 
    private:
     std::string message_;

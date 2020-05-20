@@ -15,12 +15,14 @@ class StationListbox : public nana::listbox {
     enum Columns { Name, Url, Country, Language, Codec, Bitrate, Tags };
     StationListbox(nana::form& handle, State::Context context);
     void populate_listbox(const std::vector<Station>& stations);
-    std::optional<Station> get_selected_station() const;
+    [[nodiscard]] std::optional<Station> get_selected_station() const;
 
    private:
-    static bool bitrate_comparator(const std::string& lhs, nana::any* any_l,
-                                   const std::string& rhs, nana::any* any_r,
-                                   bool reverse);
+    [[nodiscard]] static bool bitrate_comparator(const std::string& lhs,
+                                                 nana::any* any_l,
+                                                 const std::string& rhs,
+                                                 nana::any* any_r,
+                                                 bool reverse);
     void sticky_select([[maybe_unused]] const nana::arg_mouse& arg);
     State::Context context_;
 };

@@ -15,9 +15,9 @@ class StationPlayer : public Subject {
     void pause();
     void set_volume(float volume);
     float get_volume() const noexcept;
-    bool set_station(const Station& station);
-    Station get_station() const;
-    std::string get_song_title() const;
+    [[nodiscard]] bool set_station(const Station& station);
+    [[nodiscard]] Station get_station() const;
+    [[nodiscard]] std::string get_song_title() const;
 
    private:
     void check_if_song_title_has_changed();

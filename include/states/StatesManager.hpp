@@ -23,7 +23,7 @@ class StatesManager {
     template <typename T>
     void register_state(States::ID id);
     template <typename T>
-    std::shared_ptr<T> get_state(States::ID id);
+    [[nodiscard]] std::shared_ptr<T> get_state(States::ID id);
 
    private:
     Context context_;
@@ -41,7 +41,7 @@ void StatesManager::register_state(States::ID id) {
 }
 
 template <typename T>
-std::shared_ptr<T> StatesManager::get_state(States::ID id) {
+[[nodiscard]] std::shared_ptr<T> StatesManager::get_state(States::ID id) {
     return std::dynamic_pointer_cast<T>(states_.at(id));
 }
 

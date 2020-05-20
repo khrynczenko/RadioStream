@@ -11,7 +11,7 @@ struct Station {
             std::string_view country, std::string_view language,
             std::string_view codec, std::string_view bitrate,
             std::string_view tags);
-    bool operator==(const Station& rhs) const noexcept;
+    [[nodiscard]] bool operator==(const Station& rhs) const noexcept;
     std::string name_;
     std::string url_;
     std::string country_;

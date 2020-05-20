@@ -3,12 +3,12 @@
 
 #include <filesystem>
 
-std::filesystem::path get_home_path();
+[[nodiscard]] std::filesystem::path get_home_path();
 
-std::filesystem::path get_config_directory_path();
+[[nodiscard]] std::filesystem::path get_config_directory_path();
 
-std::filesystem::path get_data_directory_path();
+[[nodiscard]] std::filesystem::path get_data_directory_path();
 
-std::filesystem::path get_lang_directory_path() noexcept;
+[[nodiscard]] std::filesystem::path get_lang_directory_path() noexcept;
 
 #endif  // RADIOSTREAM_APPLICATIONDIRECTORIES_HPP

@@ -6,7 +6,7 @@
 class PocoHTTPDownloader : public HTTPDownloader {
    public:
     explicit PocoHTTPDownloader();
-    std::string download(std::string_view url) const override;
+    [[nodiscard]] std::string download(std::string_view url) const override;
 };
 
 #endif
