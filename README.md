@@ -20,9 +20,10 @@ You should branch from develop if You want to make changes.
  - [Project structure](docs/project-structure.md)
  - [How to Build](docs/build.md)
  - [Architecture design](docs/architecture/design.md)
-   - [States]()
-   - [Localization]()
-   - [Search Engine]()
+   - [States](docs/architecture/states.md)
+   - [Localization](docs/architecture/states.md)
+   - [Stream](docs/architecture/stream.md)
+   - [Events handling](docs/architecture/events.md)
 
 ## Dependencies
 nana https://github.com/cnjinhao/nana (fork)  
