@@ -4,6 +4,8 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 
 include(SetupDependencies)
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 add_executable(RadioStream
     CMakeSetup.rc
     src/Application.cpp
