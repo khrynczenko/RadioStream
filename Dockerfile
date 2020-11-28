@@ -11,7 +11,7 @@ RUN apt-get install -y gcc-8 g++-8 unzip  wget git make
 Run apt-get install -y libx11-dev libfreetype6 libfreetype6-dev libxft-dev libxcursor-dev
 
 # Install cmake
-RUN wget -qO- "https://cmake.org/files/v3.14/cmake-3.14.2-Linux-x86_64.tar.gz" | \
+RUN wget -qO- "https://cmake.org/files/v3.16/cmake-3.16.9-Linux-x86_64.tar.gz" | \
   tar --strip-components=1 -xz -C /usr/local
 
 # Point gcc and g++ to the correct version
