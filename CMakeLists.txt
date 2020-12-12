@@ -53,9 +53,11 @@ target_compile_features(RadioStream PRIVATE cxx_std_17)
 
 target_include_directories(RadioStream SYSTEM PRIVATE
     ${poco_SOURCE_DIR}/Foundation/include
+    ${poco_SOURCE_DIR}/Crypto/include
     ${poco_SOURCE_DIR}/Data/include
-    ${poco_SOURCE_DIR}/poco/Data/SQLite/include
-    ${poco_SOURCE_DIR}/poco/Net/include
+    ${poco_SOURCE_DIR}/Data/SQLite/include
+    ${poco_SOURCE_DIR}/Net/include
+    ${poco_SOURCE_DIR}/NetSSL_OpenSSL/include
     ${nana_SOURCE_DIR}/include
     ${json_SOURCE_DIR}
     ${clip_SOURCE_DIR}
@@ -70,9 +72,11 @@ target_include_directories(RadioStream PRIVATE
 target_link_libraries(RadioStream PRIVATE
                       nana
                       Foundation
+                      Crypto
                       Data
                       DataSQLite
                       Net
+                      NetSSL
                       clip
                       ${BASS_LIB_FILE} 
                       ${BASS_AAC_LIB_FILE}
