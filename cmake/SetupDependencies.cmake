@@ -34,7 +34,7 @@ CPMAddPackage(
 CPMAddPackage(
     NAME poco
     GITHUB_REPOSITORY pocoproject/poco
-    GIT_TAG "poco-1.9.0-release"
+    GIT_TAG "poco-1.9.4-release"
     OPTIONS
         "ENABLE_XML FALSE"
         "ENABLE_ENCODINGS FALSE"
