@@ -3,7 +3,7 @@
 
 #include "Station.hpp"
 #pragma warning(push, 0)
-#include <Poco/Net/HTTPClientSession.h>
+#include <Poco/Net/HTTPSClientSession.h>
 #include <Poco/URI.h>
 #include <nlohmann/json.hpp>
 #pragma warning(pop)
@@ -26,7 +26,7 @@ class RadioBrowserRequester {
                                                         Parameters request_parameters);
     [[nodiscard]] std::string correct_json_response(std::string response) const;
     unsigned short int limit_ = 100;
-    Poco::Net::HTTPClientSession session_{"www.radio-browser.info"};
+    Poco::Net::HTTPSClientSession session_{"de1.api.radio-browser.info"};
 };
 
 [[nodiscard]] std::vector<Station> parse_stations_jsons(

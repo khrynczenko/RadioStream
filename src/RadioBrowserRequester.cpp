@@ -1,5 +1,6 @@
 #include "../include/RadioBrowserRequester.hpp"
 #pragma warning(push, 0)
+#include <Poco/Net/Context.h>
 #include <Poco/Net/HTTPRequest.h>
 #include <Poco/Net/HTTPResponse.h>
 #include <Poco/StreamCopier.h>
@@ -10,7 +11,7 @@ std::vector<nlohmann::json> RadioBrowserRequester::request_stations(std::string_
                                                                     std::string_view language,
                                                                     OrderBy order) {
     std::vector<std::pair<std::string, std::string>> request_parameters;
-    const Poco::URI advanced_search_uri("/webservice/json/stations/search");
+    const Poco::URI advanced_search_uri("/json/stations/search");
     std::string order_value = [order]() {
         switch (order) {
             case OrderBy::ClickCount:
@@ -34,13 +35,13 @@ std::vector<nlohmann::json> RadioBrowserRequester::request_stations(std::string_
 }
 
 std::vector<nlohmann::json> RadioBrowserRequester::request_countries() {
-    const Poco::URI countries_uri("/webservice/json/countries");
+    const Poco::URI countries_uri("/json/countries");
     auto response = send_arbitrary_request(countries_uri, {});
     return response["response"].get<std::vector<nlohmann::json>>();
 }
 
 std::vector<nlohmann::json> RadioBrowserRequester::request_languages() {
-    const Poco::URI countries_uri("/webservice/json/languages");
+    const Poco::URI countries_uri("/json/languages");
     auto response = send_arbitrary_request(countries_uri, {});
     return response["response"].get<std::vector<nlohmann::json>>();
 }
@@ -78,14 +79,14 @@ std::vector<Station> parse_stations_jsons(const std::vector<nlohmann::json>& sta
     std::vector<Station> stations;
     stations.reserve(stations_jsons.size());
     for (const auto& station_json : stations_jsons) {
-        if (std::stoi(station_json["lastcheckok"].get<std::string>()) == 1) {
-            stations.emplace_back(station_json["name"].get<std::string>(),
-                                  station_json["url"].get<std::string>(),
-                                  station_json["country"].get<std::string>(),
-                                  station_json["language"].get<std::string>(),
-                                  station_json["codec"].get<std::string>(),
-                                  station_json["bitrate"].get<std::string>() + std::string(" kbps"),
-                                  station_json["tags"].get<std::string>());
+        if (station_json["lastcheckok"].get<int>() == 1) {
+            stations.emplace_back(
+                station_json["name"].get<std::string>(), station_json["url"].get<std::string>(),
+                station_json["country"].get<std::string>(),
+                station_json["language"].get<std::string>(),
+                station_json["codec"].get<std::string>(),
+                std::to_string(station_json["bitrate"].get<int>()) + std::string(" kbps"),
+                station_json["tags"].get<std::string>());
         }
     }
     return stations;
@@ -95,7 +96,7 @@ std::vector<std::string> parse_countries(const std::vector<nlohmann::json>& coun
     std::vector<std::string> countries_names;
     countries_names.reserve(countries_jsons.size());
     for (const auto& json : countries_jsons) {
-        countries_names.push_back(json["value"].get<std::string>());
+        countries_names.push_back(json["name"].get<std::string>());
     }
     return countries_names;
 }
@@ -104,7 +105,7 @@ std::vector<std::string> parse_languages(const std::vector<nlohmann::json>& lang
     std::vector<std::string> languages_names;
     languages_names.reserve(languages_jsons.size());
     for (const auto& json : languages_jsons) {
-        languages_names.push_back(json["value"].get<std::string>());
+        languages_names.push_back(json["name"].get<std::string>());
     }
     return languages_names;
 }

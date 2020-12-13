@@ -29,7 +29,7 @@ void RadioBrowserRequesterController::on_notify(const radiostream::Event e, cons
 
         case radiostream::Event::SearchCountriesRequested: {
             const auto requested_countries = context_.requester_.request_countries();
-            const auto parsed_countries = parse_languages(requested_countries);
+            const auto parsed_countries = parse_countries(requested_countries);
             manager_.get_state<SearchState>(States::ID::Search)
                 ->insert_possible_countries(parsed_countries);
         } break;
