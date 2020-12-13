@@ -16,8 +16,7 @@ class Controller : public Observer
 {
    public:
     Controller(StatesManager& manager, State::Context context) noexcept;
-    virtual void on_notify(const radiostream::Event e,
-                           const std::any& data) = 0;
+    virtual void on_notify(const radiostream::Event e, const std::any& data) = 0;
     virtual ~Controller() = default;
 
    protected:

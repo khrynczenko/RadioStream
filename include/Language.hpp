@@ -15,8 +15,7 @@ class LanguageCode {
 };
 
 struct LanguageCodeComparator {
-    [[nodiscard]] bool operator()(const LanguageCode& lhs,
-                                  const LanguageCode& rhs) const noexcept;
+    [[nodiscard]] bool operator()(const LanguageCode& lhs, const LanguageCode& rhs) const noexcept;
 };
 
 #endif

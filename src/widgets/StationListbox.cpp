@@ -5,8 +5,7 @@
 
 StationListbox::StationListbox(nana::form& handle, State::Context context)
     : nana::listbox(handle), context_(context) {
-    this->append_header(
-        context_.localizer_.get_localized_text("Station's name"));
+    this->append_header(context_.localizer_.get_localized_text("Station's name"));
     this->append_header(context_.localizer_.get_localized_text("URL"));
     this->append_header(context_.localizer_.get_localized_text("Country"));
     this->append_header(context_.localizer_.get_localized_text("Language"));
@@ -28,39 +27,32 @@ void StationListbox::populate_listbox(const std::vector<Station>& stations) {
     this->auto_draw(false);
     this->clear();
     const auto category_index = Categories::NanaDefault;
-    std::for_each(stations.cbegin(), stations.cend(),
-                  [this, &category_index](const auto& station) {
-                      this->at(category_index).append(station);
-                  });
+    std::for_each(stations.cbegin(), stations.cend(), [this, &category_index](const auto& station) {
+        this->at(category_index).append(station);
+    });
     this->auto_draw(true);
 }
 
 std::optional<Station> StationListbox::get_selected_station() const {
     if (!this->selected().empty()) {
         const auto selected_item = this->selected().front();
-        const auto category_index =
-            static_cast<std::size_t>(Categories::NanaDefault);
+        const auto category_index = static_cast<std::size_t>(Categories::NanaDefault);
         const auto column_index = static_cast<std::size_t>(Columns::Name);
         const auto station_category = this->at(category_index);
-        const auto name =
-            station_category.at(selected_item.item).text(column_index);
-        const auto url = station_category.at(selected_item.item)
-                             .text(static_cast<std::size_t>(Columns::Url));
-        const auto country =
-            station_category.at(selected_item.item)
-                .text(static_cast<std::size_t>(Columns::Country));
-        const auto language =
-            station_category.at(selected_item.item)
-                .text(static_cast<std::size_t>(Columns::Language));
-        const auto codec = station_category.at(selected_item.item)
-                               .text(static_cast<std::size_t>(Columns::Codec));
-        const auto bitrate =
-            station_category.at(selected_item.item)
-                .text(static_cast<std::size_t>(Columns::Bitrate));
-        const auto tags = station_category.at(selected_item.item)
-                              .text(static_cast<std::size_t>(Columns::Tags));
-        return std::make_optional<Station>(name, url, country, language, codec,
-                                           bitrate, tags);
+        const auto name = station_category.at(selected_item.item).text(column_index);
+        const auto url =
+            station_category.at(selected_item.item).text(static_cast<std::size_t>(Columns::Url));
+        const auto country = station_category.at(selected_item.item)
+                                 .text(static_cast<std::size_t>(Columns::Country));
+        const auto language = station_category.at(selected_item.item)
+                                  .text(static_cast<std::size_t>(Columns::Language));
+        const auto codec =
+            station_category.at(selected_item.item).text(static_cast<std::size_t>(Columns::Codec));
+        const auto bitrate = station_category.at(selected_item.item)
+                                 .text(static_cast<std::size_t>(Columns::Bitrate));
+        const auto tags =
+            station_category.at(selected_item.item).text(static_cast<std::size_t>(Columns::Tags));
+        return std::make_optional<Station>(name, url, country, language, codec, bitrate, tags);
     }
     return std::nullopt;
 }
@@ -69,10 +61,8 @@ std::optional<Station> StationListbox::get_selected_station() const {
  * \brief custom nana comparator for storting station listbox by bitrate in
  * correct manner
  */
-bool StationListbox::bitrate_comparator(const std::string& lhs,
-                                        [[maybe_unused]] nana::any* any_l,
-                                        const std::string& rhs,
-                                        [[maybe_unused]] nana::any* any_r,
+bool StationListbox::bitrate_comparator(const std::string& lhs, [[maybe_unused]] nana::any* any_l,
+                                        const std::string& rhs, [[maybe_unused]] nana::any* any_r,
                                         bool reverse) {
     try {
         int lhs_bitrate = std::stoi(lhs);
@@ -84,8 +74,7 @@ bool StationListbox::bitrate_comparator(const std::string& lhs,
     }
 }
 
-void StationListbox::sticky_select([
-    [maybe_unused]] const nana::arg_mouse& arg) {
+void StationListbox::sticky_select([[maybe_unused]] const nana::arg_mouse& arg) {
     if (!this->selected().empty()) {
         for (const auto& pair : this->selected()) {
             if (pair.item == this->selected().front().item) {

@@ -18,8 +18,7 @@ StationPlayerController::StationPlayerController(
     std::unique_ptr<HTTPDownloader> downloader) noexcept
     : Controller(manager, context), resolver_(std::move(downloader)) {}
 
-void StationPlayerController::on_notify(const radiostream::Event e,
-                                        const std::any& data) {
+void StationPlayerController::on_notify(const radiostream::Event e, const std::any& data) {
     using namespace constants;
     switch (e) {
         case radiostream::Event::PauseClicked: {
@@ -27,24 +26,20 @@ void StationPlayerController::on_notify(const radiostream::Event e,
         } break;
 
         case radiostream::Event::PlayClicked: {
-            std::thread thread =
-                std::thread([this]() { context_.station_player_.play(); });
+            std::thread thread = std::thread([this]() { context_.station_player_.play(); });
             thread.detach();
         } break;
 
         case radiostream::Event::VolumeChanged: {
-            context_.station_player_.set_volume(
-                volume_int_to_float(std::any_cast<unsigned>(data)));
+            context_.station_player_.set_volume(volume_int_to_float(std::any_cast<unsigned>(data)));
         } break;
 
         case radiostream::Event::NewStationRequested: {
             auto station = std::any_cast<Station>(data);
-            const auto resolved =
-                resolver_.resolve_uri(Poco::URI(station.url_));
+            const auto resolved = resolver_.resolve_uri(Poco::URI(station.url_));
             station.url_ = resolved.value_or(Poco::URI(""s)).toString();
             std::thread thread = std::thread([this, station]() {
-                if (context_.station_player_.set_station(station))
-                    context_.station_player_.play();
+                if (context_.station_player_.set_station(station)) context_.station_player_.play();
             });
             thread.detach();
         } break;

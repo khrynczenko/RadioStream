@@ -41,16 +41,13 @@ void SearchState::change_visibility(bool visible) {
 }
 
 void SearchState::set_listbox_events() {
-    found_stations_listbox_.events().mouse_down(
-        [this](const nana::arg_mouse& arg) {
-            if (!arg.is_left_button()) {
-                pop_stations_listbox_menu();
-            }
-        });
+    found_stations_listbox_.events().mouse_down([this](const nana::arg_mouse& arg) {
+        if (!arg.is_left_button()) {
+            pop_stations_listbox_menu();
+        }
+    });
     found_stations_listbox_.events().dbl_click(
-        [this]([[maybe_unused]] const nana::arg_mouse& arg) {
-            set_new_station();
-        });
+        [this]([[maybe_unused]] const nana::arg_mouse& arg) { set_new_station(); });
 }
 
 void SearchState::build_interface() {
@@ -63,19 +60,15 @@ void SearchState::build_interface() {
     });
     sort_by_label_.text_align(nana::align::left, nana::align_v::center);
     sort_by_label_.caption(context_.localizer_.get_localized_text("Sort by:"));
-    sorting_combox_
-        .push_back(context_.localizer_.get_localized_text("Popularity"))
-        .option(0);
-    sorting_combox_.push_back(
-        context_.localizer_.get_localized_text("Trending"));
+    sorting_combox_.push_back(context_.localizer_.get_localized_text("Popularity")).option(0);
+    sorting_combox_.push_back(context_.localizer_.get_localized_text("Trending"));
     sorting_combox_.push_back(context_.localizer_.get_localized_text("Score"));
 
     country_combox_.push_back("Any").option(0);
 
     language_combox_.push_back("Any").option(0);
 
-    search_submit_button_.caption(
-        context_.localizer_.get_localized_text("Find"));
+    search_submit_button_.caption(context_.localizer_.get_localized_text("Find"));
     search_submit_button_.events().click([this]() { search_for_stations(); });
 
     back_button_.caption(context_.localizer_.get_localized_text("Back"));
@@ -89,50 +82,39 @@ void SearchState::build_interface() {
         "<buttons_section arrange=[10%] min=4% max=5% weight=1% "
         "margin=[0%,1%,5%,1%]>"
         ">");
-    container_.field("search_form")
-        << search_textbox_ << sort_by_label_ << sorting_combox_
-        << country_combox_ << language_combox_ << search_submit_button_;
+    container_.field("search_form") << search_textbox_ << sort_by_label_ << sorting_combox_
+                                    << country_combox_ << language_combox_ << search_submit_button_;
     container_.field("listbox") << found_stations_listbox_;
     container_.field("buttons_section") << back_button_;
     container_.collocate();
 
-    listbox_right_click_menu_.append(
-        context_.localizer_.get_localized_text("Play"),
-        [this]([[maybe_unused]] auto& ev) { set_new_station(); });
+    listbox_right_click_menu_.append(context_.localizer_.get_localized_text("Play"),
+                                     [this]([[maybe_unused]] auto& ev) { set_new_station(); });
 
     listbox_right_click_menu_.append(
         context_.localizer_.get_localized_text("Add to list"),
-        [this]([[maybe_unused]] auto& ev) {
-            add_selected_station_to_database();
-        });
+        [this]([[maybe_unused]] auto& ev) { add_selected_station_to_database(); });
 
     listbox_right_click_menu_.append(
         context_.localizer_.get_localized_text("Copy URL to clipboard"),
-        [this]([[maybe_unused]] auto& ev) {
-            copy_selected_station_url_to_clipboard();
-        });
+        [this]([[maybe_unused]] auto& ev) { copy_selected_station_url_to_clipboard(); });
 
     listbox_right_click_menu_.append(
         context_.localizer_.get_localized_text("Copy name to clipboard"),
-        [this]([[maybe_unused]] auto& ev) {
-            copy_selected_station_name_to_clipboard();
-        });
+        [this]([[maybe_unused]] auto& ev) { copy_selected_station_name_to_clipboard(); });
 }
 
-void SearchState::insert_stations_to_listbox(
-    const std::vector<Station>& stations) {
+void SearchState::insert_stations_to_listbox(const std::vector<Station>& stations) {
     found_stations_listbox_.populate_listbox(stations);
 }
 
-void SearchState::insert_possible_languages(
-    const std::vector<std::string>& languages) {
+void SearchState::insert_possible_languages(const std::vector<std::string>& languages) {
     for (const auto& language : languages) {
         language_combox_.push_back(language);
     }
 }
 
-void SearchState::insert_possible_countries(
-    const std::vector<std::string>& countries) {
+void SearchState::insert_possible_countries(const std::vector<std::string>& countries) {
     for (const auto& country : countries) {
         country_combox_.push_back(country);
     }
@@ -145,8 +127,7 @@ void SearchState::pop_stations_listbox_menu() {
 }
 
 void SearchState::add_selected_station_to_database() {
-    if (const auto station = found_stations_listbox_.get_selected_station();
-        station.has_value()) {
+    if (const auto station = found_stations_listbox_.get_selected_station(); station.has_value()) {
         notify(station.value(), radiostream::Event::AddStationToDatabase);
     }
 }
@@ -156,14 +137,12 @@ void SearchState::search_for_stations() {
     if (!search_textbox_.getline(0, search_phrase)) {
         throw NanaTextboxProcessingException();
     }
-    const auto order =
-        static_cast<RadioBrowserRequester::OrderBy>(sorting_combox_.option());
-    auto arguments = std::make_tuple(
-        search_phrase, country_combox_.text(country_combox_.option()),
-        language_combox_.text(language_combox_.option()), order);
-    const auto any =
-        std::make_any<std::tuple<std::string, std::string, std::string,
-                                 RadioBrowserRequester::OrderBy>>(arguments);
+    const auto order = static_cast<RadioBrowserRequester::OrderBy>(sorting_combox_.option());
+    auto arguments = std::make_tuple(search_phrase, country_combox_.text(country_combox_.option()),
+                                     language_combox_.text(language_combox_.option()), order);
+    const auto any = std::make_any<
+        std::tuple<std::string, std::string, std::string, RadioBrowserRequester::OrderBy>>(
+        arguments);
     notify(any, radiostream::Event::SearchStationsRequested);
 }
 
@@ -175,15 +154,13 @@ void SearchState::set_new_station() {
 }
 
 void SearchState::copy_selected_station_url_to_clipboard() {
-    if (const auto station = found_stations_listbox_.get_selected_station();
-        station.has_value()) {
+    if (const auto station = found_stations_listbox_.get_selected_station(); station.has_value()) {
         clip::set_text(station.value().url_);
     }
 }
 
 void SearchState::copy_selected_station_name_to_clipboard() {
-    if (const auto station = found_stations_listbox_.get_selected_station();
-        station.has_value()) {
+    if (const auto station = found_stations_listbox_.get_selected_station(); station.has_value()) {
         clip::set_text(station.value().name_);
     }
 }

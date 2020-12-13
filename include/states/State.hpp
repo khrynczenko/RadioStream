@@ -28,11 +28,9 @@ class State : public Subject {
      * throughout all states
      */
     struct Context {
-        Context(nana::form& window, nana::menubar& menubar,
-                StationPlayer& station_player,
-                StationsDatabase& stations_database, StatusBar& status,
-                TextLocalizer& localizer, Config& config,
-                RadioBrowserRequester& requester) noexcept;
+        Context(nana::form& window, nana::menubar& menubar, StationPlayer& station_player,
+                StationsDatabase& stations_database, StatusBar& status, TextLocalizer& localizer,
+                Config& config, RadioBrowserRequester& requester) noexcept;
         nana::form& window_;
         nana::menubar& menubar_;
         StationPlayer& station_player_;

@@ -16,12 +16,9 @@ void StationsDatabase::add_station(const Station& station) {
     Poco::Data::Statement insert(database_);
     insert << "INSERT INTO stations (name, url, country, language, codec, "
               "bitrate, tags) VALUES (?, ?, ?, ?, ?, ?, ?)",
-        Poco::Data::Keywords::bind(station.name_),
-        Poco::Data::Keywords::bind(station.url_),
-        Poco::Data::Keywords::bind(station.country_),
-        Poco::Data::Keywords::bind(station.language_),
-        Poco::Data::Keywords::bind(station.codec_),
-        Poco::Data::Keywords::bind(station.bitrate_),
+        Poco::Data::Keywords::bind(station.name_), Poco::Data::Keywords::bind(station.url_),
+        Poco::Data::Keywords::bind(station.country_), Poco::Data::Keywords::bind(station.language_),
+        Poco::Data::Keywords::bind(station.codec_), Poco::Data::Keywords::bind(station.bitrate_),
         Poco::Data::Keywords::bind(station.tags_);
     insert.execute();
     cached_stations_.push_back(station);
@@ -31,13 +28,10 @@ void StationsDatabase::add_station(const Station& station) {
 void StationsDatabase::remove_station(const Station& station) {
     Poco::Data::Statement delete_statement(database_);
     delete_statement << "DELETE FROM stations WHERE name = ? and url = ?",
-        Poco::Data::Keywords::bind(station.name_),
-        Poco::Data::Keywords::bind(station.url_);
+        Poco::Data::Keywords::bind(station.name_), Poco::Data::Keywords::bind(station.url_);
     delete_statement.execute();
-    cached_stations_.erase(
-        std::find(cached_stations_.begin(), cached_stations_.end(), station));
-    notify(Observer::placeholder,
-           radiostream::Event::StationDeletedFromDatabase);
+    cached_stations_.erase(std::find(cached_stations_.begin(), cached_stations_.end(), station));
+    notify(Observer::placeholder, radiostream::Event::StationDeletedFromDatabase);
 }
 
 std::vector<Station> StationsDatabase::get_stations_by_substring(
@@ -45,12 +39,9 @@ std::vector<Station> StationsDatabase::get_stations_by_substring(
     std::vector<Station> matching_stations;
     const auto string_to_look_for = string_to_lower(substring);
     std::copy_if(std::cbegin(cached_stations_), std::cend(cached_stations_),
-                 std::back_inserter(matching_stations),
-                 [&string_to_look_for](const auto& station) {
-                     std::string lower_cased_station_name =
-                         string_to_lower(station.name_);
-                     return lower_cased_station_name.find(string_to_look_for) !=
-                            std::string::npos;
+                 std::back_inserter(matching_stations), [&string_to_look_for](const auto& station) {
+                     std::string lower_cased_station_name = string_to_lower(station.name_);
+                     return lower_cased_station_name.find(string_to_look_for) != std::string::npos;
                  });
     return matching_stations;
 }
@@ -69,14 +60,10 @@ void StationsDatabase::cache_stations_stored_in_database() {
     Station station;
     int id;
     select << "SELECT * FROM stations", Poco::Data::Keywords::into(id),
-        Poco::Data::Keywords::into(station.name_),
-        Poco::Data::Keywords::into(station.url_),
-        Poco::Data::Keywords::into(station.country_),
-        Poco::Data::Keywords::into(station.language_),
-        Poco::Data::Keywords::into(station.codec_),
-        Poco::Data::Keywords::into(station.bitrate_),
-        Poco::Data::Keywords::into(station.tags_),
-        Poco::Data::Keywords::range(0, 1);
+        Poco::Data::Keywords::into(station.name_), Poco::Data::Keywords::into(station.url_),
+        Poco::Data::Keywords::into(station.country_), Poco::Data::Keywords::into(station.language_),
+        Poco::Data::Keywords::into(station.codec_), Poco::Data::Keywords::into(station.bitrate_),
+        Poco::Data::Keywords::into(station.tags_), Poco::Data::Keywords::range(0, 1);
 
     while (!select.done()) {
         select.execute();

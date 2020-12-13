@@ -11,26 +11,21 @@
 
 class LanguagesPathsContainer {
    public:
-    explicit LanguagesPathsContainer(
-        const std::filesystem::path& lang_root_directory) noexcept;
+    explicit LanguagesPathsContainer(const std::filesystem::path& lang_root_directory) noexcept;
     [[nodiscard]] std::filesystem::path get_path(LanguageCode lang);
 
    private:
-    std::map<const LanguageCode, const std::filesystem::path,
-             LanguageCodeComparator>
+    std::map<const LanguageCode, const std::filesystem::path, LanguageCodeComparator>
         languages_filepaths;
 };
 
 class TextLocalizer {
    public:
-    explicit TextLocalizer(
-        const std::filesystem::path& lang_root_directory) noexcept;
+    explicit TextLocalizer(const std::filesystem::path& lang_root_directory) noexcept;
     void switch_language(LanguageCode lang);
     template <typename... Args>
-    [[nodiscard]] std::string get_localized_text(std::string text_id,
-                                                 Args... args) const;
-    [[nodiscard]] std::string get_localized_text(
-        std::string_view text_id) const;
+    [[nodiscard]] std::string get_localized_text(std::string text_id, Args... args) const;
+    [[nodiscard]] std::string get_localized_text(std::string_view text_id) const;
 
    private:
     nana::internationalization localizer_;
@@ -38,8 +33,8 @@ class TextLocalizer {
 };
 
 template <typename... Args>
-[[nodiscard]] std::string TextLocalizer::get_localized_text(
-    std::string text_id, Args... args) const {
+[[nodiscard]] std::string TextLocalizer::get_localized_text(std::string text_id,
+                                                            Args... args) const {
     return localizer_(text_id, args...);
 }
 

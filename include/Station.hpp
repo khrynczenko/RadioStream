@@ -7,9 +7,8 @@
 
 struct Station {
     Station() = default;
-    Station(std::string_view name, std::string_view url,
-            std::string_view country, std::string_view language,
-            std::string_view codec, std::string_view bitrate,
+    Station(std::string_view name, std::string_view url, std::string_view country,
+            std::string_view language, std::string_view codec, std::string_view bitrate,
             std::string_view tags);
     [[nodiscard]] bool operator==(const Station& rhs) const noexcept;
     std::string name_;
@@ -21,8 +20,6 @@ struct Station {
     std::string tags_;
 };
 
-nana::listbox::oresolver& operator<<(nana::listbox::oresolver& ores,
-                                     const Station& station);
-nana::listbox::iresolver& operator>>(nana::listbox::iresolver& ires,
-                                     Station& station);
+nana::listbox::oresolver& operator<<(nana::listbox::oresolver& ores, const Station& station);
+nana::listbox::iresolver& operator>>(nana::listbox::iresolver& ires, Station& station);
 #endif

@@ -16,15 +16,13 @@
  */
 class StreamURIResolver {
    public:
-    explicit StreamURIResolver(
-        std::unique_ptr<HTTPDownloader> downloader) noexcept;
+    explicit StreamURIResolver(std::unique_ptr<HTTPDownloader> downloader) noexcept;
     /**
      * Does the resolvement to URI which points directly to the stream.
      * @param uri Some URI.
      * @return If possible URI that points directly to the stream.
      */
-    [[nodiscard]] std::optional<Poco::URI> resolve_uri(
-        const Poco::URI& uri) const;
+    [[nodiscard]] std::optional<Poco::URI> resolve_uri(const Poco::URI& uri) const;
     [[nodiscard]] bool is_direct_uri(const Poco::URI& uri) const;
 
    private:

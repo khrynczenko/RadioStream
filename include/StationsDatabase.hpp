@@ -14,8 +14,7 @@ class StationsDatabase : public Subject {
     [[nodiscard]] const std::vector<Station>& get_stations() const noexcept;
     void add_station(const Station& station);
     void remove_station(const Station& station);
-    std::vector<Station> get_stations_by_substring(
-        const std::string& substring) const;
+    std::vector<Station> get_stations_by_substring(const std::string& substring) const;
 
    private:
     void create_empty_table_if_does_not_exist();

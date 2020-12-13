@@ -21,8 +21,7 @@ class ToolsState : public State {
 
    private:
     [[nodiscard]] ConfigOptions gather_options() const;
-    [[nodiscard]] LanguageCode string_to_language_code(
-        std::string_view language_native_name) const;
+    [[nodiscard]] LanguageCode string_to_language_code(std::string_view language_native_name) const;
     nana::place container_;
     nana::label language_label_;
     nana::combox language_choices_;

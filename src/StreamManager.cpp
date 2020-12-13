@@ -24,9 +24,7 @@ void StreamManager::set_current_volume(float volume) {
     }
 }
 
-float StreamManager::get_current_volume() const noexcept {
-    return current_volume_;
-}
+float StreamManager::get_current_volume() const noexcept { return current_volume_; }
 
 std::optional<BassErrorCode> StreamManager::set_stream(const std::string& url) {
     std::lock_guard<std::mutex> lock(mutex_);
@@ -41,12 +39,10 @@ std::optional<BassErrorCode> StreamManager::set_stream(const std::string& url) {
     if (possible_error == BASS_ERROR_FILEFORM) {
         // if stream create failed because format is not supported try AAC
         // AAC work on WINDOWS by default
-        main_stream_ =
-            BASS_AAC_StreamCreateURL(url.c_str(), 0, 0, nullptr, nullptr);
+        main_stream_ = BASS_AAC_StreamCreateURL(url.c_str(), 0, 0, nullptr, nullptr);
     }
 #endif
-    if (main_stream_ == 0)
-        return std::make_optional<BassErrorCode>(possible_error);
+    if (main_stream_ == 0) return std::make_optional<BassErrorCode>(possible_error);
     set_current_volume(this->current_volume_);
     return std::nullopt;
 }
@@ -61,10 +57,8 @@ void StreamManager::pause() {
 void StreamManager::play() {
     std::lock_guard<std::mutex> lock(mutex_);
     if (main_stream_ == 0) {
-        main_stream_ =
-            BASS_StreamCreateURL(url_playing_.c_str(), 0, 0, nullptr, nullptr);
-        BASS_ChannelSetAttribute(main_stream_, BASS_ATTRIB_VOL,
-                                 current_volume_);
+        main_stream_ = BASS_StreamCreateURL(url_playing_.c_str(), 0, 0, nullptr, nullptr);
+        BASS_ChannelSetAttribute(main_stream_, BASS_ATTRIB_VOL, current_volume_);
     }
     BASS_ChannelPlay(main_stream_, false);
 }
@@ -81,8 +75,7 @@ std::string StreamManager::get_song_title() const {
     return "";
 }
 
-StreamManager::StreamManager()
-    : main_stream_(), muted_(false), current_volume_(1.f) {
+StreamManager::StreamManager() : main_stream_(), muted_(false), current_volume_(1.f) {
     if (!BASS_Init(-1, 44100, BASS_DEVICE_STEREO, nullptr, nullptr)) {
         throw std::runtime_error("Could not initialize sound device.");
     }

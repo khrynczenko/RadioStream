@@ -17,7 +17,6 @@ void copy_to_clipboard(const std::string& message);
 
 [[nodiscard]] std::string string_to_lower(const std::string& str);
 
-[[nodiscard]] std::string replace_dollar_with_version_number(
-    std::string_view text);
+[[nodiscard]] std::string replace_dollar_with_version_number(std::string_view text);
 
 #endif

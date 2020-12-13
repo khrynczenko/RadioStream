@@ -5,8 +5,7 @@
 
 class M3UReader : public MultimediaPlaylistReader {
    public:
-    [[nodiscard]] std::string get_station_url(
-        std::istream& input) const override;
+    [[nodiscard]] std::string get_station_url(std::istream& input) const override;
 };
 
 #endif

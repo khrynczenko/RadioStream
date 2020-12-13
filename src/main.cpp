@@ -8,8 +8,7 @@
 
 #ifdef _WIN32
 #ifndef _DEBUG
-int WinMain([[maybe_unused]] HINSTANCE hInstance,
-            [[maybe_unused]] HINSTANCE hPrevInstance, char*,
+int WinMain([[maybe_unused]] HINSTANCE hInstance, [[maybe_unused]] HINSTANCE hPrevInstance, char*,
             [[maybe_unused]] int nShowCmd)
 #else
 int main()

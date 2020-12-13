@@ -18,10 +18,8 @@ class StationListbox : public nana::listbox {
     [[nodiscard]] std::optional<Station> get_selected_station() const;
 
    private:
-    [[nodiscard]] static bool bitrate_comparator(const std::string& lhs,
-                                                 nana::any* any_l,
-                                                 const std::string& rhs,
-                                                 nana::any* any_r,
+    [[nodiscard]] static bool bitrate_comparator(const std::string& lhs, nana::any* any_l,
+                                                 const std::string& rhs, nana::any* any_r,
                                                  bool reverse);
     void sticky_select([[maybe_unused]] const nana::arg_mouse& arg);
     State::Context context_;

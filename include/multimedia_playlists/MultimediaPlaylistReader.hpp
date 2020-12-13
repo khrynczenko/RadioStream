@@ -7,8 +7,7 @@
 class MultimediaPlaylistReader {
    public:
     virtual ~MultimediaPlaylistReader() = default;
-    [[nodiscard]] virtual std::string get_station_url(
-        std::istream& input) const = 0;
+    [[nodiscard]] virtual std::string get_station_url(std::istream& input) const = 0;
 };
 
 #endif

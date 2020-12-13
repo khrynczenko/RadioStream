@@ -4,8 +4,7 @@
 
 class StationsDatabaseController : public Controller {
    public:
-    StationsDatabaseController(StatesManager& manager,
-                               State::Context context) noexcept;
+    StationsDatabaseController(StatesManager& manager, State::Context context) noexcept;
     void on_notify(const radiostream::Event e, const std::any& data) override;
 };
 

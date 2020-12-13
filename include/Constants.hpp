@@ -12,8 +12,7 @@
 using LanguageNativeName = std::string;
 
 namespace constants {
-extern const std::map<const LanguageCode, const LanguageNativeName,
-                      LanguageCodeComparator>
+extern const std::map<const LanguageCode, const LanguageNativeName, LanguageCodeComparator>
     LANGUAGES_CODES_AND_NATIVE_NAMES;
 
 inline const nana::color VERNIER_COLOR{50, 50, 50, 0.5};

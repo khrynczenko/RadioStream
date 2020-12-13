@@ -27,17 +27,14 @@ const std::map<BassErrorCode, BassErrorMessage> ERROR_CODES_AND_MESSAGES = {
     {BASS_ERROR_UNKNOWN, "Some other mystery problem!"s},
 };
 
-StatusBarController::StatusBarController(StatesManager& manager,
-                                         State::Context context,
+StatusBarController::StatusBarController(StatesManager& manager, State::Context context,
                                          StatusBar& statusbar) noexcept
     : Controller(manager, context), statusbar_(statusbar) {}
 
-void StatusBarController::on_notify(const radiostream::Event e,
-                                    const std::any& data) {
+void StatusBarController::on_notify(const radiostream::Event e, const std::any& data) {
     switch (e) {
         case radiostream::Event::StationPaused: {
-            context_.status_.change_text(
-                context_.localizer_.get_localized_text("Stream paused"));
+            context_.status_.change_text(context_.localizer_.get_localized_text("Stream paused"));
             context_.status_.change_color(StatusBar::Color::FINISHED);
         } break;
 
@@ -48,14 +45,12 @@ void StatusBarController::on_notify(const radiostream::Event e,
         } break;
 
         case radiostream::Event::NewStationSet: {
-            context_.status_.change_text(
-                context_.localizer_.get_localized_text("Station ready"));
+            context_.status_.change_text(context_.localizer_.get_localized_text("Station ready"));
             context_.status_.change_color(StatusBar::Color::FINISHED);
         } break;
 
         case radiostream::Event::StationStartedPlaying: {
-            context_.status_.change_text(
-                context_.localizer_.get_localized_text("Station playing"));
+            context_.status_.change_text(context_.localizer_.get_localized_text("Station playing"));
             context_.status_.change_color(StatusBar::Color::FINISHED);
         } break;
 
@@ -66,21 +61,18 @@ void StatusBarController::on_notify(const radiostream::Event e,
                 return ERROR_CODES_AND_MESSAGES.at(error_code);
             }();
             context_.status_.change_text(
-                context_.localizer_.get_localized_text(
-                    "Could not load station:") +
+                context_.localizer_.get_localized_text("Could not load station:") +
                 context_.localizer_.get_localized_text(error_message));
             context_.status_.change_color(StatusBar::Color::ERRORED);
         } break;
 
         case radiostream::Event::StationMuted: {
-            context_.status_.change_text(
-                context_.localizer_.get_localized_text("Stream muted"));
+            context_.status_.change_text(context_.localizer_.get_localized_text("Stream muted"));
             context_.status_.change_color(StatusBar::Color::PROCESSING);
         } break;
 
         case radiostream::Event::StationUnmuted: {
-            context_.status_.change_text(
-                context_.localizer_.get_localized_text("Stream unmuted"));
+            context_.status_.change_text(context_.localizer_.get_localized_text("Stream unmuted"));
             context_.status_.change_color(StatusBar::Color::FINISHED);
         } break;
 

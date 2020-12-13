@@ -14,15 +14,16 @@ class RadioBrowserRequester {
     using Parameters = const std::vector<std::pair<std::string, std::string>>&;
     explicit RadioBrowserRequester(unsigned short int search_stations_limit);
     enum class OrderBy { ClickCount, ClickTrend, Votes };
-    [[nodiscard]] std::vector<nlohmann::json> request_stations(
-        std::string_view search_phrase, std::string_view country,
-        std::string_view language, OrderBy order);
+    [[nodiscard]] std::vector<nlohmann::json> request_stations(std::string_view search_phrase,
+                                                               std::string_view country,
+                                                               std::string_view language,
+                                                               OrderBy order);
     [[nodiscard]] std::vector<nlohmann::json> request_countries();
     [[nodiscard]] std::vector<nlohmann::json> request_languages();
 
    private:
-    [[nodiscard]] nlohmann::json send_arbitrary_request(
-        const Poco::URI& request_uri, Parameters request_parameters);
+    [[nodiscard]] nlohmann::json send_arbitrary_request(const Poco::URI& request_uri,
+                                                        Parameters request_parameters);
     [[nodiscard]] std::string correct_json_response(std::string response) const;
     unsigned short int limit_ = 100;
     Poco::Net::HTTPClientSession session_{"www.radio-browser.info"};

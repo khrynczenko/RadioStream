@@ -3,8 +3,8 @@
 #include "../../include/multimedia_playlists/PLSReader.hpp"
 #include "../../include/multimedia_playlists/M3UReader.hpp"
 
-std::unique_ptr<MultimediaPlaylistReader>
-MultimediaPlaylistReaderFactory::make_reader(const Poco::URI& uri) {
+std::unique_ptr<MultimediaPlaylistReader> MultimediaPlaylistReaderFactory::make_reader(
+    const Poco::URI& uri) {
     const std::string& path = uri.getPath();
     if (ends_with(path, ".pls")) {
         return std::make_unique<PLSReader>();

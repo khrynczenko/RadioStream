@@ -5,8 +5,7 @@
 StationPlayer::StationPlayer() : current_song_title_("") {
     auto thread = std::thread([this]() {
         while (true) {
-            std::this_thread::sleep_for(
-                std::chrono::duration<int>(std::chrono::seconds(2)));
+            std::this_thread::sleep_for(std::chrono::duration<int>(std::chrono::seconds(2)));
             check_if_song_title_has_changed();
         }
     });
@@ -33,13 +32,9 @@ void StationPlayer::pause() {
     notify(Observer::placeholder, radiostream::Event::StationPaused);
 }
 
-void StationPlayer::set_volume(float volume) {
-    stream_manager_.set_current_volume(volume);
-}
+void StationPlayer::set_volume(float volume) { stream_manager_.set_current_volume(volume); }
 
-float StationPlayer::get_volume() const noexcept {
-    return stream_manager_.get_current_volume();
-}
+float StationPlayer::get_volume() const noexcept { return stream_manager_.get_current_volume(); }
 
 bool StationPlayer::set_station(const Station& station) {
     station_ = station;
@@ -55,9 +50,7 @@ bool StationPlayer::set_station(const Station& station) {
     return true;
 }
 
-std::string StationPlayer::get_song_title() const {
-    return stream_manager_.get_song_title();
-}
+std::string StationPlayer::get_song_title() const { return stream_manager_.get_song_title(); }
 
 void StationPlayer::check_if_song_title_has_changed() {
     std::lock_guard<std::mutex> lock(mutex_);

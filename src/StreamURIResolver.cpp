@@ -7,20 +7,16 @@
 #pragma warning(pop)
 #include <sstream>
 
-StreamURIResolver::StreamURIResolver(
-    std::unique_ptr<HTTPDownloader> downloader) noexcept
+StreamURIResolver::StreamURIResolver(std::unique_ptr<HTTPDownloader> downloader) noexcept
     : downloader_(std::move(downloader)) {}
 
-std::optional<Poco::URI> StreamURIResolver::resolve_uri(
-    const Poco::URI &uri) const {
+std::optional<Poco::URI> StreamURIResolver::resolve_uri(const Poco::URI &uri) const {
     if (is_direct_uri(uri)) {
         return uri;
     } else {
         try {
-            std::stringstream playlist_data{
-                downloader_->download(uri.toString())};
-            const auto reader =
-                MultimediaPlaylistReaderFactory::make_reader(uri);
+            std::stringstream playlist_data{downloader_->download(uri.toString())};
+            const auto reader = MultimediaPlaylistReaderFactory::make_reader(uri);
             const auto direct_uri = reader->get_station_url(playlist_data);
             return Poco::URI(direct_uri);
         } catch ([[maybe_unused]] const Poco::UnknownURISchemeException &e) {

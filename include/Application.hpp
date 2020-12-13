@@ -62,8 +62,7 @@ class Application : public Subject {
     std::shared_ptr<StationPlayerController> station_player_controller;
     std::shared_ptr<StationsDatabaseController> stations_database_controller_;
     std::shared_ptr<ConfigController> config_controller_;
-    std::shared_ptr<RadioBrowserRequesterController>
-        radio_browser_requester_controller_;
+    std::shared_ptr<RadioBrowserRequesterController> radio_browser_requester_controller_;
     std::shared_ptr<StatusBarController> status_bar_controller_;
     Subject subject_;
     std::mutex mutex_;

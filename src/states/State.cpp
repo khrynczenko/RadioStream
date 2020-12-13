@@ -9,8 +9,7 @@
 #include <nana/gui/widgets/menubar.hpp>
 #pragma warning(pop)
 
-State::Context::Context(nana::form& window, nana::menubar& menubar,
-                        StationPlayer& station_player,
+State::Context::Context(nana::form& window, nana::menubar& menubar, StationPlayer& station_player,
                         StationsDatabase& stations_database, StatusBar& status,
                         TextLocalizer& localizer, Config& config,
                         RadioBrowserRequester& requester) noexcept

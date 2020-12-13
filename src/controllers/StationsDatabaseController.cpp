@@ -1,11 +1,10 @@
 #include "../../include/controllers/StationsDatabaseController.hpp"
 
-StationsDatabaseController::StationsDatabaseController(
-    StatesManager& manager, State::Context context) noexcept
+StationsDatabaseController::StationsDatabaseController(StatesManager& manager,
+                                                       State::Context context) noexcept
     : Controller(manager, context) {}
 
-void StationsDatabaseController::on_notify(const radiostream::Event e,
-                                           const std::any& data) {
+void StationsDatabaseController::on_notify(const radiostream::Event e, const std::any& data) {
     switch (e) {
         case radiostream::Event::AddStationToDatabase: {
             const auto station = std::any_cast<Station>(data);
