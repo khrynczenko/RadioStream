@@ -6,6 +6,8 @@ include(SetupDependencies)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+find_package(OpenSSL 1.1.1 REQUIRED)
+
 add_executable(RadioStream
     CMakeSetup.rc
     src/Application.cpp
@@ -56,7 +58,6 @@ target_include_directories(RadioStream SYSTEM PRIVATE
     ${poco_SOURCE_DIR}/Crypto/include
     ${poco_SOURCE_DIR}/Data/include
     ${poco_SOURCE_DIR}/Data/SQLite/include
-    ${poco_SOURCE_DIR}/Net/include
     ${poco_SOURCE_DIR}/NetSSL_OpenSSL/include
     ${nana_SOURCE_DIR}/include
     ${json_SOURCE_DIR}
@@ -69,16 +70,18 @@ target_include_directories(RadioStream PRIVATE
     ${PROJECT_BINARY_DIR}/radio-stream-version
 )
 
+
 target_link_libraries(RadioStream PRIVATE
                       nana
                       Foundation
                       Crypto
                       Data
                       DataSQLite
-                      Net
                       NetSSL
                       clip
-                      ${BASS_LIB_FILE} 
+                      ${SSL_LIB_FILE}
+                      ${CRYPTO_LIB_FILE} 
+                      ${BASS_LIB_FILE}
                       ${BASS_AAC_LIB_FILE}
                       ${FONTCONFIG_LIB} 
                       ${PTHREAD_LIB})

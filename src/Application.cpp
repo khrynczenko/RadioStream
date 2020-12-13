@@ -11,7 +11,20 @@
 #include "../include/Utilities.hpp"
 #pragma warning(push, 0)
 #include <nana/gui/msgbox.hpp>
+#include <Poco/Net/Context.h>
+#include <Poco/Net/SSLManager.h>
+#include <Poco/Net/ConsoleCertificateHandler.h>
 #pragma warning(pop)
+
+class CertificateAlwaysAccept : public Poco::Net::InvalidCertificateHandler {
+   public:
+    CertificateAlwaysAccept(bool handleErrorOnServerSide)
+        : Poco::Net::InvalidCertificateHandler(handleErrorOnServerSide) {}
+    virtual void onInvalidCertificate([[maybe_unused]] const void* pSender,
+                                      Poco::Net::VerificationErrorArgs& errorCert) override {
+        errorCert.setIgnoreError(true);
+    }
+};
 
 Application::Application(const std::filesystem::path& config_directory_path,
                          const std::filesystem::path& data_directory_path,
@@ -45,6 +58,14 @@ Application::Application(const std::filesystem::path& config_directory_path,
     register_states();
     set_observers();
     build_interface();
+
+    Poco::SharedPtr<Poco::Net::InvalidCertificateHandler> pCert =
+        new CertificateAlwaysAccept(false);
+    Poco::Net::Context::Ptr pContext = new Poco::Net::Context(
+        Poco::Net::Context::CLIENT_USE, "", "", "", Poco::Net::Context::VERIFY_NONE, 9, true,
+        "ALL:!ADH:!LOW:!EXP:!MD5:@STRENGTH");
+    Poco::Net::SSLManager::instance().initializeClient(0, pCert, pContext);
+
     auto search_state = states_manager_.get_state<SearchState>(States::ID::Search);
     search_state->initialize_countries_combox();
     search_state->initialize_language_combox();

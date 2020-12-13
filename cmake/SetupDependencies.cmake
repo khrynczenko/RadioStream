@@ -34,8 +34,11 @@ CPMAddPackage(
 CPMAddPackage(
     NAME poco
     GITHUB_REPOSITORY pocoproject/poco
-    GIT_TAG "poco-1.9.4-release"
+    GIT_TAG "poco-1.10.1-release"
     OPTIONS
+        "POCO_DISABLE_INTERNAL_OPENSSL TRUE"
+        "POCO_EXTERNAL_OPENSSL TRUE"
+        "FORCE_OPENSSL TRUE"
         "ENABLE_XML FALSE"
         "ENABLE_ENCODINGS FALSE"
         "ENABLE_MONGODB FALSE"
@@ -46,7 +49,7 @@ CPMAddPackage(
         "ENABLE_NETSSL TRUE"
         "ENABLE_JSON FALSE"
         "ENABLE_NETSSL_WIN FALSE"
-        "ENABLE_CRYPTO FALSE"
+        "ENABLE_CRYPTO TRUE"
         "ENABLE_DATA TRUE"
         "ENABLE_DATA_SQLITE TRUE"
         "ENABLE_DATA_MYSQL FALSE"
@@ -91,11 +94,15 @@ if(WIN32)
     set(BASS_LIB_FILE ${bass_SOURCE_DIR}/c/x64/bass${CMAKE_LINK_LIBRARY_SUFFIX})
     set(BASS_AAC_LIB_DIR "")
     set(BASS_AAC_LIB_FILE "")
+    set(CRYPTO_LIB_FILE $ENV{OPENSSL_ROOT_DIR}/lib/libcrypto.lib)
+    set(SSL_LIB_FILE $ENV{OPENSSL_ROOT_DIR}/lib/libssl.lib)
 elseif(UNIX)
     set(BASS_LIB_DIR ${bass_SOURCE_DIR})
     set(BASS_LIB_FILE ${bass_SOURCE_DIR}/x64/libbass${CMAKE_SHARED_LIBRARY_SUFFIX})
     set(BASS_AAC_LIB_DIR ${bass_aac_SOURCE_DIR}/c)
     set(BASS_AAC_LIB_FILE ${bass_aac_SOURCE_DIR}/x64/libbass_aac${CMAKE_SHARED_LIBRARY_SUFFIX})
+    set(CRYPTO_LIB_FILE "")
+    set(SSL_LIB_FILE "")
     set(FONTCONFIG_LIB "-lfontconfig")
     set(PTHREAD_LIB "-lpthread")
 endif()
