@@ -1,3 +1,9 @@
+### RadioStream 0.2.1
+ - Now using HTTPS
+ - Updated HTTPS requests to conform with the new `api.radio-browser.info` API
+ - A lot of internal improvements, e.g., for the build/ci and other systems
+   (updated mimiumn CMake version, nana, and poco versions, added clangd support)
+
 ### RadioStream 0.2.0
  - [Feature #44] Added functionality for copying text to clipboard (such as station name etc.)
  - [Feature #25] Added program icon
