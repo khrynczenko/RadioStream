@@ -24,8 +24,8 @@ CPMAddPackage(
 
 CPMAddPackage(
     NAME nana
-    GITHUB_REPOSITORY cnjinhao/nana
-    GIT_TAG v1.7.4
+    GITHUB_REPOSITORY khrynczenko/nana
+    GIT_TAG "hotfix-1.7.4"
     OPTIONS
         "MSVC_USE_STATIC_RUNTIME OFF"
         "NANA_CMAKE_ENABLE_PNG ${NANA_PNG}"
