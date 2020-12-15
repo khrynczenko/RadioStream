@@ -35,12 +35,15 @@ Followed by:
 Be sure to have all system dependencies installed. To be precise you should check *dockerfile* that is used to setup CI environment. It can be found in 
 root project directory in file `Dockerfile`. Roughly you need to have installed following packages.  
 
-`apt-get install -y libx11-dev libfreetype6 libfreetype6-dev libxft-dev libxcursor-dev`
+`apt-get install -y libx11-dev libfreetype6 libfreetype6-dev libxft-dev libxcursor-dev libssl-dev`
 
 ### Windows
 Again the easiest way is to use *CMake*. Command below is for *Visual Studio 15 2017* but you can use any version that supports *C++17*.
 
 `cmake -G "Visual Studio 15 2017 Win64"`
+
+You also need to have OpenSSL installed (for example with [choco](https://chocolatey.org/packages/openssl)).
+and set *`OPENSSL_ROOT_DIR`* environment variable to its root directory.
 
 Then you can work directly with generated Visual Studio solution.
 
@@ -58,6 +61,7 @@ BASS https://www.un4seen.com/
 JSON for Modern C++ https://nlohmann.github.io/json/  
 POCO C++ Libraries https://pocoproject.org/index.html  
 clip https://github.com/dacap/clip
+OpenSSL https://www.openssl.org/
 
 Screens:  
 ![search_page](/static/search_page.png?raw=true)
