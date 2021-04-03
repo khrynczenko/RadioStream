@@ -1,9 +1,7 @@
 ![logo](/resources/icon.png?raw=true)
 # RadioStream  
 Branches:  
-**master** [![Build Status](https://travis-ci.org/khrynczenko/RadioStream.svg?branch=master)](https://travis-ci.org/khrynczenko/RadioStream)  
-**develop** [![Build Status](https://travis-ci.org/khrynczenko/RadioStream.svg?branch=develop)](https://travis-ci.org/khrynczenko/RadioStream)  
-
+**develop** [![CMake](https://github.com/khrynczenko/RadioStream/actions/workflows/cmake.yml/badge.svg?branch=develop)](https://github.com/khrynczenko/RadioStream/actions/workflows/cmake.yml)
 
 ### Simple, fast and light-weight internet radio player for *Windows* and *Linux*. 
 
