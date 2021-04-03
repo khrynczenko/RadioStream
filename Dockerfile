@@ -10,7 +10,7 @@ RUN apt-get update
 RUN apt-get install -y gcc-8 g++-8 unzip  wget git make
 
 # Install all RadioStream dependencies
-Run apt-get install -y libx11-dev libfreetype6 libfreetype6-dev libxft-dev libxcursor-dev libssl-dev
+Run apt-get install -y libx11-dev libfreetype6 libfreetype6-dev libxft-dev libxcursor-dev libssl-dev libcrypto-dev
 
 # Install cmake
 RUN wget -qO- "https://cmake.org/files/v3.16/cmake-3.16.9-Linux-x86_64.tar.gz" | \
