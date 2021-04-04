@@ -13,6 +13,7 @@ using namespace constants;
 
 MainState::MainState(StatesManager& manager, Context& context)
     : State(manager, context),
+      Observer(),
       container_(context.window_),
       current_song_label_(context.window_,
                           context.localizer_.get_localized_text("no song is playing")),

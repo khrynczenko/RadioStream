@@ -58,7 +58,7 @@ void StationsDatabase::create_empty_table_if_does_not_exist() {
 void StationsDatabase::cache_stations_stored_in_database() {
     Poco::Data::Statement select(database_);
     Station station;
-    int id;
+    int id = 0;
     select << "SELECT * FROM stations", Poco::Data::Keywords::into(id),
         Poco::Data::Keywords::into(station.name_), Poco::Data::Keywords::into(station.url_),
         Poco::Data::Keywords::into(station.country_), Poco::Data::Keywords::into(station.language_),

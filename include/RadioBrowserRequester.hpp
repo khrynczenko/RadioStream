@@ -9,6 +9,8 @@
 #pragma warning(pop)
 #include <vector>
 
+constexpr std::uint16_t DEFAULT_STATION_REQUEST_LIMIT = 100;
+
 class RadioBrowserRequester {
    public:
     using Parameters = const std::vector<std::pair<std::string, std::string>>&;
@@ -25,7 +27,7 @@ class RadioBrowserRequester {
     [[nodiscard]] nlohmann::json send_arbitrary_request(const Poco::URI& request_uri,
                                                         Parameters request_parameters);
     [[nodiscard]] std::string correct_json_response(std::string response) const;
-    unsigned short int limit_ = 100;
+    unsigned short int limit_ = DEFAULT_STATION_REQUEST_LIMIT;
     Poco::Net::HTTPSClientSession session_{"de1.api.radio-browser.info"};
 };
 

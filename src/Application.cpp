@@ -20,8 +20,8 @@ class CertificateAlwaysAccept : public Poco::Net::InvalidCertificateHandler {
    public:
     CertificateAlwaysAccept(bool handleErrorOnServerSide)
         : Poco::Net::InvalidCertificateHandler(handleErrorOnServerSide) {}
-    virtual void onInvalidCertificate([[maybe_unused]] const void* pSender,
-                                      Poco::Net::VerificationErrorArgs& errorCert) override {
+    void onInvalidCertificate([[maybe_unused]] const void* pSender,
+                              Poco::Net::VerificationErrorArgs& errorCert) override {
         errorCert.setIgnoreError(true);
     }
 };
@@ -61,9 +61,10 @@ Application::Application(const std::filesystem::path& config_directory_path,
 
     Poco::SharedPtr<Poco::Net::InvalidCertificateHandler> pCert =
         new CertificateAlwaysAccept(false);
-    Poco::Net::Context::Ptr pContext = new Poco::Net::Context(
-        Poco::Net::Context::CLIENT_USE, "", "", "", Poco::Net::Context::VERIFY_NONE, 9, true,
-        "ALL:!ADH:!LOW:!EXP:!MD5:@STRENGTH");
+    Poco::Net::Context::Ptr pContext =
+        new Poco::Net::Context(Poco::Net::Context::CLIENT_USE, "", "", "",
+                               Poco::Net::Context::VERIFY_NONE, 9, true,  // NOLINT
+                               "ALL:!ADH:!LOW:!EXP:!MD5:@STRENGTH");
     Poco::Net::SSLManager::instance().initializeClient(0, pCert, pContext);
 
     auto search_state = states_manager_.get_state<SearchState>(States::ID::Search);

@@ -18,7 +18,7 @@ unsigned int volume_float_to_int(float vol) noexcept {
 
 char easytolower(char in) noexcept {
     if (in <= 'Z' && in >= 'A') {
-        return in - ('Z' - 'z');
+        return static_cast<char>(in - ('Z' - 'z'));
     }
     return in;
 }

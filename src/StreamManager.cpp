@@ -7,6 +7,8 @@
 #include <bass_aac.h>
 #endif
 
+constexpr DWORD FREQUENCY = 44100;
+
 void StreamManager::mute() {
     BASS_ChannelSetAttribute(main_stream_, BASS_ATTRIB_VOL, 0.f);
     muted_ = true;
@@ -76,7 +78,7 @@ std::string StreamManager::get_song_title() const {
 }
 
 StreamManager::StreamManager() : main_stream_(), muted_(false), current_volume_(1.f) {
-    if (!BASS_Init(-1, 44100, BASS_DEVICE_STEREO, nullptr, nullptr)) {
+    if (!BASS_Init(-1, FREQUENCY, BASS_DEVICE_STEREO, nullptr, nullptr)) {
         throw std::runtime_error("Could not initialize sound device.");
     }
 }

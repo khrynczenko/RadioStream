@@ -8,14 +8,18 @@
 #pragma warning(pop, 0)
 #include <filesystem>
 
+constexpr std::uint16_t DEFAULT_STATION_SEARCH_LIMIT = 50;
+constexpr std::uint16_t DEFAULT_WINDOW_WIDTH = 800;
+constexpr std::uint16_t DEFAULT_WINDOW_HEIGHT = 600;
+
 struct ConfigOptions {
     LanguageCode language = LanguageCode("en");
-    unsigned short int stations_search_limit = 50u;
-    unsigned short int window_width = 800u;
-    unsigned short int window_height = 600u;
+    unsigned short int stations_search_limit = DEFAULT_STATION_SEARCH_LIMIT;
+    unsigned short int window_width = DEFAULT_WINDOW_WIDTH;
+    unsigned short int window_height = DEFAULT_WINDOW_HEIGHT;
 };
 
-class Config {
+class Config {  // NOLINT: Destructor does not manage resource, just saves a file
    public:
     explicit Config(const std::filesystem::path& path_to_config);
     void change_language(const LanguageCode& code);

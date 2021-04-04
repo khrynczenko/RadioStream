@@ -4,8 +4,10 @@
 
 Config::Config(const std::filesystem::path& path_to_config)
     : path_to_config_(path_to_config),
-      default_config_(
-          {{"language", "en"}, {"stations_search_limit", 50}, {"width", 976}, {"height", 600}}) {
+      default_config_({{"language", "en"},
+                       {"stations_search_limit", DEFAULT_STATION_SEARCH_LIMIT},
+                       {"width", DEFAULT_WINDOW_WIDTH},
+                       {"height", DEFAULT_WINDOW_HEIGHT}}) {
     if (!std::filesystem::exists(path_to_config_)) {
         create_default_config_file();
     }
