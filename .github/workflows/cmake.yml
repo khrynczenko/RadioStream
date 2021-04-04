@@ -16,12 +16,16 @@ jobs:
 
     steps:
     - name: Install dependencies
-      run: sudo apt-get install -y libx11-dev libfreetype6 libfreetype6-dev libxft-dev libxcursor-dev libssl-dev clang-format
+      run: sudo apt-get install -y libx11-dev libfreetype6 libfreetype6-dev libxft-dev libxcursor-dev libssl-dev clang-format clang-tidy
 
     - uses: actions/checkout@v2
     
-    - name: Check formatting
-      run: clang-format -Werror --dry-run include/*.hpp src/*.cpp
+    - name: Run clang-format (check formatting)
+      #run: clang-format -Werror --dry-run include/*.hpp src/*.cpp
+      run: find include src -iname *.hpp -o -iname *.cpp | xargs clang-format -Werror --dry-run
+
+    - name: Run clang-tidy (perform static analysis)
+      run: find include src -iname *.hpp -o -iname *.cpp | xargs clang-tidy -p build/compile_commands.json
 
     - name: Create Build Environment
       # Some projects don't allow in-source building, so create a separate build directory
