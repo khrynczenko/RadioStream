@@ -5,12 +5,13 @@ Branches:
 
 ### Simple, fast and light-weight internet radio player for *Windows* and *Linux*. 
 
-*RadioStream* is still in early phase of development.
+*RadioStream* is not being actively developed. I made it as a side project during my studies.
+
 Do not consider master branch to be stable release, for now it contains
 the fundamental features in their basic form.
 Latest tested release goes on the master branch, while develop branch 
 is used for creating new content before releasing.
-You should branch from develop if You want to make changes.
+You should branch from develop if you want to make changes.
 
 **You can download pre-built binaries [here](https://github.com/khrynczenko/RadioStream/releases).**
 
