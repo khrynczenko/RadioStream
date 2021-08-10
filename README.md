@@ -1,11 +1,14 @@
 ![logo](/resources/icon.png?raw=true)
-# RadioStream  
+# RadioStream
+---
 Branches:  
 **develop** [![CMake](https://github.com/khrynczenko/RadioStream/actions/workflows/cmake.yml/badge.svg?branch=develop)](https://github.com/khrynczenko/RadioStream/actions/workflows/cmake.yml)
 
-### Simple, fast and light-weight internet radio player for *Windows* and *Linux*. 
+**Please note that *RadioStream* is not being actively developed. I made it as a side project during my studies while my main focus was on learning new C++ related concepts.** 
 
-*RadioStream* is not being actively developed. I made it as a side project during my studies.
+---
+
+## Simple, fast and light-weight internet radio player for *Windows* and *Linux*. 
 
 Do not consider master branch to be stable release, for now it contains
 the fundamental features in their basic form.
