@@ -4,11 +4,9 @@
 #include <exception>
 #include <string>
 
-class ReaderCouldNotReadUrl : public std::exception
-{
-public:
-    const char* what() const noexcept override;
-
+class ReaderCouldNotReadUrl : public std::exception {
+   public:
+    [[nodiscard]] const char* what() const noexcept override;
 };
 
-#endif //RADIOSTREAM_READERCOULDNOTREADURL_HPP
+#endif  // RADIOSTREAM_READERCOULDNOTREADURL_HPP

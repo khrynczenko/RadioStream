@@ -3,21 +3,19 @@
 
 #include <string>
 
-class LanguageCode
-{
-public:
+class LanguageCode {
+   public:
     LanguageCode() = default;
     explicit LanguageCode(std::string_view code);
-    bool operator==(const LanguageCode& rhs) const noexcept;
-    std::string as_string() const;
-private:
+    [[nodiscard]] bool operator==(const LanguageCode& rhs) const noexcept;
+    [[nodiscard]] std::string as_string() const;
+
+   private:
     std::string code_;
 };
 
-
-struct LanguageCodeComparator
-{
-    bool operator()(const LanguageCode& lhs, const LanguageCode& rhs) const noexcept;
+struct LanguageCodeComparator {
+    [[nodiscard]] bool operator()(const LanguageCode& lhs, const LanguageCode& rhs) const noexcept;
 };
 
 #endif

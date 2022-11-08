@@ -3,78 +3,70 @@
 #include "../../include/Utilities.hpp"
 #include "../../include/StationPlayer.hpp"
 #include "../../include/exceptions/NanaTextboxProcessingException.hpp"
+#pragma warning(push, 0)
 #include <nana/gui/widgets/menubar.hpp>
 #include <nana/gui/widgets/form.hpp>
 #include <clip.h>
+#pragma warning(pop)
 
 using namespace constants;
 
 MainState::MainState(StatesManager& manager, Context& context)
-    : State(manager, context)
-    , container_(context.window_)
-    , current_song_label_(context.window_, context.localizer_.get_localized_text("no song is playing"))
-    , current_station_label_(context.window_, context.localizer_.get_localized_text("no station is playing"))
-    , play_button_(context.window_)
-    , pause_button_(context.window_)
-    , mute_button_(context.window_)
-    , search_textbox_(context.window_)
-    , stations_listbox_(context.window_, context)
-    , volume_slider_(context.window_)
-{
+    : State(manager, context),
+      Observer(),
+      container_(context.window_),
+      current_song_label_(context.window_,
+                          context.localizer_.get_localized_text("no song is playing")),
+      current_station_label_(context.window_,
+                             context.localizer_.get_localized_text("no station is playing")),
+      play_button_(context.window_),
+      pause_button_(context.window_),
+      mute_button_(context.window_),
+      search_textbox_(context.window_),
+      stations_listbox_(context.window_, context),
+      volume_slider_(context.window_) {
     build_interface();
     init_contextual_menus();
     set_listbox_events();
     refresh_listbox();
 }
 
-void MainState::build_interface()
-{
-    current_song_label_.events().mouse_up([this](const nana::arg_mouse& arg)
-    {
-        if (!arg.is_left_button())
-        {
+void MainState::build_interface() {
+    current_song_label_.events().mouse_up([this](const nana::arg_mouse& arg) {
+        if (!arg.is_left_button()) {
             pop_song_title_menu();
         }
     });
     play_button_.caption(context_.localizer_.get_localized_text("Play"));
-    play_button_.events().click([this]()
-    {
-        notify(Observer::placeholder, radiostream::Event::PlayClicked);
-    });
+    play_button_.events().click(
+        [this]() { notify(Observer::placeholder, radiostream::Event::PlayClicked); });
     pause_button_.caption(context_.localizer_.get_localized_text("Pause"));
-    pause_button_.events().click([this]()
-    {
-        notify(Observer::placeholder, radiostream::Event::PauseClicked);
-    });
+    pause_button_.events().click(
+        [this]() { notify(Observer::placeholder, radiostream::Event::PauseClicked); });
     mute_button_.caption(context_.localizer_.get_localized_text("Mute"));
     mute_button_.enable_pushed(true);
-    mute_button_.events().mouse_up([this]()
-    {
-        if (mute_button_.pushed())
-        {
-            notify(std::make_any<unsigned int>(volume_slider_.value()), radiostream::Event::MuteClicked);
-        }
-        else
-        {
-            notify(std::make_any<unsigned int>(volume_slider_.value()), radiostream::Event::MuteUnclicked);
+    mute_button_.events().mouse_up([this]() {
+        if (mute_button_.pushed()) {
+            notify(std::make_any<unsigned int>(volume_slider_.value()),
+                   radiostream::Event::MuteClicked);
+        } else {
+            notify(std::make_any<unsigned int>(volume_slider_.value()),
+                   radiostream::Event::MuteUnclicked);
         }
     });
     volume_slider_.scheme().color_vernier = VERNIER_COLOR;
     volume_slider_.maximum(100);
     volume_slider_.value(volume_float_to_int(context_.station_player_.get_volume()));
-    volume_slider_.vernier([](const unsigned int maximum, const unsigned int cursor_value)
-    {
+    volume_slider_.vernier([](const unsigned int maximum, const unsigned int cursor_value) {
         return std::string(std::to_string(cursor_value) + "/" + std::to_string(maximum));
     });
-    volume_slider_.events().value_changed([this]()
-    {
-        notify(std::make_any<unsigned int>(volume_slider_.value()), radiostream::Event::VolumeChanged);
+    volume_slider_.events().value_changed([this]() {
+        notify(std::make_any<unsigned int>(volume_slider_.value()),
+               radiostream::Event::VolumeChanged);
     });
-    search_textbox_.line_wrapped(true).multi_lines(false).tip_string(context_.localizer_.get_localized_text("Search..."));
-    search_textbox_.events().text_changed([this]()
-    {
-        search_stations();
-    });
+    search_textbox_.line_wrapped(true).multi_lines(false).tip_string(
+        context_.localizer_.get_localized_text("Search..."));
+    search_textbox_.events().text_changed([this]() { search_stations(); });
     container_.div(
         "<content vertical margin=[5%,0,0,0]"
         "<buttons weight=12% arrange=[10%,10%,10%,10%] gap=1% margin=1%>"
@@ -89,163 +81,123 @@ void MainState::build_interface()
     container_.collocate();
 }
 
-void MainState::change_visibility(bool visible)
-{
+void MainState::change_visibility(bool visible) {
     container_.erase(context_.window_);
     container_.field_display("content", visible);
     context_.menubar_.show();
     container_.collocate();
 }
 
-void MainState::refresh_listbox()
-{
-   const auto& stations = context_.stations_database_.get_stations();
-   stations_listbox_.populate_listbox(stations);
+void MainState::refresh_listbox() {
+    const auto& stations = context_.stations_database_.get_stations();
+    stations_listbox_.populate_listbox(stations);
 }
 
-void MainState::station_being_played_changed(const Station& changed_station)
-{
+void MainState::station_being_played_changed(const Station& changed_station) {
     current_station_label_.caption(changed_station.name_);
 }
 
-void MainState::song_has_changed(std::string_view song_title)
-{
+void MainState::song_has_changed(std::string_view song_title) {
     current_song_label_.caption(std::string(song_title));
 }
 
-void MainState::init_contextual_menus()
-{
-    song_label_menu_.append(context_.localizer_.get_localized_text("Copy title to clipboard"), [this](auto&)
-    {
-        const auto title = current_song_label_.caption();
-        clip::set_text(title);
-    });
-    listbox_item_menu_.append(context_.localizer_.get_localized_text("Play"), [this](auto&)
-    {
-        on_new_station_request();
-    });
-    listbox_item_menu_.append(context_.localizer_.get_localized_text("Copy name to clipboard"), [this](auto&)
-    {
-        copy_station_name_to_clipboard();
-    });
-    listbox_item_menu_.append(context_.localizer_.get_localized_text("Copy URL to clipboard"), [this](auto&)
-    {
-        copy_station_url_to_clipboard();
-    });
-    listbox_item_menu_.append(context_.localizer_.get_localized_text("Delete from list"), [this](auto&)
-    {
-        delete_station();
-    });
+void MainState::init_contextual_menus() {
+    song_label_menu_.append(context_.localizer_.get_localized_text("Copy title to clipboard"),
+                            [this](auto&) {
+                                const auto title = current_song_label_.caption();
+                                clip::set_text(title);
+                            });
+    listbox_item_menu_.append(context_.localizer_.get_localized_text("Play"),
+                              [this](auto&) { on_new_station_request(); });
+    listbox_item_menu_.append(context_.localizer_.get_localized_text("Copy name to clipboard"),
+                              [this](auto&) { copy_station_name_to_clipboard(); });
+    listbox_item_menu_.append(context_.localizer_.get_localized_text("Copy URL to clipboard"),
+                              [this](auto&) { copy_station_url_to_clipboard(); });
+    listbox_item_menu_.append(context_.localizer_.get_localized_text("Delete from list"),
+                              [this](auto&) { delete_station(); });
 }
 
-void MainState::set_listbox_events()
-{
-    stations_listbox_.events().mouse_down([this](const nana::arg_mouse& arg)
-    {
-        if (!arg.is_left_button())
-        {
+void MainState::set_listbox_events() {
+    stations_listbox_.events().mouse_down([this](const nana::arg_mouse& arg) {
+        if (!arg.is_left_button()) {
             pop_stations_listbox_menu();
         }
     });
-    stations_listbox_.events().dbl_click([this](const nana::arg_mouse& arg)
-    {
-        on_new_station_request();
-    });
+    stations_listbox_.events().dbl_click(
+        [this]([[maybe_unused]] const nana::arg_mouse& arg) { on_new_station_request(); });
 }
 
-void MainState::search_stations()
-{
+void MainState::search_stations() {
     std::string string_to_find{};
-    if (!search_textbox_.getline(0, string_to_find))
-    {
+    if (!search_textbox_.getline(0, string_to_find)) {
         throw NanaTextboxProcessingException();
     }
     stations_listbox_.auto_draw(false);
-    if (!string_to_find.empty())
-    {
+    if (!string_to_find.empty()) {
         stations_listbox_.clear();
-        const auto& stations = context_.stations_database_.get_stations_by_substring(string_to_find);
+        const auto& stations =
+            context_.stations_database_.get_stations_by_substring(string_to_find);
         stations_listbox_.populate_listbox(stations);
-    }
-    else
-    {
+    } else {
         refresh_listbox();
     }
     stations_listbox_.auto_draw(true);
 }
 
-void MainState::pop_song_title_menu()
-{
+void MainState::pop_song_title_menu() {
     auto position = nana::API::cursor_position();
     nana::API::calc_window_point(context_.window_, position);
     song_label_menu_.popup(context_.window_, position.x, position.y);
 }
 
-void MainState::pop_stations_listbox_menu()
-{
+void MainState::pop_stations_listbox_menu() {
     auto position = nana::API::cursor_position();
     nana::API::calc_window_point(context_.window_, position);
     listbox_item_menu_.popup(context_.window_, position.x, position.y);
 }
 
-void MainState::copy_station_name_to_clipboard()
-{
-    if (const auto station = stations_listbox_.get_selected_station(); station.has_value())
-    {
+void MainState::copy_station_name_to_clipboard() {
+    if (const auto station = stations_listbox_.get_selected_station(); station.has_value()) {
         clip::set_text(station.value().name_);
     }
 }
 
-void MainState::copy_station_url_to_clipboard()
-{
-    if (const auto station = stations_listbox_.get_selected_station(); station.has_value())
-    {
+void MainState::copy_station_url_to_clipboard() {
+    if (const auto station = stations_listbox_.get_selected_station(); station.has_value()) {
         clip::set_text(station.value().url_);
     }
 }
 
-void MainState::delete_station()
-{
-    if (const auto station = stations_listbox_.get_selected_station(); station.has_value())
-    {
-        notify(std::make_any<Station>(station.value()), radiostream::Event::DeleteStationFromDatabase);
+void MainState::delete_station() {
+    if (const auto station = stations_listbox_.get_selected_station(); station.has_value()) {
+        notify(std::make_any<Station>(station.value()),
+               radiostream::Event::DeleteStationFromDatabase);
     }
 }
 
-void MainState::on_new_station_request()
-{
-    if (const auto station = stations_listbox_.get_selected_station(); station.has_value())
-    {
+void MainState::on_new_station_request() {
+    if (const auto station = stations_listbox_.get_selected_station(); station.has_value()) {
         notify(station.value(), radiostream::Event::NewStationRequested);
     }
 }
 
-void MainState::on_notify(radiostream::Event e, const std::any &data)
-{
-    switch(e)
-    {
-        case radiostream::Event::NewStationSet:
-        {
+void MainState::on_notify(radiostream::Event e, const std::any& data) {
+    switch (e) {
+        case radiostream::Event::NewStationSet: {
             const auto station = std::any_cast<Station>(data);
             station_being_played_changed(station);
-        }
-        break;
-        case radiostream::Event::StationSongHasChanged:
-        {
+        } break;
+        case radiostream::Event::StationSongHasChanged: {
             song_has_changed(std::any_cast<std::string>(data));
+        } break;
+        case radiostream::Event::StationAddedToDatabase: {
+            refresh_listbox();
+        } break;
+        case radiostream::Event::StationDeletedFromDatabase: {
+            refresh_listbox();
+        } break;
 
-        }
-        case radiostream::Event::StationAddedToDatabase:
-        {
-            refresh_listbox();
-        }
-        break;
-        case radiostream::Event::StationDeletedFromDatabase:
-        {
-            refresh_listbox();
-        }
-        break;
+        default:
+            return;
     }
 }
-
-

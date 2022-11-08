@@ -1,132 +1,110 @@
-cmake_minimum_required (VERSION 3.13)
-project(RadioStream VERSION "0.2.0")
+cmake_minimum_required (VERSION 3.16)
+project(RadioStream VERSION "0.2.2")
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 
-set(MSVC_USE_STATIC_RUNTIME OFF CACHE BOOL "Nana runtime type") #This is nana variable
-if(UNIX)
-    set(NANA_CMAKE_ENABLE_PNG ON CACHE BOOL "Nana PNG support")
-endif()
-# POCO variables
-set(ENABLE_XML FALSE)
-set(ENABLE_JSTRUE TRUE)
-set(ENABLE_MONGODB FALSE)
-set(ENABLE_REDIS FALSE)
-set(ENABLE_PDF FALSE)
-set(ENABLE_UTIL TRUE)
-set(ENABLE_NET TRUE)
-set(ENABLE_NETSSL TRUE)
-set(ENABLE_NETSSL_WIN FALSE)
-set(ENABLE_CRYPTO FALSE)
-set(ENABLE_DATA TRUE)
-set(ENABLE_DATA_SQLITE TRUE)
-set(ENABLE_DATA_MYSQL FALSE)
-set(ENABLE_DATA_ODBC FALSE)
-set(ENABLE_SEVENZIP FALSE)
-set(ENABLE_ZIP FALSE)
-set(ENABLE_APACHECONNECTOR FALSE)
-set(ENABLE_CPPPARSER FALSE)
-set(ENABLE_POCODOC FALSE)
-set(ENABLE_PAGECOMPILER FALSE)
-set(ENABLE_PAGECOMPILER_FILE2PAGE FALSE)
+include(SetupDependencies)
 
-include(DownloadDependencies)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-add_subdirectory(${nana_SOURCE_DIR} EXCLUDE_FROM_ALL)
-add_subdirectory(${poco_SOURCE_DIR} EXCLUDE_FROM_ALL)
-add_subdirectory(${clip_SOURCE_DIR} EXCLUDE_FROM_ALL)
-
-if(WIN32)
-    set(BASS_LIB_DIR ${bass_SOURCE_DIR}/c)
-    set(BASS_LIB_FILE ${bass_SOURCE_DIR}/c/x64/bass.lib)
-    set(BASS_AAC_LIB_DIR "")
-    set(BASS_AAC_LIB_FILE "")
-elseif(UNIX)
-    set(BASS_LIB_DIR ${bass_SOURCE_DIR})
-    set(BASS_LIB_FILE ${bass_SOURCE_DIR}/x64/libbass.so)
-    set(BASS_AAC_LIB_DIR ${bass_aac_SOURCE_DIR}/c)
-    set(BASS_AAC_LIB_FILE ${bass_aac_SOURCE_DIR}/x64/libbass_aac.so)
-    set(FONTCONFIG_LIB "-lfontconfig")
-    set(PTHREAD_LIB "-lpthread")
-endif()
+find_package(OpenSSL 1.1.1 REQUIRED)
 
 add_executable(RadioStream
-CMakeSetup.rc
-src/Application.cpp
-src/StreamManager.cpp
-src/StationsDatabase.cpp
-src/TextLocalizer.cpp
-src/main.cpp
-src/Constants.cpp
-src/StationPlayer.cpp
-src/Utilities.cpp
-src/Observer.cpp
-src/Config.cpp
-src/Subject.cpp
-src/Language.cpp
-src/Station.cpp
-src/StatusBar.cpp
-src/RadioBrowserRequester.cpp
-src/multimedia_playlists/PocoHTTPDownloader.cpp
-src/multimedia_playlists/M3UReader.cpp
-src/multimedia_playlists/PLSReader.cpp
-src/multimedia_playlists/MultimediaPlaylistReaderFactory.cpp
-src/widgets/StationListbox.cpp
-src/controllers/StationPlayerController.cpp
-src/controllers/ConfigController.cpp
-src/controllers/Controller.cpp
-src/controllers/StationsDatabaseController.cpp
-src/controllers/StatusBarController.cpp
-src/controllers/RadioBrowserRequesterController.cpp
-src/exceptions/NanaTextboxProcessingException.cpp
-src/exceptions/NotSupportedLanguageException.cpp
-src/exceptions/WrongLanguageCodeFormatException.cpp
-src/exceptions/LanguageFileNotFound.cpp
-src/states/ToolsState.cpp
-src/states/State.cpp
-src/states/MainState.cpp
-src/states/SearchState.cpp
-src/states/StatesManager.cpp
-src/exceptions/ReaderCouldNotReadUrl.cpp
-src/exceptions/CouldNotMakeReader.cpp
-src/StreamURIResolver.cpp
-src/ApplicationDirectories.cpp)
+    CMakeSetup.rc
+    src/Application.cpp
+    src/StreamManager.cpp
+    src/StationsDatabase.cpp
+    src/TextLocalizer.cpp
+    src/main.cpp
+    src/Constants.cpp
+    src/StationPlayer.cpp
+    src/Utilities.cpp
+    src/Observer.cpp
+    src/Config.cpp
+    src/Subject.cpp
+    src/Language.cpp
+    src/Station.cpp
+    src/StatusBar.cpp
+    src/RadioBrowserRequester.cpp
+    src/multimedia_playlists/PocoHTTPDownloader.cpp
+    src/multimedia_playlists/M3UReader.cpp
+    src/multimedia_playlists/PLSReader.cpp
+    src/multimedia_playlists/MultimediaPlaylistReaderFactory.cpp
+    src/widgets/StationListbox.cpp
+    src/controllers/StationPlayerController.cpp
+    src/controllers/ConfigController.cpp
+    src/controllers/Controller.cpp
+    src/controllers/StationsDatabaseController.cpp
+    src/controllers/StatusBarController.cpp
+    src/controllers/RadioBrowserRequesterController.cpp
+    src/exceptions/NanaTextboxProcessingException.cpp
+    src/exceptions/NotSupportedLanguageException.cpp
+    src/exceptions/WrongLanguageCodeFormatException.cpp
+    src/exceptions/LanguageFileNotFound.cpp
+    src/states/ToolsState.cpp
+    src/states/State.cpp
+    src/states/MainState.cpp
+    src/states/SearchState.cpp
+    src/states/StatesManager.cpp
+    src/exceptions/ReaderCouldNotReadUrl.cpp
+    src/exceptions/CouldNotMakeReader.cpp
+    src/StreamURIResolver.cpp
+    src/ApplicationDirectories.cpp
+)
 
 target_compile_features(RadioStream PRIVATE cxx_std_17)
 
-target_include_directories(RadioStream PRIVATE
+target_include_directories(RadioStream SYSTEM PRIVATE
     ${poco_SOURCE_DIR}/Foundation/include
+    ${poco_SOURCE_DIR}/Crypto/include
     ${poco_SOURCE_DIR}/Data/include
-    ${poco_SOURCE_DIR}/poco/Data/SQLite/include
-    ${poco_SOURCE_DIR}/poco/Net/include
+    ${poco_SOURCE_DIR}/Data/SQLite/include
+    ${poco_SOURCE_DIR}/NetSSL_OpenSSL/include
     ${nana_SOURCE_DIR}/include
     ${json_SOURCE_DIR}
     ${clip_SOURCE_DIR}
     ${BASS_LIB_DIR}
     ${BASS_AAC_LIB_DIR}
+)
+
+target_include_directories(RadioStream PRIVATE
     ${PROJECT_BINARY_DIR}/radio-stream-version
 )
+
 
 target_link_libraries(RadioStream PRIVATE
                       nana
                       Foundation
+                      Crypto
                       Data
                       DataSQLite
-                      Net
+                      NetSSL
                       clip
-                      ${BASS_LIB_FILE} 
+                      ${SSL_LIB_FILE}
+                      ${CRYPTO_LIB_FILE} 
+                      ${BASS_LIB_FILE}
                       ${BASS_AAC_LIB_FILE}
                       ${FONTCONFIG_LIB} 
                       ${PTHREAD_LIB})
 
-if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC" AND CMAKE_BUILD_TYPE STREQUAL "Release")
-    target_link_options(RadioStream BEFORE PRIVATE "/SUBSYSTEM:WINDOWS")
+if (${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
+    target_link_options(RadioStream PRIVATE "/SUBSYSTEM:WINDOWS")
+endif()
+
+if (${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
+    # remove "overriding /W3 with /W4" compiler warning
+    string(REGEX REPLACE "/W3" "" CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS})
+    # warning level 4 and all warnings as errors
+    target_compile_options(RadioStream PRIVATE /W4 /WX /sdl)
+elseif(${CMAKE_CXX_COMPILER_ID} STREQUAL GNU)
+    # lots of warnings and all warnings as errors
+    target_compile_options(RadioStream PRIVATE -Wall -Wextra -pedantic -Werror -Wno-unknown-pragmas)
 endif()
 
 if(UNIX)
         set(BASS_INSTALL_LIB "${BASS_LIB_FILE}")
         set(BASS_AAC_INSTALL_LIB "${BASS_AAC_LIB_FILE}")
 elseif(WIN32)
-        set(BASS_INSTALL_LIB "${bass_SOURCE_DIR}/x64/bass.dll")
+        set(BASS_INSTALL_LIB "${bass_SOURCE_DIR}/x64/bass${CMAKE_SHARED_LIBRARY_SUFFIX}")
 endif()
 
 configure_file (
@@ -155,6 +133,14 @@ if(WIN32)
             )
     install(TARGETS Foundation Data DataSQLite Net RUNTIME
             DESTINATION ".")
+    install(FILES
+            ${OPENSSL_INCLUDE_DIR}/../libssl-1_1-x64.dll
+            DESTINATION "."
+            )
+    install(FILES
+            ${OPENSSL_INCLUDE_DIR}/../libcrypto-1_1-x64.dll
+            DESTINATION "."
+            )
     install(FILES
             "${BASS_INSTALL_LIB}"
             DESTINATION ".")

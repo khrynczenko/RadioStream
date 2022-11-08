@@ -1,18 +1,20 @@
 ![logo](/resources/icon.png?raw=true)
-# RadioStream  
+# RadioStream
+---
 Branches:  
-**master** [![Build Status](https://travis-ci.org/khrynczenko/RadioStream.svg?branch=master)](https://travis-ci.org/khrynczenko/RadioStream)  
-**develop** [![Build Status](https://travis-ci.org/khrynczenko/RadioStream.svg?branch=develop)](https://travis-ci.org/khrynczenko/RadioStream)  
+**develop** [![CMake](https://github.com/khrynczenko/RadioStream/actions/workflows/cmake.yml/badge.svg?branch=develop)](https://github.com/khrynczenko/RadioStream/actions/workflows/cmake.yml)
 
+**Please note that *RadioStream* is not being actively developed. I made it as a side project during my studies while my main focus was on learning new C++ related concepts.** 
 
-### Simple, fast and light-weight internet radio player for *Windows* and *Linux*. 
+---
 
-*RadioStream* is still in early phase of development.
+## Simple, fast and light-weight internet radio player for *Windows* and *Linux*. 
+
 Do not consider master branch to be stable release, for now it contains
 the fundamental features in their basic form.
 Latest tested release goes on the master branch, while develop branch 
 is used for creating new content before releasing.
-You should branch from develop if You want to make changes.
+You should branch from develop if you want to make changes.
 
 **You can download pre-built binaries [here](https://github.com/khrynczenko/RadioStream/releases).**
 
@@ -35,12 +37,15 @@ Followed by:
 Be sure to have all system dependencies installed. To be precise you should check *dockerfile* that is used to setup CI environment. It can be found in 
 root project directory in file `Dockerfile`. Roughly you need to have installed following packages.  
 
-`apt-get install -y libx11-dev libfreetype6 libfreetype6-dev libxft-dev libxcursor-dev`
+`apt-get install -y libx11-dev libfreetype6 libfreetype6-dev libxft-dev libxcursor-dev libssl-dev`
 
 ### Windows
 Again the easiest way is to use *CMake*. Command below is for *Visual Studio 15 2017* but you can use any version that supports *C++17*.
 
 `cmake -G "Visual Studio 15 2017 Win64"`
+
+You also need to have OpenSSL installed (for example with [choco](https://chocolatey.org/packages/openssl)).
+and set *`OPENSSL_ROOT_DIR`* environment variable to its root directory.
 
 Then you can work directly with generated Visual Studio solution.
 
@@ -57,7 +62,8 @@ nana https://github.com/cnjinhao/nana (fork)
 BASS https://www.un4seen.com/  
 JSON for Modern C++ https://nlohmann.github.io/json/  
 POCO C++ Libraries https://pocoproject.org/index.html  
-clip https://github.com/dacap/clip
+clip https://github.com/dacap/clip  
+OpenSSL https://www.openssl.org/
 
 Screens:  
 ![search_page](/static/search_page.png?raw=true)

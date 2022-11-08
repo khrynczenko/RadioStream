@@ -6,9 +6,8 @@
 #include "Subject.hpp"
 #include <mutex>
 
-class StationPlayer : public Subject
-{
-public:
+class StationPlayer : public Subject {
+   public:
     StationPlayer();
     void mute();
     void unmute();
@@ -16,10 +15,11 @@ public:
     void pause();
     void set_volume(float volume);
     float get_volume() const noexcept;
-    bool set_station(const Station& station);
-    Station get_station() const;
-    std::string get_song_title() const;
-private:
+    [[nodiscard]] bool set_station(const Station& station);
+    [[nodiscard]] Station get_station() const;
+    [[nodiscard]] std::string get_song_title() const;
+
+   private:
     void check_if_song_title_has_changed();
     Station station_;
     StreamManager stream_manager_;

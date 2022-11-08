@@ -6,19 +6,20 @@
 #include <any>
 
 namespace radiostream {
-    enum class Event;
+enum class Event;
 }
 
 class StatesManager;
 
 class Controller : public Observer
-   
+
 {
-public:
+   public:
     Controller(StatesManager& manager, State::Context context) noexcept;
-    virtual void on_notify(const radiostream::Event e, const std::any &data) = 0;
+    virtual void on_notify(const radiostream::Event e, const std::any& data) = 0;
     virtual ~Controller() = default;
-protected:
+
+   protected:
     StatesManager& manager_;
     State::Context context_;
 };

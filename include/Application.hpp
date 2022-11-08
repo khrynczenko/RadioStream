@@ -14,8 +14,10 @@
 #include "controllers/ConfigController.hpp"
 #include "controllers/RadioBrowserRequesterController.hpp"
 #include "controllers/StatusBarController.hpp"
+#pragma warning(push, 0)
 #include <nana/gui/widgets/form.hpp>
 #include <nana/gui/widgets/menubar.hpp>
+#pragma warning(pop)
 #include <mutex>
 #include <filesystem>
 
@@ -23,40 +25,36 @@ class LanguageCode;
 
 /**
  * \class Application
- * \brief Glues each compomnent of a system together. Creates window, sets initial States, initializes menubar etc.
+ * \brief Glues each compomnent of a system together. Creates window, sets
+ * initial States, initializes menubar etc.
  */
-class Application : public Subject
-{
-public:
-	Application(const std::filesystem::path& config_directory_path,
-			    const std::filesystem::path& data_directory_path,
-			    const std::filesystem::path& lang_directory_path);
-private:
-    enum
-    {
-        FILE,
-        RADIOBROWSER,
-        TOOLS,
-        HELP
-    };
+class Application : public Subject {
+   public:
+    Application(const std::filesystem::path& config_directory_path,
+                const std::filesystem::path& data_directory_path,
+                const std::filesystem::path& lang_directory_path);
+
+   private:
+    enum { FILE, RADIOBROWSER, TOOLS, HELP };
     /**
-	 * \brief Gets called in constructor, registers states that are gonna be used throughout the application.
-	 */
-	void register_states();
-	void init_menubar();
-	void set_language();
-	void set_observers();
+     * \brief Gets called in constructor, registers states that are gonna be
+     * used throughout the application.
+     */
+    void register_states();
+    void init_menubar();
+    void set_language();
+    void set_observers();
     void set_window_events();
     void set_window();
     void build_interface();
     void init_status();
-	Config config_;
-	nana::form window_;
-	nana::menubar menubar_;
+    Config config_;
+    nana::form window_;
+    nana::menubar menubar_;
     StationPlayer station_player_;
     StationsDatabase stations_database_;
     StatusBar status_;
-	TextLocalizer localizer_;
+    TextLocalizer localizer_;
     RadioBrowserRequester requester_;
     State::Context context_;
     StatesManager states_manager_;

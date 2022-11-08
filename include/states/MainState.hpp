@@ -4,6 +4,7 @@
 #include "State.hpp"
 #include "../Station.hpp"
 #include "../widgets/StationListbox.hpp"
+#pragma warning(push, 0)
 #include <nana/gui/place.hpp>
 #include <nana/gui/widgets/button.hpp>
 #include <nana/gui/widgets/listbox.hpp>
@@ -11,22 +12,22 @@
 #include <nana/gui/widgets/slider.hpp>
 #include <nana/gui/widgets/label.hpp>
 #include <nana/gui/widgets/menu.hpp>
+#pragma warning(pop)
 #include <thread>
 
-class MainState :
-    public State,
-    public Observer
-{
-public:
+class MainState : public State, public Observer {
+   public:
     MainState(StatesManager& manager, Context& context);
     void change_visibility(bool visible) override;
     void refresh_listbox();
     void station_being_played_changed(const Station& changed_station);
     void song_has_changed(std::string_view song_title);
     void on_notify(radiostream::Event e, const std::any& data) override;
-private:
+
+   private:
     /**
-     * \brief normally when the same row is selected second time it gets unselected, this function prevents that.
+     * \brief normally when the same row is selected second time it gets
+     * unselected, this function prevents that.
      */
     void build_interface();
     void init_contextual_menus();

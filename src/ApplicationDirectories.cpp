@@ -7,8 +7,7 @@
 #endif
 
 #ifndef _WIN32
-std::filesystem::path get_home_path()
-{
+std::filesystem::path get_home_path() {
     const char* home_path = getenv("HOME");
     if (home_path == nullptr) {
         home_path = getpwuid(getuid())->pw_dir;
@@ -17,8 +16,7 @@ std::filesystem::path get_home_path()
 }
 
 #endif
-std::filesystem::path get_config_directory_path()
-{
+std::filesystem::path get_config_directory_path() {
 #ifndef _WIN32
     const char* config_path = getenv("XDG_CONFIG_HOME");
     if (config_path == nullptr) {
@@ -30,8 +28,7 @@ std::filesystem::path get_config_directory_path()
 #endif
 }
 
-std::filesystem::path get_data_directory_path()
-{
+std::filesystem::path get_data_directory_path() {
 #ifndef _WIN32
     const char* data_path = getenv("XDG_DATA_HOME");
     if (data_path == nullptr) {
@@ -43,8 +40,7 @@ std::filesystem::path get_data_directory_path()
 #endif
 }
 
-std::filesystem::path get_lang_directory_path() noexcept
-{
+std::filesystem::path get_lang_directory_path() noexcept {
 #ifndef _WIN32
     return "/usr/local/share/radiostream";
 #else
