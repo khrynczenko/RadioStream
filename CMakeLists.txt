@@ -86,8 +86,8 @@ target_link_libraries(RadioStream PRIVATE
                       ${FONTCONFIG_LIB} 
                       ${PTHREAD_LIB})
 
-if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC" AND CMAKE_BUILD_TYPE STREQUAL "Release")
-    target_link_options(RadioStream BEFORE PRIVATE "/SUBSYSTEM:WINDOWS" "/ENTRY:WinMainCRTStartup")
+if (${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
+    target_link_options(RadioStream PRIVATE "/SUBSYSTEM:WINDOWS")
 endif()
 
 if (${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
