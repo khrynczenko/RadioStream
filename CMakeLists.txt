@@ -134,6 +134,14 @@ if(WIN32)
     install(TARGETS Foundation Data DataSQLite Net RUNTIME
             DESTINATION ".")
     install(FILES
+            ${OPENSSL_INCLUDE_DIR}/../libssl-1_1-x64.dll
+            DESTINATION "."
+            )
+    install(FILES
+            ${OPENSSL_INCLUDE_DIR}/../libcrypto-1_1-x64.dll
+            DESTINATION "."
+            )
+    install(FILES
             "${BASS_INSTALL_LIB}"
             DESTINATION ".")
     install(DIRECTORY "${CMAKE_SOURCE_DIR}/lang"
