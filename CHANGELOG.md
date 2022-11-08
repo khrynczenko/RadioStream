@@ -1,3 +1,7 @@
+### RadioStream 0.2.2
+ - Fixed issue when building on windows using multi-generator approach
+ - Added libssl and libcrypto dlls to windows bundle
+
 ### RadioStream 0.2.1
  - Now using HTTPS
  - Updated HTTPS requests to conform with the new `api.radio-browser.info` API
