@@ -1,5 +1,5 @@
 cmake_minimum_required (VERSION 3.16)
-project(RadioStream VERSION "0.2.2")
+project(RadioStream VERSION "0.2.3")
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 
 include(SetupDependencies)
@@ -158,10 +158,10 @@ elseif(UNIX)
     set_target_properties(Net PROPERTIES LIBRARY_OUTPUT_DIRECTORY "${OUT_DIR}")
     install(TARGETS RadioStream
             RUNTIME
-            DESTINATION "/usr/bin/"
+            DESTINATION "/usr/local/bin/"
             )
     install(TARGETS Foundation Data DataSQLite Net LIBRARY
-            DESTINATION /usr/lib)
+            DESTINATION /usr/local/lib)
     install(FILES
             "${BASS_INSTALL_LIB}"
             "${BASS_AAC_INSTALL_LIB}"
