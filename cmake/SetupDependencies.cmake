@@ -34,7 +34,7 @@ CPMAddPackage(
 CPMAddPackage(
     NAME poco
     GITHUB_REPOSITORY pocoproject/poco
-    GIT_TAG "poco-1.10.1-release"
+    GIT_TAG "poco-1.13.3-release"
     OPTIONS
         "POCO_DISABLE_INTERNAL_OPENSSL TRUE"
         "POCO_EXTERNAL_OPENSSL TRUE"
@@ -98,10 +98,10 @@ if(WIN32)
     set(CRYPTO_LIB_FILE $ENV{OPENSSL_ROOT_DIR}/lib/libcrypto.lib)
     set(SSL_LIB_FILE $ENV{OPENSSL_ROOT_DIR}/lib/libssl.lib)
 elseif(UNIX)
-    set(BASS_LIB_DIR ${bass_SOURCE_DIR})
-    set(BASS_LIB_FILE ${bass_SOURCE_DIR}/x64/libbass${CMAKE_SHARED_LIBRARY_SUFFIX})
+    set(BASS_LIB_DIR ${bass_SOURCE_DIR}/c)
+    set(BASS_LIB_FILE ${bass_SOURCE_DIR}/libs/x86_64/libbass${CMAKE_SHARED_LIBRARY_SUFFIX})
     set(BASS_AAC_LIB_DIR ${bass_aac_SOURCE_DIR}/c)
-    set(BASS_AAC_LIB_FILE ${bass_aac_SOURCE_DIR}/x64/libbass_aac${CMAKE_SHARED_LIBRARY_SUFFIX})
+    set(BASS_AAC_LIB_FILE ${bass_aac_SOURCE_DIR}/libs/x86_64/libbass_aac${CMAKE_SHARED_LIBRARY_SUFFIX})
     set(CRYPTO_LIB_FILE "")
     set(SSL_LIB_FILE "")
     set(FONTCONFIG_LIB "-lfontconfig")

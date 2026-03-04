@@ -158,10 +158,10 @@ elseif(UNIX)
     set_target_properties(Net PROPERTIES LIBRARY_OUTPUT_DIRECTORY "${OUT_DIR}")
     install(TARGETS RadioStream
             RUNTIME
-            DESTINATION "/usr/bin/"
+            DESTINATION "/usr/local/bin/"
             )
     install(TARGETS Foundation Data DataSQLite Net LIBRARY
-            DESTINATION /usr/lib)
+            DESTINATION /usr/local/lib)
     install(FILES
             "${BASS_INSTALL_LIB}"
             "${BASS_AAC_INSTALL_LIB}"
