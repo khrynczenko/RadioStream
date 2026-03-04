@@ -1,4 +1,8 @@
 ### RadioStream 0.2.2
+ - Fixed issue where on linux menu bar items would not expand
+ - Fixed linux build directories for BASS dependepcy
+
+### RadioStream 0.2.2
  - Fixed issue when building on windows using multi-generator approach
  - Added libssl and libcrypto dlls to windows bundle
 

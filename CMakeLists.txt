@@ -1,5 +1,5 @@
 cmake_minimum_required (VERSION 3.16)
-project(RadioStream VERSION "0.2.2")
+project(RadioStream VERSION "0.2.3")
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 
 include(SetupDependencies)
